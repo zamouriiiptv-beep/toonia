@@ -1,0 +1,8 @@
+/* ===================================
+   File: main.js
+   Purpose: Global JS for Toonia
+=================================== */
+
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("Toonia JS loaded");
+});
