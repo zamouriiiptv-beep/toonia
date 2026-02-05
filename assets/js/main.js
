@@ -1,8 +1,23 @@
-/* ===================================
-   File: main.js
-   Purpose: Global JS for Toonia
-=================================== */
 
-document.addEventListener("DOMContentLoaded", () => {
-  console.log("Toonia JS loaded");
-});
+    const openBtn = document.querySelector('.menu-icon'); 
+    const closeBtn = document.getElementById('aniClose');
+    const sidebar = document.getElementById('aniSidebar');
+    const overlay = document.getElementById('aniOverlay');
+
+    if(openBtn) {
+        openBtn.onclick = () => {
+            sidebar.classList.add('active');
+            overlay.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        };
+    }
+
+    const closeMenu = () => {
+        sidebar.classList.remove('active');
+        overlay.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    };
+
+    closeBtn.onclick = closeMenu;
+    overlay.onclick = closeMenu;
+
