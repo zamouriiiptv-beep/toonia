@@ -1,24 +1,28 @@
+// اختبار تحميل JavaScript
 alert("JS يعمل");
 
-    const openBtn = document.querySelector('.menu-icon'); 
-    const closeBtn = document.getElementById('aniClose');
-    const sidebar = document.getElementById('aniSidebar');
-    const overlay = document.getElementById('aniOverlay');
+document.addEventListener("DOMContentLoaded", () => {
 
-    if(openBtn) {
-        openBtn.onclick = () => {
-            sidebar.classList.add('active');
-            overlay.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        };
-    }
+  const openBtn = document.querySelector('.menu-icon'); 
+  const closeBtn = document.getElementById('aniClose');
+  const sidebar = document.getElementById('aniSidebar');
+  const overlay = document.getElementById('aniOverlay');
 
-    const closeMenu = () => {
-        sidebar.classList.remove('active');
-        overlay.style.display = 'none';
-        document.body.style.overflow = 'auto';
+  if (openBtn && sidebar && overlay) {
+    openBtn.onclick = () => {
+      sidebar.classList.add('active');
+      overlay.style.display = 'block';
+      document.body.style.overflow = 'hidden';
     };
+  }
 
-    closeBtn.onclick = closeMenu;
-    overlay.onclick = closeMenu;
+  const closeMenu = () => {
+    sidebar.classList.remove('active');
+    overlay.style.display = 'none';
+    document.body.style.overflow = 'auto';
+  };
 
+  if (closeBtn) closeBtn.onclick = closeMenu;
+  if (overlay) overlay.onclick = closeMenu;
+
+});
