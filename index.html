@@ -1,4 +1,3 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -6,13 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Toonia - عالم الأنمي</title>
 
-    <!-- ربط ملف CSS الخارجي -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <link rel="stylesheet" href="assets/css/main.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
-<!-- رأس الصفحة يحتوي على الشعار والقائمة وزر الدخول -->
 <header>
     <div class="header-right">
         <div class="menu-icon">
@@ -20,7 +17,8 @@
         </div>
 
         <a href="#" class="logo-box">
-            <img src="assets/img/toonia-icon.webp" alt="Toonia Logo" />
+            <img src="assets/img/toonia-icon.webp" alt="Toonia Logo">
+<img src="assets/img/hero.webp" alt="Hero Image">
             <div class="site-name">Too<span>nia</span></div>
         </a>
     </div>
@@ -30,21 +28,29 @@
             <i class="fas fa-search"></i>
         </div>
         <a href="/login" class="login-button">
-            <i class="fas fa-user"></i>
-            تسجيل الدخول
+            <i class="fas fa-user"></i> تسجيل الدخول
         </a>
     </div>
 </header>
 
+<section class="hero-container">
+    <img class="hero-bg" src="assets/img/hero.webp" alt="خلفية أنمي">
+    <div class="hero-overlay"></div>
 
+    <div class="hero-content">
+        <div class="hero-buttons">
+            <button class="btn-play"><span>▶</span> شاهد الآن</button>
+            <button class="btn-info">التفاصيل ❯</button>
+        </div>
+    </div>
+</section>
 
-<!-- القائمة الجانبية للمنصة -->
 <div id="aniSidebarContainer">
     <div class="ani-overlay" id="aniOverlay"></div>
 
-    <nav class="ani-sidebar" id="aniSidebar" aria-label="القائمة الجانبية">
+    <nav class="ani-sidebar" id="aniSidebar">
         <div class="ani-close-wrapper">
-            <button class="ani-close-btn" id="aniClose" aria-label="إغلاق القائمة">
+            <button class="ani-close-btn" id="aniClose">
                 <i class="fas fa-arrow-right"></i> إغلاق
             </button>
         </div>
@@ -70,7 +76,6 @@
     </nav>
 </div>
 
-<!-- ربط ملف JavaScript الخارجي توضع قبل إغلاق body -->
-<script src="assets/js/main.js"></script>
+<script src="assets/js/main.js" defer></script>
 </body>
 </html>
