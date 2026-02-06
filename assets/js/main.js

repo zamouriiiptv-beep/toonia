@@ -1,6 +1,3 @@
-// تأكيد تحميل JavaScript
-alert("JS يعمل");
-
 document.addEventListener("DOMContentLoaded", () => {
 
   const openBtn  = document.querySelector(".menu-icon");
@@ -8,23 +5,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const sidebar  = document.getElementById("aniSidebar");
   const overlay  = document.getElementById("aniOverlay");
 
-  if (openBtn && sidebar && overlay) {
-    openBtn.addEventListener("click", () => {
-      sidebar.classList.add("active");
-      overlay.style.display = "block";
-      document.body.style.overflow = "hidden";
-    });
-  }
+  if (!openBtn || !closeBtn || !sidebar || !overlay) return;
 
-  const closeMenu = () => {
-    if (!sidebar || !overlay) return;
-
-    sidebar.classList.remove("active");
-    overlay.style.display = "none";
-    document.body.style.overflow = "auto";
+  const openMenu = () => {
+    sidebar.classList.add("active");
+    overlay.classList.add("show");
+    document.body.style.overflow = "hidden";
   };
 
-  if (closeBtn) closeBtn.addEventListener("click", closeMenu);
-  if (overlay)  overlay.addEventListener("click", closeMenu);
+  const closeMenu = () => {
+    sidebar.classList.remove("active");
+    overlay.classList.remove("show");
+    document.body.style.overflow = "";
+  };
+
+  openBtn.addEventListener("click", openMenu);
+  closeBtn.addEventListener("click", closeMenu);
+  overlay.addEventListener("click", closeMenu);
 
 });
