@@ -1,26 +1,7 @@
-document.addEventListener("DOMContentLoaded", () => {
-
-  const openBtn  = document.querySelector(".menu-icon");
-  const closeBtn = document.getElementById("aniClose");
-  const sidebar  = document.getElementById("aniSidebar");
-  const overlay  = document.getElementById("aniOverlay");
-
-  if (!openBtn || !closeBtn || !sidebar || !overlay) return;
-
-  const openMenu = () => {
-    sidebar.classList.add("active");
-    overlay.classList.add("show");
-    document.body.style.overflow = "hidden";
-  };
-
-  const closeMenu = () => {
-    sidebar.classList.remove("active");
-    overlay.classList.remove("show");
-    document.body.style.overflow = "";
-  };
-
-  openBtn.addEventListener("click", openMenu);
-  closeBtn.addEventListener("click", closeMenu);
-  overlay.addEventListener("click", closeMenu);
-
-});
+function showTime() {
+    document.getElementById('currentTime').innerHTML = new Date().toUTCString();
+}
+showTime();
+setInterval(function () {
+    showTime();
+}, 1000);
