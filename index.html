@@ -4,9 +4,449 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Toonia - عالم الأنمي</title>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-    <link rel="stylesheet" href="assets/css/main.css">
+    
+    <style>
+        :root {
+            --accent-color: #F5C518;
+            --accent-hover-color: #d0a413;
+            --accent-soft-color: #f9e88f;
+        }
+
+        /* القاعدة العامة */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+        }
+
+        body {
+            background-color: #2F2E33; /* فقط تم تعديل الخلفية */
+            color: white;
+        }
+
+        header {
+            background-color: #26262c; /* تعديل ليتوافق مع الخلفية الداكنة */
+            height: 65px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            border-bottom: 1px solid #222;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        /* القسم الأيمن: القائمة + الشعار + اسم الموقع */
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .menu-icon {
+            color: var(--accent-color);
+            font-size: 22px;
+            cursor: pointer;
+            padding: 5px;
+            transition: color 0.3s ease;
+        }
+        .menu-icon:hover {
+            color: var(--accent-hover-color);
+        }
+
+        .logo-box {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            gap: 10px;
+        }
+
+        .logo-box img {
+            height: 38px;
+            width: auto;
+            border-radius: 4px;
+        }
+
+        .site-name {
+            color: white;
+            font-size: 22px; /* نفس الحجم السابق */
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: capitalize;
+        }
+
+        .site-name span {
+            color: var(--accent-color);
+        }
+
+        /* القسم الأيسر: البحث + زر الدخول */
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .search-trigger {
+            color: var(--accent-color);
+            font-size: 18px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .search-trigger:hover {
+            color: var(--accent-hover-color);
+        }
+
+       .login-button {
+            background-color: var(--accent-color);
+            color: #000;
+            text-decoration: none;
+            font-weight: 500;           /* أخف بصريًا */
+            font-size: 10px;            /* أصغر قليلًا */
+            height: 22px;               /* أنحف */
+            padding: 0 9px;             /* تقليل العرض */
+            line-height: 22px;
+            border-radius: 4px;
+            white-space: nowrap;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .login-button:hover {
+            background-color: var(--accent-hover-color);
+            transform: translateY(-2px);
+        }
+
+        /* مساحة تجريبية للمحتوى */
+        .main-content {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+  /* =========================
+   HERO – Aniwatch Style
+========================= */
+
+.hero-container {
+  position: relative;
+  width: 100%;
+  height: 40vh;
+  min-height: 280px;
+  max-height: 460px;
+  overflow: hidden;
+  background: #000;
+  display: flex;
+  align-items: flex-end;
+  padding: 0 5% 36px;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 38%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background:
+      linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.65) 100%);
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+
+  display: flex;
+  justify-content: flex-start;
+  gap: 12px;
+
+  padding-bottom: 16px;
+  box-sizing: border-box;
+
+  user-select: none;
+}
+
+@media (min-width: 768px) {
+  .hero-content {
+    gap: 16px;
+    padding-bottom: 24px;
+  }
+}
+
+/* ===== Buttons ===== */
+.btn-hero {
+  background-color: #ffc107;
+  color: #000;
+  border: none;
+  border-radius: 24px;
+
+  padding: 8px 20px;
+  font-weight: 600;
+  font-family: system-ui, sans-serif;
+  font-size: 14px;
+
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  text-decoration: none;
+  user-select: none;
+
+  transition: transform 0.15s ease;
+}
+
+.btn-hero:active {
+  transform: scale(0.95);
+}
+
+@media (min-width: 768px) {
+  .btn-hero {
+    font-size: 16px;
+    padding: 10px 28px;
+  }
+}
+
+/* أزرار الـ hero */
+.btn-play {
+    background: var(--accent-color);
+    color: #000;
+    border: none;
+    padding: 14px 35px;
+    border-radius: 50px;
+    font-weight: 900;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.4s ease, transform 0.4s ease;
+    box-shadow: 0 4px 12px rgba(245, 197, 24, 0.7);
+}
+
+.btn-play:hover {
+    background: var(--accent-soft-color);
+    color: #2F2E33;
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(245, 197, 24, 0.9);
+}
+
+.btn-info {
+    background: rgba(255, 255, 255, 0.12);
+    color: #eee;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    padding: 14px 35px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-info:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 14px;
+}
+
+.hero-dots {
+    position: absolute;
+    left: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 3;
+}
+
+.hero-dot {
+    width: 10px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
+}
+
+.hero-dot.active {
+    background: var(--accent-color);
+    box-shadow: 0 0 15px #F5C518cc;
+    transform: scale(1.4);
+}
+
+/* موبايل */
+@media (max-width: 768px) {
+    .hero-container {
+        height: 42vh; /* تم تقليل ارتفاع الهيرو لتجنب التكبير */
+        min-height: 280px;
+        padding-bottom: 40px;
+        text-align: center;
+        justify-content: center;
+        padding: 0 20px;
+    }
+    .hero-content {
+        text-align: center;
+    }
+    .hero-description {
+        margin: 0 auto 30px auto;
+        font-size: 16px;
+    }
+    .hero-buttons {
+        justify-content: center;
+    }
+    .hero-dots {
+        display: none;
+    }
+    .hero-overlay {
+        background: rgba(47, 46, 51, 0.75);
+    }
+}
+
+/* القائمة الجانبية */
+
+.ani-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(47, 46, 51, 0.75);
+    z-index: 9998;
+    display: none;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    transition: background 0.3s ease;
+}
+
+.ani-sidebar {
+    position: fixed;
+    top: 0;
+    right: -300px;
+    width: 280px;
+    height: 100vh;
+    background: rgba(47, 46, 51, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 9999;
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    direction: rtl;
+    border-left: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: -3px 0 10px rgba(0,0,0,0.6);
+}
+
+.ani-sidebar.active {
+    right: 0;
+}
+
+.ani-close-wrapper {
+    padding: 20px 15px;
+}
+.ani-close-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: #eee;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 8px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+.ani-close-btn:hover {
+    background: var(--accent-color);
+    color: #2F2E33;
+}
+
+.ani-quick-actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 15px 0;
+    background: rgba(0, 0, 0, 0.15);
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: inset 0 0 10px rgba(245, 197, 24, 0.1);
+}
+.ani-action-item {
+    text-align: center;
+    color: #ccc;
+    text-decoration: none;
+    font-size: 11px;
+    transition: color 0.3s ease;
+}
+.ani-action-item i {
+    display: block;
+    font-size: 20px;
+    color: var(--accent-color);
+    margin-bottom: 5px;
+    filter: drop-shadow(0 0 1px #F5C518bb);
+}
+.ani-action-item:hover {
+    color: var(--accent-color);
+}
+
+.ani-community-link {
+    background: var(--accent-color);
+    color: #2F2E33;
+    text-decoration: none;
+    margin: 10px 15px;
+    padding: 12px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    display: block;
+    transition: filter 0.3s ease;
+}
+.ani-community-link:hover {
+    filter: brightness(1.15);
+}
+
+.ani-nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+.ani-nav-list li {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.ani-nav-list a {
+    color: #eee;
+    text-decoration: none;
+    display: block;
+    padding: 15px 25px;
+    font-size: 15px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+.ani-nav-list a:hover {
+    background: rgba(245, 197, 24, 0.15);
+    color: var(--accent-color);
+    box-shadow: inset 4px 0 var(--accent-color);
+}
+    </style>
 </head>
 <body>
 
@@ -15,9 +455,9 @@
         <div class="menu-icon">
             <i class="fas fa-bars"></i>
         </div>
-
+        
         <a href="#" class="logo-box">
-            <img src="assets/img/toonia-icon.webp" alt="Toonia Logo">
+            <img src="assets/img/toonia-icon.webp" alt="Toonia Logo" />
             <div class="site-name">Too<span>nia</span></div>
         </a>
     </div>
@@ -27,13 +467,17 @@
             <i class="fas fa-search"></i>
         </div>
         <a href="/login" class="login-button">
-            <i class="fas fa-user"></i> تسجيل الدخول
+            <i class="fas fa-user"></i>
+            تسجيل الدخول
         </a>
     </div>
 </header>
 
+
+
 <section class="hero-container">
-    <img class="hero-bg" src="assets/img/hero.webp" alt="خلفية أنمي">
+    <img class="hero-bg" src="assets/img/hero.webp" alt="خلفية أنمي" />
+
     <div class="hero-overlay"></div>
 
     <div class="hero-content">
@@ -43,6 +487,8 @@
         </div>
     </div>
 </section>
+
+
 
 <div id="aniSidebarContainer">
     <div class="ani-overlay" id="aniOverlay"></div>
@@ -75,6 +521,28 @@
     </nav>
 </div>
 
-<script src="assets/js/main.js" defer></script>
+<script>
+    const openBtn = document.querySelector('.menu-icon'); 
+    const closeBtn = document.getElementById('aniClose');
+    const sidebar = document.getElementById('aniSidebar');
+    const overlay = document.getElementById('aniOverlay');
+
+    if(openBtn) {
+        openBtn.onclick = () => {
+            sidebar.classList.add('active');
+            overlay.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        };
+    }
+
+    const closeMenu = () => {
+        sidebar.classList.remove('active');
+        overlay.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    };
+
+    closeBtn.onclick = closeMenu;
+    overlay.onclick = closeMenu;
+</script>
 </body>
 </html>
