@@ -1,11 +1,16 @@
-/* styles.css */
+/* style.css */
+
+/* ================================== */
+/*  تعريف الأنماط الأساسية وشاشة الموقع */
+/* ================================== */
+
+/* القاعدة العامة لتوحيد الفراغات والخطوط */
 :root {
     --accent-color: #F5C518;
     --accent-hover-color: #d0a413;
     --accent-soft-color: #f9e88f;
 }
 
-/* القاعدة العامة */
 * {
     margin: 0;
     padding: 0;
@@ -13,13 +18,19 @@
     font-family: 'Segoe UI', Tahoma, sans-serif;
 }
 
+/* خلفية الجسم ولون النص */
 body {
-    background-color: #2F2E33; /* فقط تم تعديل الخلفية */
+    body {
+    background-color: #2F2E33;
     color: white;
+    margin: 0;
+    padding: 0;
 }
 
+
+/* الهيكل العام للرأس */
 header {
-    background-color: #26262c; /* تعديل ليتوافق مع الخلفية الداكنة */
+    background-color: #26262c;
     height: 65px;
     display: flex;
     align-items: center;
@@ -64,7 +75,7 @@ header {
 
 .site-name {
     color: white;
-    font-size: 22px; /* نفس الحجم السابق */
+    font-size: 22px;
     font-weight: 800;
     letter-spacing: 0.5px;
     text-transform: capitalize;
@@ -96,10 +107,10 @@ header {
     background-color: var(--accent-color);
     color: #000;
     text-decoration: none;
-    font-weight: 500;           /* أخف بصريًا */
-    font-size: 10px;            /* أصغر قليلًا */
-    height: 22px;               /* أنحف */
-    padding: 0 9px;             /* تقليل العرض */
+    font-weight: 500;
+    font-size: 10px;
+    height: 22px;
+    padding: 0 9px;
     line-height: 22px;
     border-radius: 4px;
     white-space: nowrap;
@@ -122,100 +133,98 @@ header {
     text-align: center;
 }
 
-/* =========================
- HERO – Aniwatch Style
-========================= */
-
+/* ========================= */
+/* قسم البطل - Hero Style */
+/* ========================= */
 .hero-container {
-  position: relative;
-  width: 100%;
-  height: 40vh;
-  min-height: 280px;
-  max-height: 460px;
-  overflow: hidden;
-  background: #000;
-  display: flex;
-  align-items: flex-end;
-  padding: 0 5% 36px;
+    position: relative;
+    width: 100%;
+    height: 40vh;
+    min-height: 280px;
+    max-height: 460px;
+    overflow: hidden;
+    background: #000;
+    display: flex;
+    align-items: flex-end;
+    padding: 0 5% 36px;
 }
 
 .hero-bg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 38%;
-  pointer-events: none;
-  z-index: 1;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 38%;
+    pointer-events: none;
+    z-index: 1;
 }
 
 .hero-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  background:
-      linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.65) 100%);
-  pointer-events: none;
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background:
+        linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.65) 100%);
+    pointer-events: none;
 }
 
 .hero-content {
-  position: relative;
-  z-index: 3;
-  width: 100%;
+    position: relative;
+    z-index: 3;
+    width: 100%;
 
-  display: flex;
-  justify-content: flex-start;
-  gap: 12px;
+    display: flex;
+    justify-content: flex-start;
+    gap: 12px;
 
-  padding-bottom: 16px;
-  box-sizing: border-box;
+    padding-bottom: 16px;
+    box-sizing: border-box;
 
-  user-select: none;
+    user-select: none;
 }
 
 @media (min-width: 768px) {
-  .hero-content {
-    gap: 16px;
-    padding-bottom: 24px;
-  }
+    .hero-content {
+        gap: 16px;
+        padding-bottom: 24px;
+    }
 }
 
-/* ===== Buttons ===== */
+/* أزرار البطل */
 .btn-hero {
-  background-color: #ffc107;
-  color: #000;
-  border: none;
-  border-radius: 24px;
+    background-color: #ffc107;
+    color: #000;
+    border: none;
+    border-radius: 24px;
 
-  padding: 8px 20px;
-  font-weight: 600;
-  font-family: system-ui, sans-serif;
-  font-size: 14px;
+    padding: 8px 20px;
+    font-weight: 600;
+    font-family: system-ui, sans-serif;
+    font-size: 14px;
 
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 
-  text-decoration: none;
-  user-select: none;
+    text-decoration: none;
+    user-select: none;
 
-  transition: transform 0.15s ease;
+    transition: transform 0.15s ease;
 }
 
 .btn-hero:active {
-  transform: scale(0.95);
+    transform: scale(0.95);
 }
 
 @media (min-width: 768px) {
-  .btn-hero {
-    font-size: 16px;
-    padding: 10px 28px;
-  }
+    .btn-hero {
+        font-size: 16px;
+        padding: 10px 28px;
+    }
 }
 
-/* أزرار الـ hero */
 .btn-play {
     background: var(--accent-color);
     color: #000;
@@ -286,10 +295,10 @@ header {
     transform: scale(1.4);
 }
 
-/* موبايل */
+/* استجابة موبايل */
 @media (max-width: 768px) {
     .hero-container {
-        height: 42vh; /* تم تقليل ارتفاع الهيرو لتجنب التكبير */
+        height: 42vh;
         min-height: 280px;
         padding-bottom: 40px;
         text-align: center;
@@ -314,8 +323,9 @@ header {
     }
 }
 
-/* القائمة الجانبية */
-
+/* ========================= */
+/* القائمة الجانبية (Sidebar) */
+/* ========================= */
 .ani-overlay {
     position: fixed;
     top: 0; left: 0;
@@ -437,11 +447,4 @@ header {
     background: rgba(245, 197, 24, 0.15);
     color: var(--accent-color);
     box-shadow: inset 4px 0 var(--accent-color);
-}
-
-body{
-  padding: 25px;
-}
-.title {
-	color: #5C6AC4;
 }
