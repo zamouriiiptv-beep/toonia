@@ -1,70 +1,90 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Toonia - عالم الأنمي</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Toonia - عالم الأنمي</title>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <link rel="stylesheet" href="assets/css/main.css">
+    <!-- ربط ملف CSS الخارجي -->
+    <link rel="stylesheet" href="assets/css/main.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
+<!-- رأس الصفحة يحتوي على الشعار والقائمة وزر الدخول -->
 <header>
-  <div class="header-right">
-    <div class="menu-icon">
-      <i class="fas fa-bars"></i>
+    <div class="header-right">
+        <div class="menu-icon">
+            <i class="fas fa-bars"></i>
+        </div>
+
+        <a href="#" class="logo-box">
+            <img src="assets/img/toonia-icon.webp" alt="Toonia Logo" />
+            <div class="site-name">Too<span>nia</span></div>
+        </a>
     </div>
 
-    <a href="#" class="logo-box">
-      <img src="assets/img/toonia-icon.webp" alt="Toonia Logo">
-      <div class="site-name">Too<span>nia</span></div>
-    </a>
-  </div>
-
-  <div class="header-left">
-    <div class="search-trigger">
-      <i class="fas fa-search"></i>
+    <div class="header-left">
+        <div class="search-trigger">
+            <i class="fas fa-search"></i>
+        </div>
+        <a href="/login" class="login-button">
+            <i class="fas fa-user"></i>
+            تسجيل الدخول
+        </a>
     </div>
-    <a href="/login" class="login-button">
-      <i class="fas fa-user"></i> تسجيل الدخول
-    </a>
-  </div>
 </header>
 
+<!-- القسم الرئيسي يحتوي على صورة البطل والأزرار -->
+<main>
 <section class="hero-container">
-  <img class="hero-bg" src="assets/img/hero.webp" alt="خلفية أنمي">
-  <div class="hero-overlay"></div>
+    <img class="hero-bg" src="assets/img/hero.webp" alt="خلفية أنمي" />
 
-  <div class="hero-content">
-    <div class="hero-buttons">
-      <button class="btn-play"><span>▶</span> شاهد الآن</button>
-      <button class="btn-info">التفاصيل ❯</button>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+        <div class="hero-buttons">
+            <button class="btn-play"><span>▶</span> شاهد الآن</button>
+            <button class="btn-info">التفاصيل ❯</button>
+        </div>
     </div>
-  </div>
 </section>
+</main>
 
+<!-- القائمة الجانبية للمنصة -->
 <div id="aniSidebarContainer">
-  <div class="ani-overlay" id="aniOverlay"></div>
+    <div class="ani-overlay" id="aniOverlay"></div>
 
-  <nav class="ani-sidebar" id="aniSidebar">
-    <div class="ani-close-wrapper">
-      <button class="ani-close-btn" id="aniClose">
-        <i class="fas fa-arrow-right"></i> إغلاق
-      </button>
-    </div>
+    <nav class="ani-sidebar" id="aniSidebar" aria-label="القائمة الجانبية">
+        <div class="ani-close-wrapper">
+            <button class="ani-close-btn" id="aniClose" aria-label="إغلاق القائمة">
+                <i class="fas fa-arrow-right"></i> إغلاق
+            </button>
+        </div>
 
-    <ul class="ani-nav-list">
-      <li><a href="#">الرئيسية</a></li>
-      <li><a href="#">أنمي مترجم</a></li>
-      <li><a href="#">أنمي مدبلج</a></li>
-      <li><a href="#">الأكثر شعبية</a></li>
-      <li><a href="#">أفلام</a></li>
-      <li><a href="#">جدول الحلقات</a></li>
-    </ul>
-  </nav>
+        <div class="ani-quick-actions">
+            <a href="#" class="ani-action-item"><i class="fas fa-random"></i> عشوائي</a>
+            <a href="#" class="ani-action-item"><i class="fas fa-users"></i> شاهدوا</a>
+            <a href="#" class="ani-action-item"><i class="fas fa-language"></i> الاسم</a>
+        </div>
+
+        <a href="#" class="ani-community-link">
+            <i class="fas fa-comments"></i> انضم للمجتمع
+        </a>
+
+        <ul class="ani-nav-list">
+            <li><a href="#">الرئيسية</a></li>
+            <li><a href="#">أنمي مترجم</a></li>
+            <li><a href="#">أنمي مدبلج</a></li>
+            <li><a href="#">الأكثر شعبية</a></li>
+            <li><a href="#">أفلام</a></li>
+            <li><a href="#">جدول الحلقات</a></li>
+        </ul>
+    </nav>
 </div>
 
+<!-- ربط ملف JavaScript الخارجي توضع قبل إغلاق body -->
 <script src="assets/js/main.js"></script>
 </body>
 </html>
