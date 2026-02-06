@@ -2,9 +2,8 @@
 
 /* اختبار تحميل CSS */
 body {
-  outline: 3px dashed red;
+  outline: 4px dashed red !important;
 }
-
 
 /* ================================== */
 /*  تعريف الأنماط الأساسية وشاشة الموقع */
