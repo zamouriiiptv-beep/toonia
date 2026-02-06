@@ -1,3 +1,4 @@
+alert("JS يعمل");
 
     const openBtn = document.querySelector('.menu-icon'); 
     const closeBtn = document.getElementById('aniClose');
