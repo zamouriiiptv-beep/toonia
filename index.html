@@ -5,11 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Toonia - عالم الأنمي</title>
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-    <!-- CSS (مسار مطلق خاص بـ GitHub Pages Project) -->
-    <link rel="stylesheet" href="/toonia/assets/css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
 
@@ -20,7 +17,7 @@
         </div>
 
         <a href="#" class="logo-box">
-            <img src="/toonia/assets/img/toonia-icon.webp" alt="Toonia Logo">
+            <img src="assets/img/toonia-icon.webp" alt="Toonia Logo">
             <div class="site-name">Too<span>nia</span></div>
         </a>
     </div>
@@ -29,22 +26,27 @@
         <div class="search-trigger">
             <i class="fas fa-search"></i>
         </div>
-        <a href="#" class="login-button">
+        <a href="/login" class="login-button">
             <i class="fas fa-user"></i> تسجيل الدخول
         </a>
     </div>
 </header>
 
 <section class="hero-container">
-    <img class="hero-bg" src="/toonia/assets/img/hero.webp" alt="خلفية أنمي">
+    <img class="hero-bg" src="assets/img/hero.webp" alt="خلفية أنمي">
     <div class="hero-overlay"></div>
 
     <div class="hero-content">
-        <div class="hero-buttons">
-            <button class="btn-play"><span>▶</span> شاهد الآن</button>
-            <button class="btn-info">التفاصيل ❯</button>
-        </div>
+    <div class="hero-buttons">
+        <a href="#" class="btn-play">
+            <i class="fas fa-play"></i> شاهد الآن
+        </a>
+        
+        <a href="#" class="btn-info">
+            التفاصيل <i class="fas fa-chevron-left" style="margin-right: 8px; font-size: 12px;"></i>
+        </a>
     </div>
+</div>
 </section>
 
 <div id="aniSidebarContainer">
@@ -78,7 +80,6 @@
     </nav>
 </div>
 
-<!-- JS -->
-<script src="/toonia/assets/js/main.js" defer></script>
+<script src="assets/js/main.js" defer></script>
 </body>
 </html>
