@@ -1,74 +1,161 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+    <!-- ================================== -->
+    <!--  إعدادات الصفحة الأساسية (Meta)    -->
+    <!-- ================================== -->
+
+    <!-- تحديد ترميز الصفحة لدعم العربية -->
     <meta charset="UTF-8" />
+
+    <!-- جعل التصميم متجاوب مع جميع الشاشات -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- عنوان الصفحة (مهم للـ SEO) -->
     <title>Toonia - عالم الأنمي</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <!-- ================================== -->
+    <!--  ملفات CSS الخارجية                -->
+    <!-- ================================== -->
+
+    <!-- مكتبة Font Awesome للأيقونات -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+
+    <!-- ملف التنسيقات الرئيسي للموقع -->
     <link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
 
+<!-- ================================== -->
+<!--  الهيدر (الشريط العلوي)            -->
+<!-- ================================== -->
 <header>
+
+    <!-- القسم الأيمن من الهيدر -->
     <div class="header-right">
+
+        <!-- زر القائمة (Hamburger Menu) -->
         <div class="menu-icon">
             <i class="fas fa-bars"></i>
         </div>
 
+        <!-- الشعار + اسم الموقع -->
         <a href="#" class="logo-box">
-            <img src="assets/img/toonia-icon.webp" alt="Toonia Logo">
-            <div class="site-name">Too<span>nia</span></div>
-        </a>
+    <img
+        src="https://i.ibb.co/7J5Zv38y/toonia-icon.png"
+        alt="Toonia Logo"
+    />
+    <div class="site-name">
+        Too<span>nia</span>
+    </div>
+</a>
     </div>
 
+    <!-- القسم الأيسر من الهيدر -->
     <div class="header-left">
+
+        <!-- زر فتح البحث -->
         <div class="search-trigger">
             <i class="fas fa-search"></i>
         </div>
+
+        <!-- زر تسجيل الدخول -->
         <a href="/login" class="login-button">
-            <i class="fas fa-user"></i> تسجيل الدخول
+            <i class="fas fa-user"></i>
+            تسجيل الدخول
         </a>
     </div>
+
 </header>
 
+<!-- ================================== -->
+<!--  قسم الـ Hero (الواجهة الرئيسية)    -->
+<!-- ================================== -->
 <section class="hero-container">
-    <img class="hero-bg" src="assets/img/hero.webp" alt="خلفية أنمي">
+
+    <!-- صورة الخلفية -->
+    <img
+    class="hero-bg"
+    src="https://i.ibb.co/xS6bNQK2/hero.jpg"
+    alt="خلفية أنمي"
+/>
+
+    <!-- طبقة تغميق فوق الصورة -->
     <div class="hero-overlay"></div>
 
+    <!-- محتوى الـ Hero -->
     <div class="hero-content">
-    <div class="hero-buttons">
-        <a href="#" class="btn-play">
-            <i class="fas fa-play"></i> شاهد الآن
-        </a>
-        
-        <a href="#" class="btn-info">
-            التفاصيل <i class="fas fa-chevron-left" style="margin-right: 8px; font-size: 12px;"></i>
-        </a>
+
+        <!-- أزرار التفاعل -->
+        <div class="hero-buttons">
+
+            <!-- زر المشاهدة -->
+            <a href="#" class="btn-play">
+                <i class="fas fa-play"></i>
+                شاهد الآن
+            </a>
+
+            <!-- زر التفاصيل -->
+            <a href="#" class="btn-info">
+                التفاصيل
+                <i
+                    class="fas fa-chevron-left"
+                    style="margin-right: 8px; font-size: 12px;"
+                ></i>
+            </a>
+
+        </div>
     </div>
-</div>
+
 </section>
 
+<!-- ================================== -->
+<!--  القائمة الجانبية (Sidebar)         -->
+<!-- ================================== -->
 <div id="aniSidebarContainer">
+
+    <!-- خلفية شفافة لإغلاق القائمة عند الضغط -->
     <div class="ani-overlay" id="aniOverlay"></div>
 
+    <!-- عنصر القائمة الجانبية -->
     <nav class="ani-sidebar" id="aniSidebar">
+
+        <!-- زر إغلاق القائمة -->
         <div class="ani-close-wrapper">
             <button class="ani-close-btn" id="aniClose">
-                <i class="fas fa-arrow-right"></i> إغلاق
+                <i class="fas fa-arrow-right"></i>
+                إغلاق
             </button>
         </div>
 
+        <!-- إجراءات سريعة -->
         <div class="ani-quick-actions">
-            <a href="#" class="ani-action-item"><i class="fas fa-random"></i> عشوائي</a>
-            <a href="#" class="ani-action-item"><i class="fas fa-users"></i> شاهدوا</a>
-            <a href="#" class="ani-action-item"><i class="fas fa-language"></i> الاسم</a>
+            <a href="#" class="ani-action-item">
+                <i class="fas fa-random"></i>
+                عشوائي
+            </a>
+
+            <a href="#" class="ani-action-item">
+                <i class="fas fa-users"></i>
+                شاهدوا
+            </a>
+
+            <a href="#" class="ani-action-item">
+                <i class="fas fa-language"></i>
+                الاسم
+            </a>
         </div>
 
+        <!-- رابط المجتمع -->
         <a href="#" class="ani-community-link">
-            <i class="fas fa-comments"></i> انضم للمجتمع
+            <i class="fas fa-comments"></i>
+            انضم للمجتمع
         </a>
 
+        <!-- روابط التنقل -->
         <ul class="ani-nav-list">
             <li><a href="#">الرئيسية</a></li>
             <li><a href="#">أنمي مترجم</a></li>
@@ -77,9 +164,57 @@
             <li><a href="#">أفلام</a></li>
             <li><a href="#">جدول الحلقات</a></li>
         </ul>
+
     </nav>
 </div>
 
+<section class="latest-episodes">
+    <div class="section-header">
+        <h3>
+            <i class="fa fa-play-circle"></i>
+            الحلقات الجديدة
+        </h3>
+    </div>
+
+    <div class="swiper latest-episodes-slider">
+        <div class="swiper-wrapper">
+
+            <!-- حلقة -->
+            <article class="swiper-slide episode-card">
+                <a href="episode.html">
+                    <div class="thumb">
+                        <img src="assets/img/episode-1.webp" alt="الحلقة 1" loading="lazy">
+                        <span class="play"><i class="fa fa-play"></i></span>
+                    </div>
+                    <h4 class="title">الحلقة 1</h4>
+                </a>
+            </article>
+
+            <!-- كرر البلوك -->
+            <article class="swiper-slide episode-card">
+                <a href="#">
+                    <div class="thumb">
+                        <img src="assets/img/episode-2.webp" alt="الحلقة 2" loading="lazy">
+                        <span class="play"><i class="fa fa-play"></i></span>
+                    </div>
+                    <h4 class="title">الحلقة 2</h4>
+                </a>
+            </article>
+
+        </div>
+
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+    </div>
+</section>
+
+<!-- ================================== -->
+<!--  ملف JavaScript الرئيسي             -->
+<!-- ================================== -->
+
+<!-- defer: يضمن تحميل JS بعد HTML -->
 <script src="assets/js/main.js" defer></script>
+
 </body>
 </html>
+
