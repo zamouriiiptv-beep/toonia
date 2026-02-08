@@ -25,7 +25,7 @@
     />
 
     <!-- ملف التنسيقات الرئيسي للموقع -->
-    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="./assets/css/main.css">
 </head>
 <body>
 
@@ -168,52 +168,77 @@
     </nav>
 </div>
 
+<!-- ================================== -->
+<!--  قسم الحلقات الجديدة              -->
+<!-- ================================== -->
+
 <section class="latest-episodes">
-    <div class="section-header">
-        <h3>
-            <i class="fa fa-play-circle"></i>
-            الحلقات الجديدة
-        </h3>
+
+  <div class="section-header">
+    <h3>الحلقات الجديدة</h3>
+
+    <div class="slider-buttons">
+      <button class="prev">‹</button>
+      <button class="next">›</button>
     </div>
+  </div>
 
-    <div class="swiper latest-episodes-slider">
-        <div class="swiper-wrapper">
+  <div class="episodes-container" id="episodesSlider">
 
-            <!-- حلقة -->
-            <article class="swiper-slide episode-card">
-                <a href="episode.html">
-                    <div class="thumb">
-                        <img src="assets/img/episode-1.webp" alt="الحلقة 1" loading="lazy">
-                        <span class="play"><i class="fa fa-play"></i></span>
-                    </div>
-                    <h4 class="title">الحلقة 1</h4>
-                </a>
-            </article>
+    <article class="episode-card">
+      <img src="https://i.ibb.co/pjRkwDzn/anime-uchiha-sasuke-uzumaki-naruto-road-to-ninja-naruto-the-movie-wallpaper-preview.jpg" alt="Naruto Road to Ninja">
+      <span class="episode-title">الحلقة 26</span>
+    </article>
 
-            <!-- كرر البلوك -->
-            <article class="swiper-slide episode-card">
-                <a href="#">
-                    <div class="thumb">
-                        <img src="assets/img/episode-2.webp" alt="الحلقة 2" loading="lazy">
-                        <span class="play"><i class="fa fa-play"></i></span>
-                    </div>
-                    <h4 class="title">الحلقة 2</h4>
-                </a>
-            </article>
+    <article class="episode-card">
+  <img src="https://i.ibb.co/3YsrgWXY/b59198c92059644bbadb214f275a116d.jpg"
+       alt="حلقة أنمي"
+       loading="lazy">
+  <span class="episode-title">الحلقة 27</span>
+</article>
 
-        </div>
+    <article class="episode-card">
+  <img src="https://i.ibb.co/C5XHBV5v/dcgrcre-f4b144f8-2427-4543-b277-5f7f1d5b6381.jpg"
+       alt="حلقة أنمي"
+       loading="lazy">
+  <span class="episode-title">الحلقة 28</span>
+</article>
 
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-    </div>
+
+    <article class="episode-card">
+  <img src="https://i.ibb.co/nsB6vqVM/demon-slayer-2560x1080-23247.jpg"
+       alt="Demon Slayer"
+       loading="lazy">
+  <span class="episode-title">الحلقة 29</span>
+</article>
+
+
+<article class="episode-card">
+  <img src="https://i.ibb.co/Zpy6h2tQ/demon-slayer-2880x1800-23615.jpg"
+       alt="Demon Slayer"
+       loading="lazy">
+  <span class="episode-title">الحلقة 30</span>
+</article>
+
+
+<article class="episode-card">
+  <img src="https://i.ibb.co/YF5Z72Fq/dragon-ball-dragon-ball-super-ultra-instinct-son-goku-wallpaper-preview.jpg"
+       alt="Dragon Ball Super Ultra Instinct Goku"
+       loading="lazy">
+  <span class="episode-title">الحلقة 31</span>
+</article>
+
+
+  </div>
 </section>
+
 
 <!-- ================================== -->
 <!--  ملف JavaScript الرئيسي             -->
 <!-- ================================== -->
 
 <!-- defer: يضمن تحميل JS بعد HTML -->
-<script src="assets/js/main.js" defer></script>
+<script src="./assets/js/main.js" defer></script>
 
 </body>
 </html>
