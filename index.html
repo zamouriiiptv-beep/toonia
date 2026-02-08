@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <!-- ================================== -->
+    <!--  إعدادات الصفحة الأساسية (Meta)    -->
+    <!-- ================================== -->
+
+    <!-- تحديد ترميز الصفحة لدعم العربية -->
+    <meta charset="UTF-8" />
+
+    <!-- جعل التصميم متجاوب مع جميع الشاشات -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- عنوان الصفحة (مهم للـ SEO) -->
+    <title>Toonia - عالم الأنمي</title>
+
+    <!-- ================================== -->
+    <!--  ملفات CSS الخارجية                -->
+    <!-- ================================== -->
+
+    <!-- مكتبة Font Awesome للأيقونات -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+
+    <!-- ملف التنسيقات الرئيسي للموقع -->
+    <link rel="stylesheet" href="./assets/css/main.css">
+</head>
+<body>
+
+<!-- ================================== -->
+<!--  الهيدر (الشريط العلوي)            -->
+<!-- ================================== -->
+<header>
+
+    <!-- القسم الأيمن من الهيدر -->
+    <div class="header-right">
+
+        <!-- زر القائمة (Hamburger Menu) -->
+        <div class="menu-icon">
+            <i class="fas fa-bars"></i>
+        </div>
+
+        <!-- الشعار + اسم الموقع -->
+        <a href="#" class="logo-box">
+    <img
+        src="https://i.ibb.co/7J5Zv38y/toonia-icon.png"
+        alt="Toonia Logo"
+    />
+    <div class="site-name">
+        Too<span>nia</span>
+    </div>
+</a>
+    </div>
+
+    <!-- القسم الأيسر من الهيدر -->
+    <div class="header-left">
+
+        <!-- زر فتح البحث -->
+        <div class="search-trigger">
+            <i class="fas fa-search"></i>
+        </div>
+
+        <!-- زر تسجيل الدخول -->
+        <a href="/login" class="login-button">
+            <i class="fas fa-user"></i>
+            تسجيل الدخول
+        </a>
+    </div>
+
+</header>
+
+<!-- ================================== -->
+<!--  قسم الـ Hero (الواجهة الرئيسية)    -->
+<!-- ================================== -->
+<section class="hero-container">
+
+    <!-- صورة الخلفية -->
+    <img
+    class="hero-bg"
+    src="https://i.ibb.co/xS6bNQK2/hero.jpg"
+    alt="خلفية أنمي"
+/>
+
+    <!-- طبقة تغميق فوق الصورة -->
+    <div class="hero-overlay"></div>
+
+    <!-- محتوى الـ Hero -->
+    <div class="hero-content">
+
+        <!-- أزرار التفاعل -->
+        <div class="hero-buttons">
+
+            <!-- زر المشاهدة -->
+            <a href="#" class="btn-play">
+                <i class="fas fa-play"></i>
+                شاهد الآن
+            </a>
+
+            <!-- زر التفاصيل -->
+            <a href="#" class="btn-info">
+                التفاصيل
+                <i
+                    class="fas fa-chevron-left"
+                    style="margin-right: 8px; font-size: 12px;"
+                ></i>
+            </a>
+
+        </div>
+    </div>
+
+</section>
+
+<!-- ================================== -->
+<!--  القائمة الجانبية (Sidebar)         -->
+<!-- ================================== -->
+<div id="aniSidebarContainer">
+
+    <!-- خلفية شفافة لإغلاق القائمة عند الضغط -->
+    <div class="ani-overlay" id="aniOverlay"></div>
+
+    <!-- عنصر القائمة الجانبية -->
+    <nav class="ani-sidebar" id="aniSidebar">
+
+        <!-- زر إغلاق القائمة -->
+        <div class="ani-close-wrapper">
+            <button class="ani-close-btn" id="aniClose">
+                <i class="fas fa-arrow-right"></i>
+                إغلاق
+            </button>
+        </div>
+
+        <!-- إجراءات سريعة -->
+        <div class="ani-quick-actions">
+            <a href="#" class="ani-action-item">
+                <i class="fas fa-random"></i>
+                عشوائي
+            </a>
+
+            <a href="#" class="ani-action-item">
+                <i class="fas fa-users"></i>
+                شاهدوا
+            </a>
+
+            <a href="#" class="ani-action-item">
+                <i class="fas fa-language"></i>
+                الاسم
+            </a>
+        </div>
+
+        <!-- رابط المجتمع -->
+        <a href="#" class="ani-community-link">
+            <i class="fas fa-comments"></i>
+            انضم للمجتمع
+        </a>
+
+        <!-- روابط التنقل -->
+        <ul class="ani-nav-list">
+            <li><a href="#">الرئيسية</a></li>
+            <li><a href="#">أنمي مترجم</a></li>
+            <li><a href="#">أنمي مدبلج</a></li>
+            <li><a href="#">الأكثر شعبية</a></li>
+            <li><a href="#">أفلام</a></li>
+            <li><a href="#">جدول الحلقات</a></li>
+        </ul>
+
+    </nav>
+</div>
+
+<!-- ================================== -->
+<!--  قسم الحلقات الجديدة              -->
+<!-- ================================== -->
+
+<section class="latest-episodes">
+
+  <div class="section-header">
+    <h3>الحلقات الجديدة</h3>
+
+    <div class="slider-buttons">
+      <button class="prev">‹</button>
+      <button class="next">›</button>
+    </div>
+  </div>
+
+  <div class="episodes-container" id="episodesSlider">
+
+    <article class="episode-card">
+      <img src="https://i.ibb.co/pjRkwDzn/anime-uchiha-sasuke-uzumaki-naruto-road-to-ninja-naruto-the-movie-wallpaper-preview.jpg" alt="Naruto Road to Ninja">
+      <span class="episode-title">الحلقة 26</span>
+    </article>
+
+    <article class="episode-card">
+  <img src="https://i.ibb.co/3YsrgWXY/b59198c92059644bbadb214f275a116d.jpg"
+       alt="حلقة أنمي"
+       loading="lazy">
+  <span class="episode-title">الحلقة 27</span>
+</article>
+
+    <article class="episode-card">
+  <img src="https://i.ibb.co/C5XHBV5v/dcgrcre-f4b144f8-2427-4543-b277-5f7f1d5b6381.jpg"
+       alt="حلقة أنمي"
+       loading="lazy">
+  <span class="episode-title">الحلقة 28</span>
+</article>
+
+
+    <article class="episode-card">
+  <img src="https://i.ibb.co/nsB6vqVM/demon-slayer-2560x1080-23247.jpg"
+       alt="Demon Slayer"
+       loading="lazy">
+  <span class="episode-title">الحلقة 29</span>
+</article>
+
+
+<article class="episode-card">
+  <img src="https://i.ibb.co/Zpy6h2tQ/demon-slayer-2880x1800-23615.jpg"
+       alt="Demon Slayer"
+       loading="lazy">
+  <span class="episode-title">الحلقة 30</span>
+</article>
+
+
+<article class="episode-card">
+  <img src="https://i.ibb.co/YF5Z72Fq/dragon-ball-dragon-ball-super-ultra-instinct-son-goku-wallpaper-preview.jpg"
+       alt="Dragon Ball Super Ultra Instinct Goku"
+       loading="lazy">
+  <span class="episode-title">الحلقة 31</span>
+</article>
+
+
+  </div>
+</section>
+
+
+<!-- ================================== -->
+<!--  ملف JavaScript الرئيسي             -->
+<!-- ================================== -->
+
+<!-- defer: يضمن تحميل JS بعد HTML -->
+<script src="./assets/js/main.js" defer></script>
+
+</body>
+</html>
+
