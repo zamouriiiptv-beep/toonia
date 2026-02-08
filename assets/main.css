@@ -1,0 +1,695 @@
+/* ================================== */
+/*  style.css                         */
+/*  الملف الرئيسي لتنسيقات الموقع     */
+/* ================================== */
+
+
+/* ================================== */
+/*  المتغيرات العامة (CSS Variables)  */
+/* ================================== */
+/* تُستخدم لتوحيد الألوان وتسهيل التعديل لاحقًا */
+:root {
+    --accent-color: #F5C518;
+    --accent-hover-color: #d0a413;
+    --accent-soft-color: #f9e88f;
+}
+
+
+/* ================================== */
+/*  القاعدة العامة (Reset + Font)     */
+/* ================================== */
+/* توحيد الهوامش والحشوات وضبط الخط */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+
+/* ================================== */
+/*  إعدادات جسم الصفحة (Body)         */
+/* ================================== */
+/* خلفية الموقع العامة ولون النص */
+body {
+    background-color: #2F2E33;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* ================================== */
+/*  الهيدر (Header)                   */
+/* ================================== */
+/* الهيكل العام للشريط العلوي */
+header {
+    background-color: #26262c;
+    height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    border-bottom: 1px solid #222;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+
+/* ================================== */
+/*  الهيدر - الجهة اليمنى              */
+/* ================================== */
+/* يحتوي على زر القائمة + الشعار */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* زر فتح القائمة الجانبية */
+.menu-icon {
+    color: #ffffff;              /* أبيض */
+    font-size: 22px;
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.3s ease;
+}
+
+/* صندوق الشعار */
+.logo-box {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    gap: 10px;
+}
+
+/* صورة الشعار */
+.logo-box img {
+    height: 38px;
+    width: auto;
+    border-radius: 4px;
+}
+
+/* اسم الموقع */
+.site-name {
+    color: white;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: capitalize;
+}
+
+/* تلوين جزء من الاسم */
+.site-name span {
+    color: var(--accent-color);
+}
+
+
+/* ================================== */
+/*  الهيدر - الجهة اليسرى              */
+/* ================================== */
+/* يحتوي على البحث + تسجيل الدخول */
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* أيقونة البحث */
+.search-trigger {
+    color: #ffffff;
+    font-size: 18px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+.search-trigger:hover {
+    color: var(--accent-hover-color);
+}
+
+/* زر تسجيل الدخول */
+.login-button {
+    background-color: var(--accent-color);
+    color: #000;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 10px;
+
+    height: 28px;          /* الارتفاع */
+    padding: 0 12px;       /* العرض (يمين ويسار) */
+    
+
+    border-radius: 4px;
+    white-space: nowrap;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+/* تأثير التحويم */
+.login-button:hover {
+    background-color: var(--accent-hover-color);
+    transform: translateY(-2px);
+}
+
+
+/* ================================== */
+/*  محتوى تجريبي                      */
+/* ================================== */
+.main-content {
+    padding: 40px 20px;
+    text-align: center;
+}
+
+
+/* ================================== */
+/*  قسم البطل (Hero Section)           */
+/* ================================== */
+/* الحاوية الرئيسية */
+.hero-container {
+    position: relative;
+    width: 100%;
+    height: 40vh;
+    min-height: 280px;
+    max-height: 460px;
+    overflow: hidden;
+    background: #000;
+    display: flex;
+    align-items: flex-end;
+    padding: 0 5% 36px;
+}
+
+/* صورة الخلفية */
+.hero-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 38%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* طبقة التدرج (Overlay) */
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.8) 0%,
+        rgba(0,0,0,0) 40%
+    );
+    pointer-events: none;
+}
+
+/* محتوى الـ Hero */
+.hero-content {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    gap: 12px;
+    padding-bottom: 16px;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+/* تحسين المسافات للشاشات المتوسطة */
+@media (min-width: 768px) {
+    .hero-content {
+        gap: 16px;
+        padding-bottom: 24px;
+    }
+}
+
+
+/* ================================== */
+/*  أزرار الـ Hero                     */
+/* ================================== */
+.hero-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+    z-index: 5;
+}
+
+/* تنسيق موحد للأزرار */
+.btn-play,
+.btn-info {
+    height: 36px;
+    padding: 0 16px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+/* زر المشاهدة */
+.btn-play {
+    background-color: #ffc107;
+    color: #000;
+}
+
+/* زر التفاصيل */
+.btn-info {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    backdrop-filter: blur(8px);
+}
+
+/* تأثيرات التحويم */
+.btn-play:hover,
+.btn-info:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+/* الأيقونات داخل الأزرار */
+.btn-play i,
+.btn-info i {
+    margin-left: 6px;
+    font-size: 12px;
+}
+
+
+/* ================================== */
+/*  نقاط التنقل (Hero Dots)            */
+/* ================================== */
+.hero-dots {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 3;
+}
+
+.hero-dot {
+    width: 7px;
+    height: 7px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.hero-dot.active {
+    background: #ffc107;
+    box-shadow: 0 0 8px #ffc107;
+    transform: scale(1.2);
+}
+
+
+/* ================================== */
+/*  استجابة الموبايل                  */
+/* ================================== */
+@media (max-width: 768px) {
+
+    .hero-buttons {
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    .btn-play,
+    .btn-info {
+        height: 32px;
+        padding: 0 12px;
+        font-size: 12px;
+    }
+
+    .hero-dots {
+        display: none;
+    }
+
+    .hero-container {
+        height: 42vh;
+        min-height: 280px;
+        padding-bottom: 40px;
+        text-align: center;
+        justify-content: center;
+        padding: 0 20px;
+    }
+
+    .hero-content {
+        text-align: center;
+    }
+
+    .hero-overlay {
+        background: linear-gradient(
+            to top,
+            rgba(0,0,0,0.8) 0%,
+            rgba(0,0,0,0) 60%
+        );
+    }
+}
+
+
+/* ================================== */
+/*  القائمة الجانبية (Sidebar)         */
+/* ================================== */
+/* طبقة التعتيم الخلفية */
+.ani-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(47, 46, 51, 0.75);
+    z-index: 9998;
+    display: none;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    transition: background 0.3s ease;
+}
+
+/* حاوية القائمة */
+.ani-sidebar {
+    position: fixed;
+    top: 0;
+    right: -300px;
+    width: 280px;
+    height: 100vh;
+    background: rgba(47, 46, 51, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 9999;
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    direction: rtl;
+    border-left: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: -3px 0 10px rgba(0,0,0,0.6);
+}
+
+/* حالة الفتح */
+.ani-sidebar.active {
+    right: 0;
+}
+
+/* زر الإغلاق */
+.ani-close-wrapper {
+    padding: 20px 15px;
+}
+.ani-close-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: #eee;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 8px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+.ani-close-btn:hover {
+    background: var(--accent-color);
+    color: #2F2E33;
+}
+
+
+/* ================================== */
+/*  أزرار الإجراءات السريعة            */
+/* ================================== */
+.ani-quick-actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 15px 0;
+    background: rgba(0, 0, 0, 0.15);
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: inset 0 0 10px rgba(245, 197, 24, 0.1);
+}
+
+.ani-action-item {
+    text-align: center;
+    color: #ccc;
+    text-decoration: none;
+    font-size: 11px;
+    transition: color 0.3s ease;
+}
+
+.ani-action-item i {
+    display: block;
+    font-size: 20px;
+    color: var(--accent-color);
+    margin-bottom: 5px;
+    filter: drop-shadow(0 0 1px #F5C518bb);
+}
+
+.ani-action-item:hover {
+    color: var(--accent-color);
+}
+
+
+/* ================================== */
+/*  رابط المجتمع                       */
+/* ================================== */
+.ani-community-link {
+    background: var(--accent-color);
+    color: #2F2E33;
+    text-decoration: none;
+    margin: 10px 15px;
+    padding: 12px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    display: block;
+    transition: filter 0.3s ease;
+}
+.ani-community-link:hover {
+    filter: brightness(1.15);
+}
+
+
+/* ================================== */
+/*  قائمة التنقل                       */
+/* ================================== */
+.ani-nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.ani-nav-list li {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.ani-nav-list a {
+    color: #eee;
+    text-decoration: none;
+    display: block;
+    padding: 15px 25px;
+    font-size: 15px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.ani-nav-list a:hover {
+    background: rgba(245, 197, 24, 0.15);
+    color: var(--accent-color);
+    box-shadow: inset 4px 0 var(--accent-color);
+}
+
+/* ================================== */
+/*  قسم الحلقات الجديدة                */
+/* ================================== */
+
+.latest-episodes {
+  padding: 40px 20px;
+  background-color: #121218;
+}
+
+/* رأس القسم */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.section-header h2 {
+  font-size: 20px;
+  color: #ffffff;
+}
+
+/* رابط عرض المزيد */
+.view-more {
+  font-size: 14px;
+  color: #f5c518;
+  text-decoration: none;
+}
+
+.view-more:hover {
+  text-decoration: underline;
+}
+
+/* ================================== */
+/*  شبكة عرض الحلقات                   */
+/* ================================== */
+
+.episodes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+/* ================================== */
+/*  بطاقة الحلقة                       */
+/* ================================== */
+
+.episode-card {
+  background-color: #1f1f26;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.episode-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* رابط البطاقة */
+.episode-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+/* صورة الحلقة */
+.episode-thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.episode-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* شارة رقم الحلقة */
+.episode-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: #f5c518;
+  color: #000000;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+/* أيقونة التشغيل */
+.play-icon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 42px;
+  color: #ffffff;
+  background-color: rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.episode-card:hover .play-icon {
+  opacity: 1;
+}
+
+/* اسم الأنمي */
+.episode-title {
+  font-size: 14px;
+  padding: 10px;
+  line-height: 1.4;
+  color: #eeeeee;
+}
+
+/* ================================== */
+/*  تحسين العرض على الشاشات الصغيرة    */
+/* ================================== */
+
+@media (max-width: 768px) {
+  .latest-episodes {
+    padding: 24px 16px;
+  }
+
+  .section-header h2 {
+    font-size: 18px;
+  }
+}
+
+/* ================================== */
+/*  تنسيق سلايدر الحلقات الجديدة       */
+/* ================================== */
+
+/* ===== سلايدر الحلقات الجديدة ===== */
+
+.latest-episodes {
+  padding: 16px;           /* فقط مسافة */
+  background: transparent; /* يعتمد على خلفية الموقع */
+}
+
+.episodes-container {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+}
+
+.episodes-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* كرت الحلقة */
+.episode-card {
+  flex: 0 0 65%;           /* 🔑 صورة ونصف في الهاتف */
+  max-width: 65%;
+  border-radius: 10px;
+  overflow: hidden;
+  background: transparent;
+}
+
+/* الصورة */
+.episode-card img {
+  width: 100%;
+  height: 120px;           /* ارتفاع متوازن */
+  object-fit: cover;
+  display: block;
+}
+
+/* عنوان الحلقة */
+.episode-title {
+  padding: 6px 8px;
+  font-size: 13px;
+  color: #fff;
+  background: linear-gradient(to top, rgba(0,0,0,.7), rgba(0,0,0,.1));
+}
+
+
+
