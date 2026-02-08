@@ -647,19 +647,20 @@ header {
 /* ================================== */
 /*  تنسيق سلايدر الحلقات الجديدة       */
 /* ================================== */
-
 /* ===== سلايدر الحلقات الجديدة ===== */
 
 .latest-episodes {
-  padding: 16px;           /* فقط مسافة */
-  background: transparent; /* يعتمد على خلفية الموقع */
+  padding: 16px;
+  background: transparent;
 }
 
+/* الحاوية الأفقية */
 .episodes-container {
   display: flex;
   gap: 12px;
   overflow-x: auto;
   scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
 .episodes-container::-webkit-scrollbar {
@@ -668,28 +669,42 @@ header {
 
 /* كرت الحلقة */
 .episode-card {
-  flex: 0 0 65%;           /* 🔑 صورة ونصف في الهاتف */
+  flex: 0 0 65%;        /* صورة ونصف في الهاتف */
   max-width: 65%;
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
   background: transparent;
 }
 
-/* الصورة */
+/* الصورة (الحل الحقيقي هنا) */
 .episode-card img {
   width: 100%;
-  height: 120px;           /* ارتفاع متوازن */
+  aspect-ratio: 16 / 9;   /* 🔥 حل احترافي بدل height */
   object-fit: cover;
+  object-position: center;
   display: block;
 }
 
 /* عنوان الحلقة */
 .episode-title {
-  padding: 6px 8px;
+  padding: 8px 10px;
   font-size: 13px;
   color: #fff;
-  background: linear-gradient(to top, rgba(0,0,0,.7), rgba(0,0,0,.1));
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.75),
+    rgba(0,0,0,0.15)
+  );
 }
+
+/* تحسين للشاشات الأكبر */
+@media (min-width: 768px) {
+  .episode-card {
+    flex: 0 0 30%;
+    max-width: 30%;
+  }
+}
+
 
 
 
