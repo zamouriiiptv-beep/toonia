@@ -679,7 +679,7 @@ header {
 /* الصورة (الحل الحقيقي هنا) */
 .episode-card img {
   width: 100%;
-  aspect-ratio: 18 / 10;   /* 🔥 أكبر قليلًا */
+  aspect-ratio: 4 / 3;  /* 🔥 أكبر قليلًا */
   object-fit: cover;
   display: block;
 }
