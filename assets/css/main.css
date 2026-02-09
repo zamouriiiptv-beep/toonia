@@ -695,17 +695,20 @@ header {
   }
 }
 /* ===============================
-   Episode Card Overlay Text
+   تراكب النص على بطاقة الحلقة
 ================================ */
-
 .episode-card {
   position: relative;
   overflow: hidden;
   border-radius: 12px;
+  width: 220px; /* تحكّم في عرض الكرت */
 }
 
+/* الصورة (المفتاح الحقيقي لتقليص الارتفاع) */
 .episode-card img {
   width: 100%;
+  height: 130px;          /* ← تم تقليص الارتفاع */
+  object-fit: cover;
   display: block;
   border-radius: 12px;
 }
@@ -716,7 +719,7 @@ header {
   bottom: 0;
   right: 0;
   left: 0;
-  padding: 12px;
+  padding: 10px;
   background: linear-gradient(
     to top,
     rgba(0, 0, 0, 0.85),
@@ -726,15 +729,36 @@ header {
 }
 
 .episode-info h4 {
-  margin: 0;
+  margin: 0 0 2px;
   font-size: 14px;
   font-weight: 600;
+  line-height: 1.3;
 }
 
 .episode-info span {
+  display: block;
   font-size: 12px;
   opacity: 0.9;
 }
+
+/* عنوان الحلقة (إن وجد) */
+.episode-info small {
+  display: block;
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+/* تحسين الموبايل */
+@media (max-width: 768px) {
+  .episode-card {
+    width: 160px;
+  }
+
+  .episode-card img {
+    height: 100px;
+  }
+}
+
 
 
 
