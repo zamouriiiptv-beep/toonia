@@ -647,7 +647,6 @@ header {
 /* ================================== */
 /*  تنسيق سلايدر الحلقات الجديدة       */
 /* ================================== */
-/* ===== سلايدر الحلقات الجديدة ===== */
 
 .latest-episodes {
   padding: 16px;
@@ -667,9 +666,9 @@ header {
   display: none;
 }
 
-/* كرت الحلقة (حلقة + ربع) */
+/* كرت الحلقة */
 .episode-card {
-  flex: 0 0 80%;        /* 🔥 1.25 حلقة */
+  flex: 0 0 80%;          /* 🔥 حلقة وربع */
   max-width: 80%;
   background: transparent;
 }
@@ -677,15 +676,15 @@ header {
 /* الصورة */
 .episode-card img {
   width: 100%;
-  aspect-ratio: 18 / 10;   /* متوازن واحترافي */
+  aspect-ratio: 4 / 3;    /* صورة أكبر وواضحة */
   object-fit: cover;
   display: block;
-  border-radius: 12px;     /* إظهار الحواف الأربع */
+  border-radius: 12px;    /* إظهار الحواف الأربع */
 }
 
-/* إخفاء عنوان / رقم الحلقة */
+/* ❌ حذف رقم / عنوان الحلقة نهائيًا */
 .episode-title {
-  display: none;
+  display: none !important;
 }
 
 /* تحسين للشاشات الأكبر */
@@ -694,6 +693,47 @@ header {
     flex: 0 0 30%;
     max-width: 30%;
   }
+}
+/* ===============================
+   Episode Card Overlay Text
+================================ */
+
+.episode-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.episode-card img {
+  width: 100%;
+  display: block;
+  border-radius: 12px;
+}
+
+/* النص فوق الصورة */
+.episode-info {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  padding: 12px;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.85),
+    rgba(0, 0, 0, 0)
+  );
+  color: #fff;
+}
+
+.episode-info h4 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.episode-info span {
+  font-size: 12px;
+  opacity: 0.9;
 }
 
 
