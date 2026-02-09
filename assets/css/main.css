@@ -674,12 +674,12 @@ header {
 }
 
 /* الصورة */
-.episode-card img {
+..episode-card img {
   width: 100%;
-  aspect-ratio: 16 / 9;    /* صورة أكبر وواضحة */
+  aspect-ratio: 2 / 1;   /* ← ارتفاع أقل ومريح */
   object-fit: cover;
   display: block;
-  border-radius: 12px;    /* إظهار الحواف الأربع */
+  border-radius: 12px;
 }
 
 /* ❌ حذف رقم / عنوان الحلقة نهائيًا */
