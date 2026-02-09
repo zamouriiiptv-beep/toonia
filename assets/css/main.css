@@ -674,13 +674,14 @@ header {
 }
 
 /* الصورة */
-..episode-card img {
+.episode-card img {
   width: 100%;
-  aspect-ratio: 4 / 3;  /* ← ارتفاع أقل ومريح */
+  aspect-ratio: 4 / 3;   /* ← هذا سيحل المشكلة مباشرة */
   object-fit: cover;
   display: block;
   border-radius: 12px;
 }
+
 
 /* ❌ حذف رقم / عنوان الحلقة نهائيًا */
 .episode-title {
