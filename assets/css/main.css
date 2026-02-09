@@ -676,7 +676,7 @@ header {
 /* الصورة */
 ..episode-card img {
   width: 100%;
-  aspect-ratio: 3 / 2;  /* ← ارتفاع أقل ومريح */
+  aspect-ratio: 4 / 3;  /* ← ارتفاع أقل ومريح */
   object-fit: cover;
   display: block;
   border-radius: 12px;
