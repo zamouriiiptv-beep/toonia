@@ -64,6 +64,12 @@ prev.onclick = () => {
 };
 </script>
 
+/* ================================== */
+/*  منطق سلايدر الأعمال الأكثر مشاهدة */
+/*  يتحكم في التمرير الأفقي للنقاط     */
+/*  مع دعم السحب على الأجهزة المحمولة */
+/*  بدون استخدام مكتبات خارجية        */
+/* ================================== */
 
 <script>
 const slider = document.getElementById('mostWatchedSlider');
@@ -90,3 +96,34 @@ slider.addEventListener('scroll', () => {
   if (dots[index]) dots[index].classList.add('active');
 });
 </script>
+
+<!-- ================================== -->
+<!--  صفحة جميع الأعمال                 -->
+<!--  تعرض جميع الأعمال بدون تحديد     -->
+<!-- ================================== -->
+
+<section class="all-works-page" aria-label="جميع الأعمال">
+
+  <!-- عنوان الصفحة -->
+  <h1>جميع الأعمال</h1>
+
+  <!-- شبكة عرض جميع الأعمال -->
+  <div class="works-grid">
+
+    <article class="work-card">
+      <a href="/work/conan">
+        <img src="assets/img/conan.webp" alt="المحقق كونان" loading="lazy">
+      </a>
+    </article>
+
+    <article class="work-card">
+      <a href="/work/bluey">
+        <img src="assets/img/bluey.webp" alt="Bluey" loading="lazy">
+      </a>
+    </article>
+
+    <!-- بقية الأعمال -->
+
+  </div>
+
+</section>
