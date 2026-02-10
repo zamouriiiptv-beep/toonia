@@ -918,10 +918,10 @@ body {
   margin-bottom: 12px;
 }
 
-/* شبكة الأعمال */
+/* شبكة الأعمال — افتراضيًا (الهاتف) */
 .works-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 1fr); /* 📱 3 صور */
   gap: 12px;
 }
 
@@ -947,12 +947,13 @@ body {
   text-align: center;
 }
 
-/* تحسين العرض على الهاتف */
-@media (max-width: 768px) {
+/* 🖥️ من التابلت فما فوق */
+@media (min-width: 768px) {
   .works-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr); /* 4 صور */
   }
 }
+
 
 
 
