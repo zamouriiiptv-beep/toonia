@@ -514,6 +514,16 @@ header {
 /*  قسم الحلقات الجديدة                */
 /* ================================== */
 
+/* ================================ */
+/*  قسم الحلقات الجديدة             */
+/* ================================ */
+
+/* القسم نفسه (المسافة من حواف الشاشة) */
+.latest-episodes {
+  padding-inline: 16px;
+}
+
+/* حاوية السلايدر */
 .episodes-container {
   display: flex;
   gap: var(--gap);
@@ -521,10 +531,7 @@ header {
   -webkit-overflow-scrolling: touch;
   scroll-snap-type: x mandatory;
 
-  /* تحسين التباعد البصري */
-  padding-inline: var(--gap);
   padding-bottom: 12px;
-
   scrollbar-width: none;
 }
 
@@ -532,26 +539,24 @@ header {
   display: none;
 }
 
-/* ===== بطاقة الحلقة (صور فقط) ===== */
+/* بطاقة الحلقة (صور فقط) */
 .episode-card {
   flex: 0 0 30.77%; /* 📱 3.25 بطاقة */
   border-radius: var(--radius);
   overflow: hidden;
   background: #222;
   scroll-snap-align: start;
-
-  /* يمنع الاهتزاز أثناء السحب */
   will-change: transform;
 }
 
-/* 🖥️ شاشات أكبر */
+/* شاشات أكبر */
 @media (min-width: 768px) {
   .episode-card {
-    flex: 0 0 23.53%; /* 4.25 بطاقة */
+    flex: 0 0 23.53%; /* 🖥️ 4.25 بطاقة */
   }
 }
 
-/* ===== الصورة ===== */
+/* الصورة */
 .episode-card img {
   width: 100%;
   aspect-ratio: 2 / 3;
