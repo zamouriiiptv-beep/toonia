@@ -513,35 +513,38 @@ header {
 /* ================================== */
 /*  قسم الحلقات الجديدة                */
 /* ================================== */
+/* ===== حاوية السلايدر ===== */
 .episodes-container {
   display: flex;
   gap: var(--gap);
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scroll-snap-type: x mandatory;
-  scroll-padding-inline: 1rem;
   padding-bottom: 10px;
   scrollbar-width: none;
 }
+
 .episodes-container::-webkit-scrollbar {
   display: none;
 }
 
+/* ===== بطاقة الحلقة (صور فقط) ===== */
 .episode-card {
-  flex: 0 0 calc(30.77% - 9px); /* 📱 3.25 */
-  position: relative;
+  flex: 0 0 30.77%; /* 📱 يظهر 3.25 بطاقة */
   border-radius: var(--radius);
   overflow: hidden;
   background: #222;
   scroll-snap-align: start;
 }
 
+/* 🖥️ شاشات أكبر */
 @media (min-width: 768px) {
   .episode-card {
-    flex: 0 0 calc(23.53% - 9px); /* 🖥️ 4.25 */
+    flex: 0 0 23.53%; /* 4.25 بطاقة */
   }
 }
 
+/* ===== الصورة ===== */
 .episode-card img {
   width: 100%;
   aspect-ratio: 2 / 3;
