@@ -670,17 +670,18 @@ header {
 .episode-card {
   flex: 0 0 85%;
   max-width: 85%;
+  background: transparent;
 }
 
-/* الصورة */
+/* Mobile first */
 .episode-card img {
   width: 100%;
-  aspect-ratio: 16 / 9;
+  height: 260px;        /* ✅ ارتفاع واضح ومريح */
   object-fit: cover;
-  max-height: clamp(170px, 50vw, 200px);
   display: block;
   border-radius: 12px;
 }
+
 
 
 
