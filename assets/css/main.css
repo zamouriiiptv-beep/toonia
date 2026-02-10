@@ -848,23 +848,22 @@ body {
   display: none;
 }
 
-/* البطاقة */
+/* 📱 البطاقة — هاتف: 3.25 صورة */
 .slide {
-  flex: 0 0 45%;
+  flex: 0 0 calc(30.77% - 9px);
   scroll-snap-align: start;
   position: relative;
 }
 
 .slide img {
   width: 100%;
-  height: auto;
   aspect-ratio: 2 / 3;
   object-fit: cover;
   border-radius: 12px;
   display: block;
 }
 
-/* شارة */
+/* الشارة */
 .badge {
   position: absolute;
   bottom: 8px;
@@ -897,12 +896,13 @@ body {
   background: #fff;
 }
 
-/* Desktop */
+/* 🖥️ تابلت + ديسكتوب: 4.25 صورة */
 @media (min-width: 768px) {
   .slide {
-    flex: 0 0 18%;
+    flex: 0 0 calc(23.53% - 9px);
   }
 }
+
 
 /* ================================== */
 /*  تنسيق قسم جميع الأعمال (عرض مختصر) */
