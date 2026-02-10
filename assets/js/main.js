@@ -65,3 +65,28 @@ prev.onclick = () => {
 </script>
 
 
+<script>
+const slider = document.getElementById('mostWatchedSlider');
+const dotsContainer = document.getElementById('mostWatchedDots');
+const slides = slider.children;
+
+const slidesPerView = window.innerWidth < 768 ? 2 : 5;
+const dotsCount = Math.ceil(slides.length / slidesPerView);
+
+for (let i = 0; i < dotsCount; i++) {
+  const dot = document.createElement('span');
+  if (i === 0) dot.classList.add('active');
+  dotsContainer.appendChild(dot);
+}
+
+const dots = dotsContainer.children;
+
+slider.addEventListener('scroll', () => {
+  const index = Math.round(
+    slider.scrollLeft / (slider.scrollWidth / dotsCount)
+  );
+
+  [...dots].forEach(dot => dot.classList.remove('active'));
+  if (dots[index]) dots[index].classList.add('active');
+});
+</script>
