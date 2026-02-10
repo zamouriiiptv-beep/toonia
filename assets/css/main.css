@@ -644,14 +644,22 @@ header {
   }
 }
 
-/* سلايدر الحلقات الجديدة */
+/* ================================== */
+/*  تنسيق سلايدر الحلقات الجديدة       */
+/* ================================== */
+
+/* ===============================
+   سلايدر الحلقات الجديدة
+================================ */
+
 .latest-episodes {
   padding: 16px;
+  background-color: #121218;
 }
 
 .episodes-container {
   display: flex;
-  gap: 12px;
+  gap: 14px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
@@ -660,30 +668,30 @@ header {
   display: none;
 }
 
-/* كرت الحلقة */
-.episode-card {
+/* بطاقة السلايدر */
+.slider-card {
   flex: 0 0 95%;
   max-width: 95%;
   position: relative;
+  border-radius: 14px;
   overflow: hidden;
-  border-radius: 12px;
 }
 
-/* الصورة – حل نهائي */
-.episode-card img {
+/* صورة السلايدر */
+.slider-card img {
   width: 100%;
-  height: 320px;        /* 🔥 هذا هو الارتفاع الذي تبحث عنه */
+  height: 320px;   /* ✅ هذا سيظهر طويلًا فعليًا */
   object-fit: cover;
   display: block;
 }
 
 /* النص */
-.episode-info {
+.slider-info {
   position: absolute;
   bottom: 0;
   right: 0;
   left: 0;
-  padding: 10px;
+  padding: 12px;
   background: linear-gradient(
     to top,
     rgba(0,0,0,.85),
@@ -694,85 +702,19 @@ header {
 
 /* Desktop */
 @media (min-width: 768px) {
-  .episode-card {
+  .slider-card {
     flex: 0 0 30%;
     max-width: 30%;
   }
 
-  .episode-card img {
-    height: 200px;
-  }
-}
-/* ===============================
-   تراكب النص على بطاقة الحلقة
-================================ */
-.episode-card {
-  position: relative;
-  overflow: hidden;
-  border-radius: 12px;
-  width: 220px; /* تحكّم في عرض الكرت */
-}
-
-/* الصورة (المفتاح الحقيقي لتقليص الارتفاع) */
-.episode-card img {
-  width: 100%;
-  height: 130px;          /* ← تم تقليص الارتفاع */
-  object-fit: cover;
-  display: block;
-  border-radius: 12px;
-}
-
-/* النص فوق الصورة */
-.episode-info {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  padding: 10px;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.85),
-    rgba(0, 0, 0, 0)
-  );
-  color: #fff;
-}
-
-.episode-info h4 {
-  margin: 0 0 2px;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 1.3;
-}
-
-.episode-info span {
-  display: block;
-  font-size: 12px;
-  opacity: 0.9;
-}
-
-/* عنوان الحلقة (إن وجد) */
-.episode-info small {
-  display: block;
-  font-size: 11px;
-  opacity: 0.8;
-}
-
-/* تحسين الموبايل */
-@media (max-width: 768px) {
-  .episode-card {
-    width: 160px;
-  }
-
-  .episode-card img {
-    height: 100px;
+  .slider-card img {
+    height: 220px;
   }
 }
 
 
 
 
-.latest-episodes .episodes-container .episode-card img {
-  height: 320px !important;
-}
+
 
 
