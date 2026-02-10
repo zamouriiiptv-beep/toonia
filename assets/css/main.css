@@ -514,13 +514,8 @@ header {
 /*  قسم الحلقات الجديدة                */
 /* ================================== */
 
-/* ================================ */
-/*  قسم الحلقات الجديدة             */
-/* ================================ */
-
-/* القسم نفسه (المسافة من حواف الشاشة) */
 .latest-episodes {
-  padding-inline: 16px;
+  padding-block: 16px;
 }
 
 /* حاوية السلايدر */
@@ -530,7 +525,6 @@ header {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scroll-snap-type: x mandatory;
-
   padding-bottom: 12px;
   scrollbar-width: none;
 }
@@ -539,7 +533,7 @@ header {
   display: none;
 }
 
-/* بطاقة الحلقة (صور فقط) */
+/* بطاقة الحلقة */
 .episode-card {
   flex: 0 0 30.77%; /* 📱 3.25 بطاقة */
   border-radius: var(--radius);
@@ -549,10 +543,27 @@ header {
   will-change: transform;
 }
 
+/* ✅ حل الالتصاق (المهم) */
+.episode-card:first-child {
+  margin-inline-start: 16px;
+}
+
+.episode-card:last-child {
+  margin-inline-end: 16px;
+}
+
 /* شاشات أكبر */
 @media (min-width: 768px) {
   .episode-card {
-    flex: 0 0 23.53%; /* 🖥️ 4.25 بطاقة */
+    flex: 0 0 23.53%;
+  }
+
+  .episode-card:first-child {
+    margin-inline-start: 24px;
+  }
+
+  .episode-card:last-child {
+    margin-inline-end: 24px;
   }
 }
 
