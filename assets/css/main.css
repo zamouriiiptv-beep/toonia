@@ -514,18 +514,55 @@ header {
 /*  قسم الحلقات الجديدة                */
 /* ================================== */
 
+:root {
+  --gap: 12px;
+  --radius: 12px;
+  --card-bg: #222;
+}
+
+/* ===== القسم ===== */
 .latest-episodes {
   padding-block: 16px;
 }
 
-/* حاوية السلايدر */
+/* ===== الهيدر ===== */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 16px;
+  margin-bottom: 12px;
+}
+
+.section-header h3 {
+  font-size: 18px;
+  margin: 0;
+}
+
+/* أزرار */
+.slider-buttons button {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: #333;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.slider-buttons button:active {
+  transform: scale(0.95);
+}
+
+/* ===== السلايدر ===== */
 .episodes-container {
   display: flex;
   gap: var(--gap);
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+  padding-inline: 16px;
   scroll-snap-type: x mandatory;
-  padding-bottom: 12px;
+  -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
 }
 
@@ -533,46 +570,33 @@ header {
   display: none;
 }
 
-/* بطاقة الحلقة */
+/* ===== البطاقة ===== */
 .episode-card {
   flex: 0 0 30.77%; /* 📱 3.25 بطاقة */
+  background: var(--card-bg);
   border-radius: var(--radius);
   overflow: hidden;
-  background: #222;
   scroll-snap-align: start;
-  will-change: transform;
+  outline: none;
 }
 
-/* ✅ حل الالتصاق (المهم) */
-.episode-card:first-child {
-  margin-inline-start: 16px;
+.episode-card:focus-visible {
+  outline: 2px solid #f5c400;
 }
 
-.episode-card:last-child {
-  margin-inline-end: 16px;
-}
-
-/* شاشات أكبر */
-@media (min-width: 768px) {
-  .episode-card {
-    flex: 0 0 23.53%;
-  }
-
-  .episode-card:first-child {
-    margin-inline-start: 24px;
-  }
-
-  .episode-card:last-child {
-    margin-inline-end: 24px;
-  }
-}
-
-/* الصورة */
+/* ===== الصورة ===== */
 .episode-card img {
   width: 100%;
   aspect-ratio: 2 / 3;
   object-fit: cover;
   display: block;
+}
+
+/* ===== شاشات أكبر ===== */
+@media (min-width: 768px) {
+  .episode-card {
+    flex: 0 0 23.53%;
+  }
 }
 
 <!-- ================================== -->
