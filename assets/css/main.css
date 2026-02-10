@@ -771,5 +771,8 @@ header {
 
 
 
+.latest-episodes .episodes-container .episode-card img {
+  height: 320px !important;
+}
 
 
