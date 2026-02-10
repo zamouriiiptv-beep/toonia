@@ -48,20 +48,30 @@ document.addEventListener('DOMContentLoaded', function () {
 /* ================================== */
 /*  تهيئة سلايدر الحلقات الجديدة       */
 /* ================================== */
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
-
 <script>
-const slider = document.getElementById('episodesSlider');
-const next = document.querySelector('.next');
-const prev = document.querySelector('.prev');
+document.addEventListener('DOMContentLoaded', () => {
+  const slider = document.getElementById('episodesSlider');
+  const next = document.querySelector('.next');
+  const prev = document.querySelector('.prev');
 
-next.onclick = () => {
-  slider.scrollBy({ left: 170, behavior: 'smooth' });
-};
+  if (!slider || !next || !prev) return;
 
-prev.onclick = () => {
-  slider.scrollBy({ left: -170, behavior: 'smooth' });
-};
+  const scrollAmount = () => {
+    const card = slider.querySelector('.episode-card');
+    if (!card) return 0;
+
+    const gap = parseInt(getComputedStyle(slider).gap) || 0;
+    return card.offsetWidth + gap;
+  };
+
+  next.addEventListener('click', () => {
+    slider.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
+  });
+
+  prev.addEventListener('click', () => {
+    slider.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
+  });
+});
 </script>
 
 /* ================================== */
