@@ -644,21 +644,19 @@ header {
   }
 }
 
-/* ================================== */
-/*  تنسيق سلايدر الحلقات الجديدة       */
-/* ================================== */
+/* ===============================
+   سلايدر الحلقات الجديدة
+================================ */
 
 .latest-episodes {
   padding: 16px;
-  background: transparent;
 }
 
-/* الحاوية الأفقية */
+/* الحاوية */
 .episodes-container {
   display: flex;
   gap: 12px;
   overflow-x: auto;
-  scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -670,31 +668,43 @@ header {
 .episode-card {
   flex: 0 0 85%;
   max-width: 85%;
-  background: transparent;
-}
-
-/* Mobile first */
-.episode-card img {
-  width: 100%;
-  height: 260px;        /* ✅ ارتفاع واضح ومريح */
-  object-fit: cover;
-  display: block;
+  position: relative;
+  overflow: hidden;
   border-radius: 12px;
 }
 
-
-
-
-/* ❌ حذف رقم / عنوان الحلقة نهائيًا */
-.episode-title {
-  display: none !important;
+/* الصورة – الارتفاع الصحيح */
+.episode-card img {
+  width: 100%;
+  height: 260px;        /* ✅ ارتفاع واضح */
+  object-fit: cover;
+  display: block;
 }
 
-/* تحسين للشاشات الأكبر */
+/* النص فوق الصورة */
+.episode-info {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  padding: 10px;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.85),
+    rgba(0, 0, 0, 0)
+  );
+  color: #fff;
+}
+
+/* تحسين الشاشات الكبيرة */
 @media (min-width: 768px) {
   .episode-card {
     flex: 0 0 30%;
     max-width: 30%;
+  }
+
+  .episode-card img {
+    height: 200px;
   }
 }
 /* ===============================
