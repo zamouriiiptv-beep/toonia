@@ -514,88 +514,85 @@ header {
 /*  قسم الحلقات الجديدة                */
 /* ================================== */
 
-:root {
-  --gap: 12px;
-  --radius: 12px;
-  --card-bg: #222;
+.most-watched {
+  padding: 16px;
 }
 
-/* ===== القسم ===== */
-.latest-episodes {
-  padding-block: 16px;
-}
-
-/* ===== الهيدر ===== */
-.section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-inline: 16px;
+.section-header h2 {
+  font-size: 20px;
   margin-bottom: 12px;
 }
 
-.section-header h3 {
-  font-size: 18px;
-  margin: 0;
+/* الحاوية */
+.slider-wrapper {
+  overflow: hidden;
 }
 
-/* أزرار */
-.slider-buttons button {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: none;
-  background: #333;
-  color: #fff;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-.slider-buttons button:active {
-  transform: scale(0.95);
-}
-
-/* ===== السلايدر ===== */
-.episodes-container {
+/* السلايدر */
+.slider {
   display: flex;
-  gap: var(--gap);
+  gap: 12px;
   overflow-x: auto;
-  padding-inline: 16px;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
 }
 
-.episodes-container::-webkit-scrollbar {
+.slider::-webkit-scrollbar {
   display: none;
 }
 
-/* ===== البطاقة ===== */
-.episode-card {
-  flex: 0 0 30.77%; /* 📱 3.25 بطاقة */
-  background: var(--card-bg);
-  border-radius: var(--radius);
-  overflow: hidden;
+/* 📱 البطاقة — هاتف: 3.25 صورة */
+.slide {
+  flex: 0 0 calc(30.77% - 9px);
   scroll-snap-align: start;
-  outline: none;
+  position: relative;
 }
 
-.episode-card:focus-visible {
-  outline: 2px solid #f5c400;
-}
-
-/* ===== الصورة ===== */
-.episode-card img {
+.slide img {
   width: 100%;
   aspect-ratio: 2 / 3;
   object-fit: cover;
+  border-radius: 12px;
   display: block;
 }
 
-/* ===== شاشات أكبر ===== */
+/* الشارة */
+.badge {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  background: #000;
+  color: #fff;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+/* النقاط */
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.dots span {
+  width: 8px;
+  height: 8px;
+  background: #555;
+  border-radius: 50%;
+  opacity: 0.4;
+}
+
+.dots span.active {
+  opacity: 1;
+  background: #fff;
+}
+
+/* 🖥️ تابلت + ديسكتوب: 4.25 صورة */
 @media (min-width: 768px) {
-  .episode-card {
-    flex: 0 0 23.53%;
+  .slide {
+    flex: 0 0 calc(23.53% - 9px);
   }
 }
 
