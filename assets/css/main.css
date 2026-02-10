@@ -674,11 +674,11 @@ header {
 }
 
 /* الصورة */
-/* صورة الحلقة بنسبة 16:9 */
 .episode-card img {
   width: 100%;
-  aspect-ratio: 3 / 2;   /* 🔥 أقرب لما في الصورة */
+  aspect-ratio: 16 / 9;
   object-fit: cover;
+  max-height: clamp(140px, 45vw, 170px);
   display: block;
   border-radius: 12px;
 }
