@@ -648,18 +648,10 @@ header {
 /*  تنسيق سلايدر الحلقات الجديدة       */
 /* ================================== */
 
-/* ===============================
-   سلايدر الحلقات الجديدة
-================================ */
-
-.latest-episodes {
-  padding: 16px;
-  background-color: #121218;
-}
-
+/* سلايدر الحلقات الجديدة */
 .episodes-container {
   display: flex;
-  gap: 14px;
+  gap: 12px;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
@@ -668,33 +660,33 @@ header {
   display: none;
 }
 
-/* بطاقة السلايدر */
-.slider-card {
-  flex: 0 0 95%;
-  max-width: 95%;
+/* بطاقة الحلقة */
+.episode-slide {
+  flex: 0 0 80%;          /* 1.25 بطاقة */
+  max-width: 80%;
   position: relative;
-  border-radius: 14px;
+  border-radius: 12px;
   overflow: hidden;
 }
 
-/* صورة السلايدر */
-.slider-card img {
+/* صورة الحلقة */
+.episode-slide img {
   width: 100%;
-  height: 320px;   /* ✅ هذا سيظهر طويلًا فعليًا */
+  aspect-ratio: 16 / 9;  /* ✅ نسبة صحيحة */
   object-fit: cover;
   display: block;
 }
 
-/* النص */
-.slider-info {
+/* التراكب */
+.episode-info {
   position: absolute;
   bottom: 0;
   right: 0;
   left: 0;
-  padding: 12px;
+  padding: 8px 10px;
   background: linear-gradient(
     to top,
-    rgba(0,0,0,.85),
+    rgba(0,0,0,.8),
     rgba(0,0,0,0)
   );
   color: #fff;
@@ -702,15 +694,12 @@ header {
 
 /* Desktop */
 @media (min-width: 768px) {
-  .slider-card {
-    flex: 0 0 30%;
-    max-width: 30%;
-  }
-
-  .slider-card img {
-    height: 220px;
+  .episode-slide {
+    flex: 0 0 28%;
+    max-width: 28%;
   }
 }
+
 
 
 
