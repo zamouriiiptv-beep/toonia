@@ -513,14 +513,18 @@ header {
 /* ================================== */
 /*  قسم الحلقات الجديدة                */
 /* ================================== */
-/* ===== حاوية السلايدر ===== */
+
 .episodes-container {
   display: flex;
   gap: var(--gap);
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scroll-snap-type: x mandatory;
-  padding-bottom: 10px;
+
+  /* تحسين التباعد البصري */
+  padding-inline: var(--gap);
+  padding-bottom: 12px;
+
   scrollbar-width: none;
 }
 
@@ -530,11 +534,14 @@ header {
 
 /* ===== بطاقة الحلقة (صور فقط) ===== */
 .episode-card {
-  flex: 0 0 30.77%; /* 📱 يظهر 3.25 بطاقة */
+  flex: 0 0 30.77%; /* 📱 3.25 بطاقة */
   border-radius: var(--radius);
   overflow: hidden;
   background: #222;
   scroll-snap-align: start;
+
+  /* يمنع الاهتزاز أثناء السحب */
+  will-change: transform;
 }
 
 /* 🖥️ شاشات أكبر */
@@ -551,7 +558,6 @@ header {
   object-fit: cover;
   display: block;
 }
-
 
 <!-- ================================== -->
 <!--  قسم الأعمال الأكثر مشاهدة          -->
