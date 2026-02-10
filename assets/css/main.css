@@ -668,9 +668,8 @@ header {
 
 /* كرت الحلقة */
 .episode-card {
-  flex: 0 0 80%;          /* 🔥 حلقة وربع */
-  max-width: 80%;
-  background: transparent;
+  flex: 0 0 85%;
+  max-width: 85%;
 }
 
 /* الصورة */
@@ -678,10 +677,11 @@ header {
   width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
-  max-height: clamp(140px, 45vw, 170px);
+  max-height: clamp(170px, 50vw, 200px);
   display: block;
   border-radius: 12px;
 }
+
 
 
 /* ❌ حذف رقم / عنوان الحلقة نهائيًا */
