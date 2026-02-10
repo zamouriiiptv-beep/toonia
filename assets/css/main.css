@@ -677,7 +677,7 @@ header {
 /* صورة الحلقة بنسبة 16:9 */
 .episode-card img {
   width: 100%;
-  aspect-ratio: 16 / 9;   /* ✅ 16:9 */
+  aspect-ratio: 3 / 2;   /* 🔥 أقرب لما في الصورة */
   object-fit: cover;
   display: block;
   border-radius: 12px;
