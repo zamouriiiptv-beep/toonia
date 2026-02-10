@@ -513,275 +513,42 @@ header {
 /* ================================== */
 /*  قسم الحلقات الجديدة                */
 /* ================================== */
-
-.latest-episodes {
-  padding: 40px 20px;
-  background-color: #121218;
-}
-
-/* رأس القسم */
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.section-header h2 {
-  font-size: 20px;
-  color: #ffffff;
-}
-
-/* رابط عرض المزيد */
-.view-more {
-  font-size: 14px;
-  color: #f5c518;
-  text-decoration: none;
-}
-
-.view-more:hover {
-  text-decoration: underline;
-}
-
-/* ================================== */
-/*  شبكة عرض الحلقات                   */
-/* ================================== */
-
-.episodes-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 16px;
-}
-
-/* ================================== */
-/*  بطاقة الحلقة                       */
-/* ================================== */
-
-.episode-card {
-  background-color: #1f1f26;
-  border-radius: 10px;
-  overflow: hidden;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.episode-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-}
-
-/* رابط البطاقة */
-.episode-link {
-  display: block;
-  color: inherit;
-  text-decoration: none;
-}
-
-/* صورة الحلقة */
-.episode-thumb {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-}
-
-.episode-thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* شارة رقم الحلقة */
-.episode-badge {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  background-color: #f5c518;
-  color: #000000;
-  font-size: 12px;
-  font-weight: bold;
-  padding: 4px 8px;
-  border-radius: 6px;
-}
-
-/* أيقونة التشغيل */
-.play-icon {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 42px;
-  color: #ffffff;
-  background-color: rgba(0, 0, 0, 0.35);
-  opacity: 0;
-  transition: opacity 0.25s ease;
-}
-
-.episode-card:hover .play-icon {
-  opacity: 1;
-}
-
-/* اسم الأنمي */
-.episode-title {
-  font-size: 14px;
-  padding: 10px;
-  line-height: 1.4;
-  color: #eeeeee;
-}
-
-/* ================================== */
-/*  تحسين العرض على الشاشات الصغيرة    */
-/* ================================== */
-
-@media (max-width: 768px) {
-  .latest-episodes {
-    padding: 24px 16px;
-  }
-
-  .section-header h2 {
-    font-size: 18px;
-  }
-}
-
-/* ================================== */
-/* تنسيقات السلايدر لأحدث الحلقات */
-/* ================================== */
-
-:root {
-  --gap: 12px;
-  --radius: 12px;
-  --gradient-color: rgba(0, 0, 0, 0.7);
-  --text-color: #fff;
-}
-
-/* ============================= */
-/*  قسم الحلقات الجديدة           */
-/* ============================= */
-
-.latest-episodes {
-  padding: 1rem;
-  direction: rtl;
-}
-
-/* رأس القسم */
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-  gap: 10px;
-}
-
-.section-header h3 {
-  margin: 0;
-  font-size: 1.4rem;
-  font-weight: 700;
-}
-
-/* أزرار التنقل */
-.slider-buttons {
-  display: none;
-  gap: 10px;
-}
-
-.slider-buttons button {
-  background-color: #222;
-  border: none;
-  color: #fff;
-  font-size: 1.8rem;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-/* ============================= */
-/*  السلايدر                      */
-/* ============================= */
-
 .episodes-container {
   display: flex;
   gap: var(--gap);
   overflow-x: auto;
-  scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   scroll-snap-type: x mandatory;
   scroll-padding-inline: 1rem;
   padding-bottom: 10px;
   scrollbar-width: none;
 }
-
 .episodes-container::-webkit-scrollbar {
   display: none;
 }
 
-/* ============================= */
-/*  بطاقة الحلقة                  */
-/* ============================= */
-
 .episode-card {
-  flex: 0 0 calc(30.77% - 9px); /* 📱 3.25 بطاقة */
+  flex: 0 0 calc(30.77% - 9px); /* 📱 3.25 */
   position: relative;
   border-radius: var(--radius);
   overflow: hidden;
   background: #222;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 0.5);
-  cursor: pointer;
   scroll-snap-align: start;
-  transition: transform 0.25s ease;
 }
-
-.episode-card:focus {
-  outline: none;
-  transform: scale(1.03);
-}
-
-/* صورة الحلقة */
-.episode-card img {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  display: block;
-  user-select: none;
-  pointer-events: none;
-}
-
-/* التدرج + النص */
-.episode-info {
-  position: absolute;
-  bottom: 0;
-  inset-inline: 0;
-  padding: 8px 12px;
-  background: linear-gradient(to top, var(--gradient-color), transparent);
-  color: var(--text-color);
-}
-
-.work-title {
-  margin: 0 0 4px;
-  font-size: 1.1rem;
-  font-weight: 700;
-  line-height: 1.1;
-}
-
-.episode-number {
-  font-size: 0.9rem;
-  opacity: 0.9;
-}
-
-/* ============================= */
-/*  تابلت + ديسكتوب               */
-/* ============================= */
 
 @media (min-width: 768px) {
   .episode-card {
-    flex: 0 0 calc(23.53% - 9px); /* 🖥️ 4.25 بطاقة */
-  }
-
-  .slider-buttons {
-    display: flex;
+    flex: 0 0 calc(23.53% - 9px); /* 🖥️ 4.25 */
   }
 }
+
+.episode-card img {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  display: block;
+}
+
 
 <!-- ================================== -->
 <!--  قسم الأعمال الأكثر مشاهدة          -->
