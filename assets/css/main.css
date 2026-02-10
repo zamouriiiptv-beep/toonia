@@ -660,7 +660,7 @@ header {
   display: none;
 }
 
-/* كرت الحلقة – Mobile */
+/* كرت الحلقة */
 .episode-card {
   flex: 0 0 95%;
   max-width: 95%;
@@ -669,10 +669,10 @@ header {
   border-radius: 12px;
 }
 
-/* الصورة */
+/* الصورة – حل نهائي */
 .episode-card img {
   width: 100%;
-  height: 260px;        /* هذا الارتفاع أصبح صحيح */
+  height: 320px;        /* 🔥 هذا هو الارتفاع الذي تبحث عنه */
   object-fit: cover;
   display: block;
 }
