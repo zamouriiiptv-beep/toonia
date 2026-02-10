@@ -651,24 +651,20 @@ header {
 :root {
   --gap: 12px;
   --radius: 12px;
-  --gradient-color: rgba(0,0,0,0.7);
+  --gradient-color: rgba(0, 0, 0, 0.7);
   --text-color: #fff;
 }
 
-body {
-  margin: 0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background: #121212;
-  color: #eee;
-}
+/* ============================= */
+/*  قسم الحلقات الجديدة           */
+/* ============================= */
 
-/* القسم الرئيسي */
 .latest-episodes {
   padding: 1rem;
-  direction: rtl; /* تأكيد اتجاه من اليمين لليسار */
+  direction: rtl;
 }
 
-/* رأس القسم مع العنوان والأزرار */
+/* رأس القسم */
 .section-header {
   display: flex;
   justify-content: space-between;
@@ -679,71 +675,69 @@ body {
 
 .section-header h3 {
   margin: 0;
-  font-weight: 700;
   font-size: 1.4rem;
+  font-weight: 700;
 }
 
-/* حاوية أزرار التنقل */
+/* أزرار التنقل */
 .slider-buttons {
-  display: none; /* تظهر فقط على الشاشات الكبيرة */
+  display: none;
   gap: 10px;
 }
 
 .slider-buttons button {
   background-color: #222;
   border: none;
-  color: white;
+  color: #fff;
   font-size: 1.8rem;
   width: 40px;
   height: 40px;
   border-radius: 50%;
   cursor: pointer;
-  transition: background-color 0.3s;
-  user-select: none;
 }
 
-.slider-buttons button:hover,
-.slider-buttons button:focus {
-  background-color: #555;
-  outline: none;
-}
+/* ============================= */
+/*  السلايدر                      */
+/* ============================= */
 
-/* السلايدر - الحاوية */
 .episodes-container {
   display: flex;
   gap: var(--gap);
   overflow-x: auto;
   scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 1rem;
   padding-bottom: 10px;
-  -webkit-overflow-scrolling: touch; /* دعم السحب على iOS */
-  scrollbar-width: none; /* إخفاء شريط التمرير لفايرفوكس */
-}
-.episodes-container::-webkit-scrollbar {
-  display: none; /* إخفاء شريط التمرير لفايرفوكس, كروم, سفاري */
+  scrollbar-width: none;
 }
 
-/* بطاقات الحلقات */
+.episodes-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* ============================= */
+/*  بطاقة الحلقة                  */
+/* ============================= */
+
 .episode-card {
-  flex: 0 0 auto;
-  border-radius: var(--radius);
+  flex: 0 0 calc(30.77% - 9px); /* 📱 3.25 بطاقة */
   position: relative;
+  border-radius: var(--radius);
   overflow: hidden;
   background: #222;
   box-shadow: 0 2px 8px rgb(0 0 0 / 0.5);
   cursor: pointer;
-  outline-offset: 2px;
-  transition: transform 0.3s;
-  min-width: 70vw;
-  max-width: 85vw;
+  scroll-snap-align: start;
+  transition: transform 0.25s ease;
 }
 
-/* عند التركيز (لتوافقية) */
 .episode-card:focus {
-  box-shadow: 0 0 0 3px #40aaff;
+  outline: none;
   transform: scale(1.03);
 }
 
-/* صورة الحلقة متجاوبة بنسبة 16:9 */
+/* صورة الحلقة */
 .episode-card img {
   width: 100%;
   aspect-ratio: 16 / 9;
@@ -753,67 +747,41 @@ body {
   pointer-events: none;
 }
 
-/* تراكب التدرج + النص */
+/* التدرج + النص */
 .episode-info {
   position: absolute;
   bottom: 0;
-  inset-inline-start: 0;
-  inset-inline-end: 0;
+  inset-inline: 0;
   padding: 8px 12px;
   background: linear-gradient(to top, var(--gradient-color), transparent);
   color: var(--text-color);
-  box-sizing: border-box;
 }
 
-/* عنوان العمل */
 .work-title {
-  margin: 0 0 4px 0;
-  font-weight: 700;
+  margin: 0 0 4px;
   font-size: 1.1rem;
+  font-weight: 700;
   line-height: 1.1;
 }
 
-/* رقم الحلقة */
 .episode-number {
   font-size: 0.9rem;
   opacity: 0.9;
 }
 
-/* --- التصميم المتجاوب حسب حجم الشاشة --- */
+/* ============================= */
+/*  تابلت + ديسكتوب               */
+/* ============================= */
 
-/* أجهزة الموبايل - عرض من 1.3 إلى 1.5 بطاقة */
-@media (max-width: 599px) {
+@media (min-width: 768px) {
   .episode-card {
-    min-width: 75vw;
-    max-width: 90vw;
+    flex: 0 0 calc(23.53% - 9px); /* 🖥️ 4.25 بطاقة */
   }
-  .slider-buttons {
-    display: none;
-  }
-}
 
-/* التابلت - عرض 2 إلى 3 بطاقات تقريبا */
-@media (min-width: 600px) and (max-width: 991px) {
-  .episode-card {
-    min-width: 40vw;
-    max-width: 45vw;
-  }
   .slider-buttons {
     display: flex;
   }
 }
-
-/* الديسكتوب - عرض 4 إلى 5 بطاقات تقريبا */
-@media (min-width: 992px) {
-  .episode-card {
-    min-width: 18vw;
-    max-width: 22vw;
-  }
-  .slider-buttons {
-    display: flex;
-  }
-}
-
 
 <!-- ================================== -->
 <!--  قسم الأعمال الأكثر مشاهدة          -->
