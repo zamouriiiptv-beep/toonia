@@ -45,6 +45,46 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const slides = document.querySelectorAll(".hero-bg");
+  const dots = document.querySelectorAll(".hero-dot");
+
+  let current = 0;
+  let interval = 5000;
+
+  if (slides.length < 2) return;
+
+  function showSlide(index) {
+    slides.forEach(slide => slide.classList.remove("active"));
+    dots.forEach(dot => dot.classList.remove("active"));
+
+    slides[index].classList.add("active");
+    dots[index].classList.add("active");
+
+    current = index;
+  }
+
+  // تشغيل تلقائي
+  let timer = setInterval(() => {
+    let next = (current + 1) % slides.length;
+    showSlide(next);
+  }, interval);
+
+  // التحكم عبر dots
+  dots.forEach((dot, index) => {
+    dot.addEventListener("click", () => {
+      clearInterval(timer);
+      showSlide(index);
+      timer = setInterval(() => {
+        showSlide((current + 1) % slides.length);
+      }, interval);
+    });
+  });
+
+});
+
 /* ================================== */
 /*  تهيئة سلايدر الحلقات الجديدة       */
 /* ================================== */
