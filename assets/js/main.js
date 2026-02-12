@@ -24,60 +24,58 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  /* ================================= */
-  /* Hero Slider */
-  /* ================================= */
 /* ================================= */
-  /* Hero Slider */
-  /* ================================= */
-  const heroContainer = document.querySelector('.hero');
-  if (heroContainer) {
-    const heroSlides = heroContainer.querySelectorAll('.hero-slide');
-    const heroDotsWrapper = heroContainer.querySelector('.hero-dots');
+/* Hero Slider */
+/* ================================= */
+const heroContainer = document.querySelector('.hero');
+if (heroContainer) {
+  const heroSlides = heroContainer.querySelectorAll('.hero-slide');
+  const heroDotsWrapper = heroContainer.querySelector('.hero-dots');
 
-    if (heroSlides.length > 1 && heroDotsWrapper) {
-      let currentIndex = 0;
-      const slideIntervalDelay = 4000;
-      let slideInterval;
+  if (heroSlides.length > 1 && heroDotsWrapper) {
+    let currentIndex = 0;
+    const slideIntervalDelay = 4000;
+    let slideInterval;
 
-      const goToSlide = (index) => {
-        heroSlides[currentIndex].classList.remove('active');
-        heroDots[currentIndex].classList.remove('active');
+    const goToSlide = (index) => {
+      heroSlides[currentIndex].classList.remove('active');
+      heroDots[currentIndex].classList.remove('active');
 
-        currentIndex = index;
+      currentIndex = index;
 
-        heroSlides[currentIndex].classList.add('active');
-        heroDots[currentIndex].classList.add('active');
-      };
+      heroSlides[currentIndex].classList.add('active');
+      heroDots[currentIndex].classList.add('active');
+    };
 
-      const nextSlide = () => {
-        goToSlide((currentIndex + 1) % heroSlides.length);
-      };
+    const nextSlide = () => {
+      goToSlide((currentIndex + 1) % heroSlides.length);
+    };
 
-      const startSlideInterval = () => {
-        slideInterval = setInterval(nextSlide, slideIntervalDelay);
-      };
+    const startSlideInterval = () => {
+      slideInterval = setInterval(nextSlide, slideIntervalDelay);
+    };
 
-      const resetSlideInterval = () => {
-        clearInterval(slideInterval);
-        startSlideInterval();
-      };
-
-      // إنشاء dots للـ Hero Slider
-      heroSlides.forEach((_, index) => {
-        const dotBtn = document.createElement('button');
-        if (index === 0) dotBtn.classList.add('active');
-        dotBtn.addEventListener('click', () => {
-          goToSlide(index);
-          resetSlideInterval();
-        });
-        heroDotsWrapper.appendChild(dotBtn);
-      });
-
+    const resetSlideInterval = () => {
+      clearInterval(slideInterval);
       startSlideInterval();
-    }
-  }
+    };
 
+    // إنشاء dots للـ Hero Slider
+    heroSlides.forEach((_, index) => {
+      const dotBtn = document.createElement('button');
+      if (index === 0) dotBtn.classList.add('active');
+      dotBtn.addEventListener('click', () => {
+        goToSlide(index);
+        resetSlideInterval();
+      });
+      heroDotsWrapper.appendChild(dotBtn);
+    });
+
+    const heroDots = heroDotsWrapper.querySelectorAll('button');
+
+    startSlideInterval();
+  }
+}
 
   /* ================================= */
   /* سلايدر الحلقات الجديدة (Episodes Slider) */
