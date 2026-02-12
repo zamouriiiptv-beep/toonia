@@ -155,210 +155,10 @@ header {
     transform: translateY(-2px);
 }
 
+/* ============================================= */
+/*                 سلايدر الهيرو                */
+/* ============================================= */
 
-/* ================================== */
-/*  محتوى تجريبي                      */
-/* ================================== */
-.main-content {
-    padding: 40px 20px;
-    text-align: center;
-}
-
-
-/* ================================== */
-/*  قسم البطل (Hero Section)           */
-/* ================================== */
-/* الحاوية الرئيسية */
-.hero-container {
-    position: relative;
-    width: 100%;
-    height: 40vh;
-    min-height: 280px;
-    max-height: 460px;
-    overflow: hidden;
-    background: #000;
-    display: flex;
-    align-items: flex-end;
-    padding: 0 5% 36px;
-}
-
-/* صورة الخلفية */
-.hero-bg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center 38%;
-    pointer-events: none;
-    z-index: 1;
-}
-
-/* طبقة التدرج (Overlay) */
-.hero-overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    background: linear-gradient(
-        to top,
-        rgba(0,0,0,0.8) 0%,
-        rgba(0,0,0,0) 40%
-    );
-    pointer-events: none;
-}
-
-/* محتوى الـ Hero */
-.hero-content {
-    position: relative;
-    z-index: 3;
-    width: 100%;
-    display: flex;
-    justify-content: flex-start;
-    gap: 12px;
-    padding-bottom: 16px;
-    box-sizing: border-box;
-    user-select: none;
-}
-
-/* تحسين المسافات للشاشات المتوسطة */
-@media (min-width: 768px) {
-    .hero-content {
-        gap: 16px;
-        padding-bottom: 24px;
-    }
-}
-
-
-/* ================================== */
-/*  أزرار الـ Hero                     */
-/* ================================== */
-.hero-buttons {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 15px;
-    z-index: 5;
-}
-
-/* تنسيق موحد للأزرار */
-.btn-play,
-.btn-info {
-    height: 36px;
-    padding: 0 16px;
-    border-radius: 4px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    border: none;
-    cursor: pointer;
-    white-space: nowrap;
-}
-
-/* زر المشاهدة */
-.btn-play {
-    background-color: #ffc107;
-    color: #000;
-}
-
-/* زر التفاصيل */
-.btn-info {
-    background: rgba(255, 255, 255, 0.12);
-    color: #fff;
-    backdrop-filter: blur(8px);
-}
-
-/* تأثيرات التحويم */
-.btn-play:hover,
-.btn-info:hover {
-    transform: translateY(-2px);
-    opacity: 0.9;
-}
-
-/* الأيقونات داخل الأزرار */
-.btn-play i,
-.btn-info i {
-    margin-left: 6px;
-    font-size: 12px;
-}
-
-
-/* ================================== */
-/*  نقاط التنقل (Hero Dots)            */
-/* ================================== */
-.hero-dots {
-    position: absolute;
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    z-index: 3;
-}
-
-.hero-dot {
-    width: 7px;
-    height: 7px;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.hero-dot.active {
-    background: #ffc107;
-    box-shadow: 0 0 8px #ffc107;
-    transform: scale(1.2);
-}
-
-
-/* ================================== */
-/*  استجابة الموبايل                  */
-/* ================================== */
-@media (max-width: 768px) {
-
-    .hero-buttons {
-        justify-content: center;
-        margin-top: 10px;
-    }
-
-    .btn-play,
-    .btn-info {
-        height: 32px;
-        padding: 0 12px;
-        font-size: 12px;
-    }
-
-    .hero-dots {
-        display: none;
-    }
-
-    .hero-container {
-        height: 42vh;
-        min-height: 280px;
-        padding-bottom: 40px;
-        text-align: center;
-        justify-content: center;
-        padding: 0 20px;
-    }
-
-    .hero-content {
-        text-align: center;
-    }
-
-    .hero-overlay {
-        background: linear-gradient(
-            to top,
-            rgba(0,0,0,0.8) 0%,
-            rgba(0,0,0,0) 60%
-        );
-    }
-}
-/* ====== Hero slider ====== */
 .hero-slider {
   position: relative;
   width: 100%;
@@ -491,7 +291,233 @@ header {
   box-shadow: 0 0 8px #ffc107;
 }
 
-/* ====== Responsive tweaks ====== */
+/* ================================== */
+/*  قسم الحلقات الجديدة                */
+/* ================================== */
+
+.most-watched {
+  padding: 16px;
+}
+
+.section-header h2 {
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+
+/* الحاوية */
+.slider-wrapper {
+  overflow: hidden;
+}
+
+/* السلايدر */
+.slider {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.slider::-webkit-scrollbar {
+  display: none;
+}
+
+/* 📱 البطاقة — هاتف: 3.25 صورة */
+.slide {
+  flex: 0 0 calc(30.77% - 9px);
+  scroll-snap-align: start;
+  position: relative;
+}
+
+.slide img {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+}
+
+/* الشارة */
+.badge {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  background: #000;
+  color: #fff;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+/* النقاط */
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.dots span {
+  width: 8px;
+  height: 8px;
+  background: #555;
+  border-radius: 50%;
+  opacity: 0.4;
+}
+
+.dots span.active {
+  opacity: 1;
+  background: #fff;
+}
+
+/* 🖥️ تابلت + ديسكتوب: 4.25 صورة */
+@media (min-width: 768px) {
+  .slide {
+    flex: 0 0 calc(23.53% - 9px);
+  }
+}
+
+/* ================================== */
+/*  قسم الأعمال الأكثر مشاهدة          */
+/*  يعرض أكثر الأعمال رواجًا بناءً     */
+/*  على عدد المشاهدات أو التفاعل       */
+/* ================================== */
+
+.most-watched {
+  padding: 16px;
+}
+
+.section-header h2 {
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+
+/* الحاوية */
+.slider-wrapper {
+  overflow: hidden;
+}
+
+/* السلايدر */
+.slider {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.slider::-webkit-scrollbar {
+  display: none;
+}
+
+/* 📱 البطاقة — هاتف: 3.25 صورة */
+.slide {
+  flex: 0 0 calc(30.77% - 9px);
+  scroll-snap-align: start;
+  position: relative;
+}
+
+.slide img {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+}
+
+/* الشارة */
+.badge {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  background: #000;
+  color: #fff;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+/* النقاط */
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.dots span {
+  width: 8px;
+  height: 8px;
+  background: #555;
+  border-radius: 50%;
+  opacity: 0.4;
+}
+
+.dots span.active {
+  opacity: 1;
+  background: #fff;
+}
+
+/* 🖥️ تابلت + ديسكتوب: 4.25 صورة */
+@media (min-width: 768px) {
+  .slide {
+    flex: 0 0 calc(23.53% - 9px);
+  }
+}
+
+/* ================================== */
+/*  تنسيق قسم جميع الأعمال (عرض مختصر) */
+/* ================================== */
+
+.all-works-preview {
+  padding: 16px;
+}
+
+/* عنوان القسم */
+.all-works-preview .section-header h2 {
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+
+/* شبكة الأعمال — افتراضيًا (الهاتف) */
+.works-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 📱 3 صور */
+  gap: 12px;
+}
+
+/* بطاقة العمل */
+.work-card img {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+}
+
+/* زر عرض جميع الأعمال */
+.view-all-btn {
+  display: block;
+  margin: 16px auto 0;
+  padding: 10px 18px;
+  border-radius: 20px;
+  background-color: #222;
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* 🖥️ من التابلت فما فوق */
+@media (min-width: 768px) {
+  .works-grid {
+    grid-template-columns: repeat(4, 1fr); /* 4 صور */
+  }
+}
+/* ============================================= */
+/*            تعديلات التصميم المتجاوب          */
+/* ============================================= */
+
 @media (max-width: 768px) {
   .hero-slider {
     height: 42vh;
@@ -669,230 +695,8 @@ header {
     box-shadow: inset 4px 0 var(--accent-color);
 }
 
-/* ================================== */
-/*  قسم الحلقات الجديدة                */
-/* ================================== */
-
-.most-watched {
-  padding: 16px;
-}
-
-.section-header h2 {
-  font-size: 20px;
-  margin-bottom: 12px;
-}
-
-/* الحاوية */
-.slider-wrapper {
-  overflow: hidden;
-}
-
-/* السلايدر */
-.slider {
-  display: flex;
-  gap: 12px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-}
-
-.slider::-webkit-scrollbar {
-  display: none;
-}
-
-/* 📱 البطاقة — هاتف: 3.25 صورة */
-.slide {
-  flex: 0 0 calc(30.77% - 9px);
-  scroll-snap-align: start;
-  position: relative;
-}
-
-.slide img {
-  width: 100%;
-  aspect-ratio: 2 / 3;
-  object-fit: cover;
-  border-radius: 12px;
-  display: block;
-}
-
-/* الشارة */
-.badge {
-  position: absolute;
-  bottom: 8px;
-  left: 8px;
-  background: #000;
-  color: #fff;
-  font-size: 12px;
-  padding: 2px 6px;
-  border-radius: 6px;
-}
-
-/* النقاط */
-.dots {
-  display: flex;
-  justify-content: center;
-  gap: 6px;
-  margin-top: 10px;
-}
-
-.dots span {
-  width: 8px;
-  height: 8px;
-  background: #555;
-  border-radius: 50%;
-  opacity: 0.4;
-}
-
-.dots span.active {
-  opacity: 1;
-  background: #fff;
-}
-
-/* 🖥️ تابلت + ديسكتوب: 4.25 صورة */
-@media (min-width: 768px) {
-  .slide {
-    flex: 0 0 calc(23.53% - 9px);
-  }
-}
-
-/* ================================== */
-/*  قسم الأعمال الأكثر مشاهدة          */
-/*  يعرض أكثر الأعمال رواجًا بناءً     */
-/*  على عدد المشاهدات أو التفاعل       */
-/* ================================== */
-
-.most-watched {
-  padding: 16px;
-}
-
-.section-header h2 {
-  font-size: 20px;
-  margin-bottom: 12px;
-}
-
-/* الحاوية */
-.slider-wrapper {
-  overflow: hidden;
-}
-
-/* السلايدر */
-.slider {
-  display: flex;
-  gap: 12px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-}
-
-.slider::-webkit-scrollbar {
-  display: none;
-}
-
-/* 📱 البطاقة — هاتف: 3.25 صورة */
-.slide {
-  flex: 0 0 calc(30.77% - 9px);
-  scroll-snap-align: start;
-  position: relative;
-}
-
-.slide img {
-  width: 100%;
-  aspect-ratio: 2 / 3;
-  object-fit: cover;
-  border-radius: 12px;
-  display: block;
-}
-
-/* الشارة */
-.badge {
-  position: absolute;
-  bottom: 8px;
-  left: 8px;
-  background: #000;
-  color: #fff;
-  font-size: 12px;
-  padding: 2px 6px;
-  border-radius: 6px;
-}
-
-/* النقاط */
-.dots {
-  display: flex;
-  justify-content: center;
-  gap: 6px;
-  margin-top: 10px;
-}
-
-.dots span {
-  width: 8px;
-  height: 8px;
-  background: #555;
-  border-radius: 50%;
-  opacity: 0.4;
-}
-
-.dots span.active {
-  opacity: 1;
-  background: #fff;
-}
-
-/* 🖥️ تابلت + ديسكتوب: 4.25 صورة */
-@media (min-width: 768px) {
-  .slide {
-    flex: 0 0 calc(23.53% - 9px);
-  }
-}
 
 
-/* ================================== */
-/*  تنسيق قسم جميع الأعمال (عرض مختصر) */
-/* ================================== */
-
-.all-works-preview {
-  padding: 16px;
-}
-
-/* عنوان القسم */
-.all-works-preview .section-header h2 {
-  font-size: 20px;
-  margin-bottom: 12px;
-}
-
-/* شبكة الأعمال — افتراضيًا (الهاتف) */
-.works-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 📱 3 صور */
-  gap: 12px;
-}
-
-/* بطاقة العمل */
-.work-card img {
-  width: 100%;
-  aspect-ratio: 2 / 3;
-  object-fit: cover;
-  border-radius: 12px;
-  display: block;
-}
-
-/* زر عرض جميع الأعمال */
-.view-all-btn {
-  display: block;
-  margin: 16px auto 0;
-  padding: 10px 18px;
-  border-radius: 20px;
-  background-color: #222;
-  color: #fff;
-  text-decoration: none;
-  font-size: 14px;
-  text-align: center;
-}
-
-/* 🖥️ من التابلت فما فوق */
-@media (min-width: 768px) {
-  .works-grid {
-    grid-template-columns: repeat(4, 1fr); /* 4 صور */
-  }
-}
 
 
 
