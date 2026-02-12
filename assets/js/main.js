@@ -1,3 +1,5 @@
+console.log("JS file loaded");
+
 'use strict';
 
 /* ===================================== */
