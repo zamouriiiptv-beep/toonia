@@ -43,49 +43,53 @@ document.addEventListener("DOMContentLoaded", function () {
     const heroSlides = hero.querySelectorAll(".hero-slide");
     const heroDotsContainer = hero.querySelector(".hero-dots");
 
-    if (heroSlides.length > 1 && heroDotsContainer) {
+    if (heroSlides.length <= 1 || !heroDotsContainer) return;
 
-        let current = 0;
-        const intervalTime = 4000;
-        let sliderInterval;
+    let current = 0;
+    const intervalTime = 4000;
+    let sliderInterval;
 
-        heroSlides.forEach((_, index) => {
-            const dot = document.createElement("button");
-            if (index === 0) dot.classList.add("active");
+    heroSlides.forEach((_, index) => {
+        const dot = document.createElement("button");
 
-            dot.addEventListener("click", () => {
-                goToSlide(index);
-                resetInterval();
-            });
+        if (index === 0) dot.classList.add("active");
 
-            heroDotsContainer.appendChild(dot);
+        dot.addEventListener("click", () => {
+            goToSlide(index);
+            resetInterval();
         });
 
-        const heroDots = heroDotsContainer.querySelectorAll("button");
+        heroDotsContainer.appendChild(dot);
+    });
 
-        function goToSlide(index) {
-            heroSlides[current].classList.remove("active");
-            heroDots[current].classList.remove("active");
+    const heroDots = heroDotsContainer.querySelectorAll("button");
 
-            current = index;
+    function goToSlide(index) {
+        heroSlides[current].classList.remove("active");
+        heroDots[current].classList.remove("active");
 
-            heroSlides[current].classList.add("active");
-            heroDots[current].classList.add("active");
-        }
+        current = index;
 
-        function nextSlide() {
-            goToSlide((current + 1) % heroSlides.length);
-        }
+        heroSlides[current].classList.add("active");
+        heroDots[current].classList.add("active");
+    }
 
-        function startSlider() {
-            sliderInterval = setInterval(nextSlide, intervalTime);
-        }
+    function nextSlide() {
+        const nextIndex = (current + 1) % heroSlides.length;
+        goToSlide(nextIndex);
+    }
 
+    function startSlider() {
+        sliderInterval = setInterval(nextSlide, intervalTime);
+    }
+
+    function resetInterval() {
+        clearInterval(sliderInterval);
         startSlider();
     }
 
+    startSlider();
 });
-
 
     /* ================================== */
     /*  سلايدر الحلقات الجديدة             */
