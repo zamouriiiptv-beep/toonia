@@ -289,12 +289,10 @@ header {
 /* ================================== */
 /*  نقاط التنقل (Hero Dots)            */
 /* ================================== */
-/* ================================== */
-/*  نقاط التنقل (Hero Dots)           */
-/* ================================== */
-.hero-dots {
+
+.hero-slider .dots {
     position: absolute;
-    right: 20px;             /* اجعلها على اليمين مثل النموذج */
+    right: 20px;               /* على اليمين مثل المثال */
     top: 50%;
     transform: translateY(-50%);
     display: flex;
@@ -303,9 +301,9 @@ header {
     z-index: 3;
 }
 
-.hero-dot {
-    width: 9px;              /* حجم أكبر قليلاً */
-    height: 9px;             /* نفس الحجم للارتفاع */
+.hero-slider .dots .dot {
+    width: 9px;                 /* حجم أكبر قليلًا */
+    height: 9px;                /* نفس الحجم للارتفاع */
     background: rgba(255, 255, 255, 0.7); /* أبيض شبه شفاف واضح */
     border-radius: 50%;
     cursor: pointer;
@@ -313,11 +311,11 @@ header {
     border: 1px solid rgba(255, 255, 255, 0.9); /* حدود خفيفة لتعزيز التباين */
 }
 
-.hero-dot.active {
-    background: #ffc107;     /* أصفر بارز للنقطة النشطة */
-    box-shadow: 0 0 6px #ffc107; /* توهج خفيف لتأكيد النشاط */
-    transform: scale(1.3);   /* تكبير أكثر للنقطة النشطة */
-    border-color: #ffc107;   /* حدود بلون متوافق */
+.hero-slider .dots .dot.active {
+    background: #ffc107;        /* أصفر بارز للنقطة النشطة */
+    box-shadow: 0 0 6px #ffc107;/* توهج خفيف لتأكيد النشاط */
+    transform: scale(1.3);      /* تكبير أكثر للنقطة النشطة */
+    border-color: #ffc107;      /* حدود بلون متوافق */
 }
 
 /* ================================== */
