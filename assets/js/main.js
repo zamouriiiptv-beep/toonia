@@ -1,147 +1,144 @@
 'use strict';
 
-/* ===================================== */
-/*  انتظار تحميل الصفحة بالكامل          */
-/* ===================================== */
+document.addEventListener('DOMContentLoaded', () => {
 
-document.addEventListener('DOMContentLoaded', function () {
+  const body = document.body;
 
-    /* ================================= */
-    /*  التحكم في فتح/إغلاق القائمة      */
-    /* ================================= */
+  /* ================================= */
+  /* التحكم في فتح/إغلاق القائمة */
+  /* ================================= */
+  const menuToggleBtn = document.querySelector('.menu-toggle');
+  if (menuToggleBtn) {
+    menuToggleBtn.addEventListener('click', () => {
+      body.classList.toggle('menu-open');
+    });
+  }
 
-    const menuToggle = document.querySelector('.menu-toggle');
-    const body = document.body;
+  /* ================================= */
+  /* زر البحث */
+  /* ================================= */
+  const searchButton = document.querySelector('.search-btn');
+  if (searchButton) {
+    searchButton.addEventListener('click', () => {
+      body.classList.toggle('search-open');
+    });
+  }
 
-    if (menuToggle) {
-        menuToggle.addEventListener('click', function () {
-            body.classList.toggle('menu-open');
+  /* ================================= */
+  /* Hero Slider */
+  /* ================================= */
+  const heroContainer = document.querySelector('.hero');
+  if (heroContainer) {
+    const heroSlides = heroContainer.querySelectorAll('.hero-slide');
+    const heroDotsWrapper = heroContainer.querySelector('.hero-dots');
+
+    if (heroSlides.length > 1 && heroDotsWrapper) {
+      let currentIndex = 0;
+      const slideIntervalDelay = 4000;
+      let slideInterval;
+
+      // إنشاء dots للـ Hero Slider
+      heroSlides.forEach((_, index) => {
+        const dotBtn = document.createElement('button');
+        if (index === 0) dotBtn.classList.add('active');
+        dotBtn.addEventListener('click', () => {
+          goToSlide(index);
+          resetSlideInterval();
         });
+        heroDotsWrapper.appendChild(dotBtn);
+      });
+
+      const heroDots = heroDotsWrapper.querySelectorAll('button');
+
+      const goToSlide = (index) => {
+        heroSlides[currentIndex].classList.remove('active');
+        heroDots[currentIndex].classList.remove('active');
+
+        currentIndex = index;
+
+        heroSlides[currentIndex].classList.add('active');
+        heroDots[currentIndex].classList.add('active');
+      };
+
+      const nextSlide = () => {
+        goToSlide((currentIndex + 1) % heroSlides.length);
+      };
+
+      const startSlideInterval = () => {
+        slideInterval = setInterval(nextSlide, slideIntervalDelay);
+      };
+
+      const resetSlideInterval = () => {
+        clearInterval(slideInterval);
+        startSlideInterval();
+      };
+
+      startSlideInterval();
+    }
+  }
+
+  /* ================================= */
+  /* سلايدر الحلقات الجديدة (Episodes Slider) */
+  /* ================================= */
+  const episodesSliderContainer = document.getElementById('episodesSlider');
+  if (episodesSliderContainer) {
+    const episodesSliderWrapper = episodesSliderContainer.parentElement;
+    const episodesNextBtn = episodesSliderWrapper.querySelector('.next');
+    const episodesPrevBtn = episodesSliderWrapper.querySelector('.prev');
+
+    if (episodesNextBtn && episodesPrevBtn) {
+      const getScrollAmount = () => {
+        const card = episodesSliderContainer.querySelector('.episode-card');
+        if (!card) return 0;
+        const gapValue = parseInt(getComputedStyle(episodesSliderContainer).gap) || 0;
+        return card.offsetWidth + gapValue;
+      };
+
+      episodesNextBtn.addEventListener('click', () => {
+        episodesSliderContainer.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+      });
+
+      episodesPrevBtn.addEventListener('click', () => {
+        episodesSliderContainer.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+      });
+    }
+  }
+
+  /* ================================= */
+  /* سلايدر الأكثر مشاهدة (Most Watched Slider) */
+  /* ================================= */
+  const mostWatchedSliderContainer = document.getElementById('mostWatchedSlider');
+  const mostWatchedDotsWrapper = document.getElementById('mostWatchedDots');
+
+  if (mostWatchedSliderContainer && mostWatchedDotsWrapper) {
+    const slidesElements = [...mostWatchedSliderContainer.children];
+    const slidesPerViewCount = window.innerWidth < 768 ? 2 : 5;
+    const dotsNeededCount = Math.ceil(slidesElements.length / slidesPerViewCount);
+
+    // تنظيف الدوتس القديمة
+    mostWatchedDotsWrapper.innerHTML = '';
+
+    for (let i = 0; i < dotsNeededCount; i++) {
+      const dotSpan = document.createElement('span');
+      if (i === 0) dotSpan.classList.add('active');
+      mostWatchedDotsWrapper.appendChild(dotSpan);
     }
 
-    /* ================================= */
-    /*  زر البحث                         */
-    /* ================================= */
+    const mostWatchedDots = mostWatchedDotsWrapper.children;
 
-    const searchBtn = document.querySelector('.search-btn');
+    mostWatchedSliderContainer.addEventListener('scroll', () => {
+      const maxScrollLeft = mostWatchedSliderContainer.scrollWidth - mostWatchedSliderContainer.clientWidth;
+      const scrollLeft = mostWatchedSliderContainer.scrollLeft;
+      let activeDotIndex = 0;
 
-    if (searchBtn) {
-        searchBtn.addEventListener('click', function () {
-            body.classList.toggle('search-open');
-        });
-    }
+      if (maxScrollLeft > 0) {
+        activeDotIndex = Math.round((scrollLeft / maxScrollLeft) * (dotsNeededCount - 1));
+      }
 
-    /* ================================= */
-/*  Hero Slider                      */
-/* ================================= */
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    const hero = document.querySelector(".hero");
-    if (!hero) return;
-
-    const heroSlides = hero.querySelectorAll(".hero-slide");
-    const heroDotsContainer = hero.querySelector(".hero-dots");
-
-    if (heroSlides.length > 1 && heroDotsContainer) {
-
-        let current = 0;
-        const intervalTime = 4000;
-        let sliderInterval;
-
-        heroSlides.forEach((_, index) => {
-            const dot = document.createElement("button");
-            if (index === 0) dot.classList.add("active");
-
-            dot.addEventListener("click", () => {
-                goToSlide(index);
-                resetInterval();
-            });
-
-            heroDotsContainer.appendChild(dot);
-        });
-
-        const heroDots = heroDotsContainer.querySelectorAll("button");
-
-        function goToSlide(index) {
-            heroSlides[current].classList.remove("active");
-            heroDots[current].classList.remove("active");
-
-            current = index;
-
-            heroSlides[current].classList.add("active");
-            heroDots[current].classList.add("active");
-        }
-
-        function nextSlide() {
-            goToSlide((current + 1) % heroSlides.length);
-        }
-
-        function startSlider() {
-            sliderInterval = setInterval(nextSlide, intervalTime);
-        }
-
-        startSlider();
-    }
-
-});
-
-    /* ================================== */
-    /*  سلايدر الحلقات الجديدة             */
-    /* ================================== */
-
-    const episodesSlider = document.getElementById('episodesSlider');
-    const nextBtn = document.querySelector('.next');
-    const prevBtn = document.querySelector('.prev');
-
-    if (episodesSlider && nextBtn && prevBtn) {
-
-        const scrollAmount = () => {
-            const card = episodesSlider.querySelector('.episode-card');
-            if (!card) return 0;
-
-            const gap = parseInt(getComputedStyle(episodesSlider).gap) || 0;
-            return card.offsetWidth + gap;
-        };
-
-        nextBtn.addEventListener('click', () => {
-            episodesSlider.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
-        });
-
-        prevBtn.addEventListener('click', () => {
-            episodesSlider.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
-        });
-    }
-
-    /* ================================== */
-    /*  سلايدر الأكثر مشاهدة              */
-    /* ================================== */
-
-    const mostSlider = document.getElementById('mostWatchedSlider');
-    const dotsContainer = document.getElementById('mostWatchedDots');
-
-    if (mostSlider && dotsContainer) {
-
-        const slides = mostSlider.children;
-        const slidesPerView = window.innerWidth < 768 ? 2 : 5;
-        const dotsCount = Math.ceil(slides.length / slidesPerView);
-
-        for (let i = 0; i < dotsCount; i++) {
-            const dot = document.createElement('span');
-            if (i === 0) dot.classList.add('active');
-            dotsContainer.appendChild(dot);
-        }
-
-        const dots = dotsContainer.children;
-
-        mostSlider.addEventListener('scroll', () => {
-            const index = Math.round(
-                mostSlider.scrollLeft / (mostSlider.scrollWidth / dotsCount)
-            );
-
-            [...dots].forEach(dot => dot.classList.remove('active'));
-            if (dots[index]) dots[index].classList.add('active');
-        });
-    }
-
+      [...mostWatchedDots].forEach(dot => dot.classList.remove('active'));
+      if (mostWatchedDots[activeDotIndex]) {
+        mostWatchedDots[activeDotIndex].classList.add('active');
+      }
+    });
+  }
 });
