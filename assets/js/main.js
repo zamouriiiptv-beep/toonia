@@ -1,5 +1,3 @@
-console.log("JS file loaded");
-
 'use strict';
 
 /* ===================================== */
@@ -37,55 +35,57 @@ document.addEventListener('DOMContentLoaded', function () {
 /*  Hero Slider                      */
 /* ================================= */
 
-const heroSlides = document.querySelectorAll(".hero-slide");
-const heroDotsContainer = document.querySelector(".hero-dots");
+document.addEventListener("DOMContentLoaded", function () {
 
-if (heroSlides.length > 1 && heroDotsContainer) {
+    const hero = document.querySelector(".hero");
+    if (!hero) return;
 
-    let current = 0;
-    const intervalTime = 4000;
-    let sliderInterval;
+    const heroSlides = hero.querySelectorAll(".hero-slide");
+    const heroDotsContainer = hero.querySelector(".hero-dots");
 
-    heroSlides.forEach((_, index) => {
-        const dot = document.createElement("button");
-        if (index === 0) dot.classList.add("active");
+    if (heroSlides.length > 1 && heroDotsContainer) {
 
-        dot.addEventListener("click", () => {
-            goToSlide(index);
-            resetInterval();
+        let current = 0;
+        const intervalTime = 4000;
+        let sliderInterval;
+
+        heroSlides.forEach((_, index) => {
+            const dot = document.createElement("button");
+            if (index === 0) dot.classList.add("active");
+
+            dot.addEventListener("click", () => {
+                goToSlide(index);
+                resetInterval();
+            });
+
+            heroDotsContainer.appendChild(dot);
         });
 
-        heroDotsContainer.appendChild(dot);
-    });
+        const heroDots = heroDotsContainer.querySelectorAll("button");
 
-    const heroDots = heroDotsContainer.querySelectorAll("button");
+        function goToSlide(index) {
+            heroSlides[current].classList.remove("active");
+            heroDots[current].classList.remove("active");
 
-    function goToSlide(index) {
-        heroSlides[current].classList.remove("active");
-        heroDots[current].classList.remove("active");
+            current = index;
 
-        current = index;
+            heroSlides[current].classList.add("active");
+            heroDots[current].classList.add("active");
+        }
 
-        heroSlides[current].classList.add("active");
-        heroDots[current].classList.add("active");
-    }
+        function nextSlide() {
+            goToSlide((current + 1) % heroSlides.length);
+        }
 
-    function nextSlide() {
-        current = (current + 1) % heroSlides.length;
-        goToSlide(current);
-    }
+        function startSlider() {
+            sliderInterval = setInterval(nextSlide, intervalTime);
+        }
 
-    function startSlider() {
-        sliderInterval = setInterval(nextSlide, intervalTime);
-    }
-
-    function resetInterval() {
-        clearInterval(sliderInterval);
         startSlider();
     }
 
-    startSlider();
-}
+});
+
 
     /* ================================== */
     /*  سلايدر الحلقات الجديدة             */
