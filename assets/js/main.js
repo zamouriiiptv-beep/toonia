@@ -35,58 +35,62 @@ document.addEventListener('DOMContentLoaded', function () {
     /*  Hero Slider                      */
     /* ================================= */
 
-    document.addEventListener("DOMContentLoaded", function () {
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
 
-  const slides = document.querySelectorAll(".hero-slider .slide");
-  const dotsContainer = document.querySelector(".hero-slider .dots");
+  const slides = document.querySelectorAll(".hero-slide");
+  const dotsContainer = document.querySelector(".hero-dots");
 
   let current = 0;
-  const intervalTime = 5000;  // مدة عرض كل شريحة
-  const transitionTime = 800; // مجرد مرجع، غير مستخدم برمجياً هنا
+  const intervalTime = 5000;
+  let sliderInterval;
 
-  // لا يوجد أكثر من شريحة واحدة؟ لا نفعل شيئاً.
   if (slides.length < 2) return;
 
-  // إنشاء نقاط بناءً على عدد الشرائح
-  slides.forEach((_, idx) => {
-    const dot = document.createElement("span");
-    dot.classList.add("dot");
-    if (idx === 0) dot.classList.add("active");
+  /* إنشاء Dots */
+  slides.forEach((_, index) => {
+    const dot = document.createElement("button");
+    if (index === 0) dot.classList.add("active");
+
+    dot.addEventListener("click", () => {
+      goToSlide(index);
+      resetInterval();
+    });
+
     dotsContainer.appendChild(dot);
   });
-  const dots = dotsContainer.querySelectorAll(".dot");
 
-  // عرض شريحة معينة
-  function showSlide(index) {
-    slides.forEach(s => s.classList.remove("active"));
-    dots.forEach(d => d.classList.remove("active"));
+  const dots = dotsContainer.querySelectorAll("button");
 
-    slides[index].classList.add("active");
-    dots[index].classList.add("active");
+  function goToSlide(index) {
+    slides[current].classList.remove("active");
+    dots[current].classList.remove("active");
 
     current = index;
+
+    slides[current].classList.add("active");
+    dots[current].classList.add("active");
   }
 
-  // الانتقال للشريحة التالية
   function nextSlide() {
-    const next = (current + 1) % slides.length;
-    showSlide(next);
+    let next = current + 1;
+    if (next >= slides.length) next = 0;
+    goToSlide(next);
   }
 
-  // تشغيل تلقائي
-  let auto = setInterval(nextSlide, intervalTime);
+  function startSlider() {
+    sliderInterval = setInterval(nextSlide, intervalTime);
+  }
 
-  // التحكم بالنقاط
-  dots.forEach((dot, idx) => {
-    dot.addEventListener("click", () => {
-      clearInterval(auto);
-      showSlide(idx);
-      // إعادة تشغيل التلقائي بعد التفاعل
-      auto = setInterval(nextSlide, intervalTime);
-    });
-  });
+  function resetInterval() {
+    clearInterval(sliderInterval);
+    startSlider();
+  }
+
+  startSlider();
 
 });
+</script>
 
     /* ================================== */
     /*  سلايدر الحلقات الجديدة             */
