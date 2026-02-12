@@ -74,67 +74,58 @@
 <!-- ================================== -->
 <!--  قسم الـ Hero (الواجهة الرئيسية)    -->
 <!-- ================================== -->
-<section class="hero-container">
+  <section class="hero-slider">
 
-  <!-- صور السلايدر -->
-  <img
-    class="hero-bg active"
-    src="https://i.ibb.co/rXrfN5Y/thumb-1920-981462.jpg"
-    alt="Anime Hero Background 1"
-    loading="eager"
-  />
-
-  <img
-    class="hero-bg"
-    src="https://i.ibb.co/rXrfN5Y/thumb-1920-981462.jpg"
-    alt="Anime Hero Background 2"
-    loading="lazy"
-  />
-
-  <img
-    class="hero-bg"
-    src="https://i.ibb.co/rXrfN5Y/thumb-1920-981462.jpg"
-    alt="Anime Hero Background 3"
-    loading="lazy"
-  />
-
-  <img
-    class="hero-bg"
-    src="https://i.ibb.co/7qRLRrP/thumb-1920-1319290.jpg"
-    alt="Anime Hero Background 4"
-    loading="lazy"
-  />
-
-  <!-- Overlay -->
-  <div class="hero-overlay"></div>
-
-  <!-- المحتوى -->
-  <div class="hero-content">
-    <div class="hero-buttons">
-
-      <a href="#" class="btn-play">
-        <i class="fas fa-play"></i>
-        شاهد الآن
-      </a>
-
-      <a href="#" class="btn-info">
-        التفاصيل
-        <i class="fas fa-chevron-left"></i>
-      </a>
-
+  <!-- شريحة 1 -->
+  <div class="slide active" style="--bg-url:url('https://i.ibb.co/rXrfN5Y/thumb-1920-981462.jpg')">
+    <div class="slide-content">
+      <h2 class="title">جيغوكو داكو الموسم الثاني</h2>
+      <div class="buttons">
+        <a href="#" class="btn btn-play">
+          <i class="fas fa-play"></i> شاهد الآن
+        </a>
+        <a href="#" class="btn btn-info">
+          التفاصيل <i class="fas fa-chevron-left"></i>
+        </a>
+      </div>
     </div>
   </div>
 
-  <!-- dots -->
-  <div class="hero-dots">
-    <span class="hero-dot active"></span>
-    <span class="hero-dot"></span>
-    <span class="hero-dot"></span>
-    <span class="hero-dot"></span>
+  <!-- شريحة 2 -->
+  <div class="slide" style="--bg-url:url('https://i.ibb.co/7qRLRrP/thumb-1920-1319290.jpg')">
+    <div class="slide-content">
+      <h2 class="title">عنوان آخر مثلاً</h2>
+      <div class="buttons">
+        <a href="#" class="btn btn-play">
+          <i class="fas fa-play"></i> شاهد الآن
+        </a>
+        <a href="#" class="btn btn-info">
+          التفاصيل <i class="fas fa-chevron-left"></i>
+        </a>
+      </div>
+    </div>
   </div>
 
-</section>
+  <!-- أضف عدد الشرائح بحسب الحاجة -->
+  <!-- شريحة 3 -->
+  <div class="slide" style="--bg-url:url('https://i.ibb.co/rXrfN5Y/thumb-1920-981462.jpg')">
+    <div class="slide-content">
+      <h2 class="title">شريحة ثالثة</h2>
+      <div class="buttons">
+        <a href="#" class="btn btn-play">
+          <i class="fas fa-play"></i> شاهد الآن
+        </a>
+        <a href="#" class="btn btn-info">
+          التفاصيل <i class="fas fa-chevron-left"></i>
+        </a>
+      </div>
+    </div>
+  </div>
 
+  <!-- نقاط التصفح -->
+  <div class="dots"></div>
+
+</section>
 
 
 <!-- ================================== -->
