@@ -43,52 +43,47 @@ document.addEventListener("DOMContentLoaded", function () {
     const heroSlides = hero.querySelectorAll(".hero-slide");
     const heroDotsContainer = hero.querySelector(".hero-dots");
 
-    if (heroSlides.length <= 1 || !heroDotsContainer) return;
+    if (heroSlides.length > 1 && heroDotsContainer) {
 
-    let current = 0;
-    const intervalTime = 4000;
-    let sliderInterval;
+        let current = 0;
+        const intervalTime = 4000;
+        let sliderInterval;
 
-    heroSlides.forEach((_, index) => {
-        const dot = document.createElement("button");
+        heroSlides.forEach((_, index) => {
+            const dot = document.createElement("button");
+            if (index === 0) dot.classList.add("active");
 
-        if (index === 0) dot.classList.add("active");
+            dot.addEventListener("click", () => {
+                goToSlide(index);
+                resetInterval();
+            });
 
-        dot.addEventListener("click", () => {
-            goToSlide(index);
-            resetInterval();
+            heroDotsContainer.appendChild(dot);
         });
 
-        heroDotsContainer.appendChild(dot);
-    });
+        const heroDots = heroDotsContainer.querySelectorAll("button");
 
-    const heroDots = heroDotsContainer.querySelectorAll("button");
+        function goToSlide(index) {
+            heroSlides[current].classList.remove("active");
+            heroDots[current].classList.remove("active");
 
-    function goToSlide(index) {
-        heroSlides[current].classList.remove("active");
-        heroDots[current].classList.remove("active");
+            current = index;
 
-        current = index;
+            heroSlides[current].classList.add("active");
+            heroDots[current].classList.add("active");
+        }
 
-        heroSlides[current].classList.add("active");
-        heroDots[current].classList.add("active");
-    }
+        function nextSlide() {
+            goToSlide((current + 1) % heroSlides.length);
+        }
 
-    function nextSlide() {
-        const nextIndex = (current + 1) % heroSlides.length;
-        goToSlide(nextIndex);
-    }
+        function startSlider() {
+            sliderInterval = setInterval(nextSlide, intervalTime);
+        }
 
-    function startSlider() {
-        sliderInterval = setInterval(nextSlide, intervalTime);
-    }
-
-    function resetInterval() {
-        clearInterval(sliderInterval);
         startSlider();
     }
 
-    startSlider();
 });
 
     /* ================================== */
