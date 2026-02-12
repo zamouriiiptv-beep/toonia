@@ -289,10 +289,9 @@ header {
 /* ================================== */
 /*  نقاط التنقل (Hero Dots)            */
 /* ================================== */
-
 .hero-dots {
     position: absolute;
-    right: 20px;             /* وضع النقاط على اليمين */
+    left: 20px;
     top: 50%;
     transform: translateY(-50%);
     display: flex;
@@ -302,21 +301,20 @@ header {
 }
 
 .hero-dot {
-    width: 12px;              /* حجم أكبر لتحسين الرؤية */
-    height: 12px;             
-    background: white;        /* لون أبيض واضح */
+    width: 7px;
+    height: 7px;
+    background: rgba(255, 255, 255, 0.3);
     border-radius: 50%;
     cursor: pointer;
-    transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
-    border: 1.5px solid white; /* حدود بيضاء واضحة */
+    transition: 0.3s;
 }
 
 .hero-dot.active {
-    background: #ffc107;       /* أصفر */
-    box-shadow: 0 0 8px #ffc107; /* توهج أصفر */
-    transform: scale(1.4);     /* تكبير النقطة النشطة */
-    border-color: #ffc107;
+    background: #ffc107;
+    box-shadow: 0 0 8px #ffc107;
+    transform: scale(1.2);
 }
+
 
 /* ================================== */
 /*  استجابة الموبايل                  */
