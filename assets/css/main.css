@@ -359,18 +359,42 @@ header {
     }
 }
 /* ================================== */
-/*  Hero Slider Logic                 */
+/*  Hero Slider                       */
 /* ================================== */
 
-.hero-bg {
-    opacity: 0;
-    transition: opacity 0.8s ease;
+.hero-container {
+    position: relative;
+    width: 100%;
+    height: 40vh;
+    min-height: 280px;
+    max-height: 460px;
+    overflow: hidden;
+    background: #000;
+    display: flex;
+    align-items: flex-end;
+    padding: 0 5% 36px;
 }
 
+/* صورة الخلفية */
+.hero-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 38%;
+    pointer-events: none;
+    z-index: 1;
+
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+}
+
+/* الصورة النشطة فقط */
 .hero-bg.active {
     opacity: 1;
+    z-index: 2;
 }
-
 
 /* ================================== */
 /*  القائمة الجانبية (Sidebar)         */
@@ -608,11 +632,11 @@ header {
   }
 }
 
-<!-- ================================== -->
-<!--  قسم الأعمال الأكثر مشاهدة          -->
-<!--  يعرض أكثر الأعمال رواجًا بناءً     -->
-<!--  على عدد المشاهدات أو التفاعل       -->
-<!-- ================================== -->
+/* ================================== */
+/*  قسم الأعمال الأكثر مشاهدة          */
+/*  يعرض أكثر الأعمال رواجًا بناءً     */
+/*  على عدد المشاهدات أو التفاعل       */
+/* ================================== */
 
 .most-watched {
   padding: 16px;
