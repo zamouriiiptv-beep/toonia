@@ -1,179 +1,132 @@
 'use strict';
 
 /* ===================================== */
-/*  تفاعلات الهيدر (Header Interactions) */
+/*  انتظار تحميل الصفحة بالكامل          */
 /* ===================================== */
 
-/* انتظار تحميل الصفحة بالكامل قبل تنفيذ JavaScript */
 document.addEventListener('DOMContentLoaded', function () {
 
     /* ================================= */
     /*  التحكم في فتح/إغلاق القائمة      */
     /* ================================= */
 
-    /* زر فتح القائمة */
     const menuToggle = document.querySelector('.menu-toggle');
-
-    /* عنصر body لإضافة / إزالة class */
     const body = document.body;
 
-    /* التأكد من وجود زر القائمة قبل إضافة الحدث */
     if (menuToggle) {
         menuToggle.addEventListener('click', function () {
-
-            /* تبديل حالة القائمة (فتح / إغلاق) */
             body.classList.toggle('menu-open');
         });
     }
-
 
     /* ================================= */
     /*  زر البحث                         */
     /* ================================= */
 
-    /* زر البحث في الهيدر */
     const searchBtn = document.querySelector('.search-btn');
 
-    /* التأكد من وجود زر البحث */
     if (searchBtn) {
         searchBtn.addEventListener('click', function () {
-
-            /* تبديل حالة البحث (إظهار / إخفاء) */
             body.classList.toggle('search-open');
         });
     }
 
+    /* ================================= */
+    /*  Hero Slider                      */
+    /* ================================= */
+
+    const heroSlides = document.querySelectorAll(".hero-bg");
+    const heroDots = document.querySelectorAll(".hero-dot");
+
+    let current = 0;
+    const interval = 5000;
+
+    if (heroSlides.length > 1) {
+
+        function showSlide(index) {
+            heroSlides.forEach(slide => slide.classList.remove("active"));
+            heroDots.forEach(dot => dot.classList.remove("active"));
+
+            heroSlides[index].classList.add("active");
+            if (heroDots[index]) {
+                heroDots[index].classList.add("active");
+            }
+
+            current = index;
+        }
+
+        let timer = setInterval(() => {
+            let next = (current + 1) % heroSlides.length;
+            showSlide(next);
+        }, interval);
+
+        heroDots.forEach((dot, index) => {
+            dot.addEventListener("click", () => {
+                clearInterval(timer);
+                showSlide(index);
+                timer = setInterval(() => {
+                    showSlide((current + 1) % heroSlides.length);
+                }, interval);
+            });
+        });
+    }
+
+    /* ================================== */
+    /*  سلايدر الحلقات الجديدة             */
+    /* ================================== */
+
+    const episodesSlider = document.getElementById('episodesSlider');
+    const nextBtn = document.querySelector('.next');
+    const prevBtn = document.querySelector('.prev');
+
+    if (episodesSlider && nextBtn && prevBtn) {
+
+        const scrollAmount = () => {
+            const card = episodesSlider.querySelector('.episode-card');
+            if (!card) return 0;
+
+            const gap = parseInt(getComputedStyle(episodesSlider).gap) || 0;
+            return card.offsetWidth + gap;
+        };
+
+        nextBtn.addEventListener('click', () => {
+            episodesSlider.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
+        });
+
+        prevBtn.addEventListener('click', () => {
+            episodesSlider.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
+        });
+    }
+
+    /* ================================== */
+    /*  سلايدر الأكثر مشاهدة              */
+    /* ================================== */
+
+    const mostSlider = document.getElementById('mostWatchedSlider');
+    const dotsContainer = document.getElementById('mostWatchedDots');
+
+    if (mostSlider && dotsContainer) {
+
+        const slides = mostSlider.children;
+        const slidesPerView = window.innerWidth < 768 ? 2 : 5;
+        const dotsCount = Math.ceil(slides.length / slidesPerView);
+
+        for (let i = 0; i < dotsCount; i++) {
+            const dot = document.createElement('span');
+            if (i === 0) dot.classList.add('active');
+            dotsContainer.appendChild(dot);
+        }
+
+        const dots = dotsContainer.children;
+
+        mostSlider.addEventListener('scroll', () => {
+            const index = Math.round(
+                mostSlider.scrollLeft / (mostSlider.scrollWidth / dotsCount)
+            );
+
+            [...dots].forEach(dot => dot.classList.remove('active'));
+            if (dots[index]) dots[index].classList.add('active');
+        });
+    }
+
 });
-
-
-document.addEventListener("DOMContentLoaded", () => {
-
-  const slides = document.querySelectorAll(".hero-bg");
-  const dots = document.querySelectorAll(".hero-dot");
-
-  let current = 0;
-  let interval = 5000;
-
-  if (slides.length < 2) return;
-
-  function showSlide(index) {
-    slides.forEach(slide => slide.classList.remove("active"));
-    dots.forEach(dot => dot.classList.remove("active"));
-
-    slides[index].classList.add("active");
-    dots[index].classList.add("active");
-
-    current = index;
-  }
-
-  // تشغيل تلقائي
-  let timer = setInterval(() => {
-    let next = (current + 1) % slides.length;
-    showSlide(next);
-  }, interval);
-
-  // التحكم عبر dots
-  dots.forEach((dot, index) => {
-    dot.addEventListener("click", () => {
-      clearInterval(timer);
-      showSlide(index);
-      timer = setInterval(() => {
-        showSlide((current + 1) % slides.length);
-      }, interval);
-    });
-  });
-
-});
-
-/* ================================== */
-/*  تهيئة سلايدر الحلقات الجديدة       */
-/* ================================== */
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const slider = document.getElementById('episodesSlider');
-  const next = document.querySelector('.next');
-  const prev = document.querySelector('.prev');
-
-  if (!slider || !next || !prev) return;
-
-  const scrollAmount = () => {
-    const card = slider.querySelector('.episode-card');
-    if (!card) return 0;
-
-    const gap = parseInt(getComputedStyle(slider).gap) || 0;
-    return card.offsetWidth + gap;
-  };
-
-  next.addEventListener('click', () => {
-    slider.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
-  });
-
-  prev.addEventListener('click', () => {
-    slider.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
-  });
-});
-</script>
-
-/* ================================== */
-/*  منطق سلايدر الأعمال الأكثر مشاهدة */
-/*  يتحكم في التمرير الأفقي للنقاط     */
-/*  مع دعم السحب على الأجهزة المحمولة */
-/*  بدون استخدام مكتبات خارجية        */
-/* ================================== */
-
-<script>
-const slider = document.getElementById('mostWatchedSlider');
-const dotsContainer = document.getElementById('mostWatchedDots');
-const slides = slider.children;
-
-const slidesPerView = window.innerWidth < 768 ? 2 : 5;
-const dotsCount = Math.ceil(slides.length / slidesPerView);
-
-for (let i = 0; i < dotsCount; i++) {
-  const dot = document.createElement('span');
-  if (i === 0) dot.classList.add('active');
-  dotsContainer.appendChild(dot);
-}
-
-const dots = dotsContainer.children;
-
-slider.addEventListener('scroll', () => {
-  const index = Math.round(
-    slider.scrollLeft / (slider.scrollWidth / dotsCount)
-  );
-
-  [...dots].forEach(dot => dot.classList.remove('active'));
-  if (dots[index]) dots[index].classList.add('active');
-});
-</script>
-
-<!-- ================================== -->
-<!--  صفحة جميع الأعمال                 -->
-<!--  تعرض جميع الأعمال بدون تحديد     -->
-<!-- ================================== -->
-
-<section class="all-works-page" aria-label="جميع الأعمال">
-
-  <!-- عنوان الصفحة -->
-  <h1>جميع الأعمال</h1>
-
-  <!-- شبكة عرض جميع الأعمال -->
-  <div class="works-grid">
-
-    <article class="work-card">
-      <a href="/work/conan">
-        <img src="assets/img/conan.webp" alt="المحقق كونان" loading="lazy">
-      </a>
-    </article>
-
-    <article class="work-card">
-      <a href="/work/bluey">
-        <img src="assets/img/bluey.webp" alt="Bluey" loading="lazy">
-      </a>
-    </article>
-
-    <!-- بقية الأعمال -->
-
-  </div>
-
-</section>
