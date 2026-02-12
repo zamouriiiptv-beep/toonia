@@ -291,7 +291,7 @@ header {
 /* ================================== */
 .hero-dots {
     position: absolute;
-    left: 20px;
+    right: 20px;             /* وضع النقاط على اليمين مثل المثال */
     top: 50%;
     transform: translateY(-50%);
     display: flex;
@@ -301,18 +301,20 @@ header {
 }
 
 .hero-dot {
-    width: 7px;
-    height: 7px;
-    background: rgba(255, 255, 255, 0.3);
+    width: 9px;              /* حجم أكبر قليلًا لتحسين الرؤية */
+    height: 9px;             /* نفس الحجم للارتفاع */
+    background: rgba(255, 255, 255, 0.6); /* لون أبيض شبه شفاف واضح */
     border-radius: 50%;
     cursor: pointer;
-    transition: 0.3s;
+    transition: transform 0.25s, background 0.25s, box-shadow 0.25s;
+    border: 1px solid rgba(255, 255, 255, 0.8); /* حدود خفيفة للتباين */
 }
 
 .hero-dot.active {
-    background: #ffc107;
-    box-shadow: 0 0 8px #ffc107;
-    transform: scale(1.2);
+    background: #ffc107;     /* أصفر بارز مثل زر المشاهدة */
+    box-shadow: 0 0 6px #ffc107; /* توهج خفيف لتمييز النقطة النشطة */
+    transform: scale(1.3);   /* تكبير أكثر للنقطة النشطة */
+    border-color: #ffc107;   /* حدود بلون متوافق مع النقطة النشطة */
 }
 
 /* ================================== */
