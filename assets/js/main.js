@@ -27,55 +27,64 @@ document.addEventListener('DOMContentLoaded', () => {
 /* ================================= */
 /* Hero Slider */
 /* ================================= */
-const heroContainer = document.querySelector('.hero');
-if (heroContainer) {
-  const heroSlides = heroContainer.querySelectorAll('.hero-slide');
-  const heroDotsWrapper = heroContainer.querySelector('.hero-dots');
+'use strict';
 
-  if (heroSlides.length > 1 && heroDotsWrapper) {
-    let currentIndex = 0;
-    const slideIntervalDelay = 4000;
-    let slideInterval;
+document.addEventListener('DOMContentLoaded', () => {
 
-    const goToSlide = (index) => {
-      heroSlides[currentIndex].classList.remove('active');
-      heroDots[currentIndex].classList.remove('active');
+  const hero = document.querySelector('.hero');
+  if (!hero) return;
 
-      currentIndex = index;
+  const slider = hero.querySelector('.hero-slider');
+  const slides = slider.querySelectorAll('.hero-slide');
+  const dotsWrapper = hero.querySelector('.hero-dots');
 
-      heroSlides[currentIndex].classList.add('active');
-      heroDots[currentIndex].classList.add('active');
-    };
+  if (slides.length < 2) return;
 
-    const nextSlide = () => {
-      goToSlide((currentIndex + 1) % heroSlides.length);
-    };
+  let current = 0;
+  const delay = 4000;
+  let interval;
 
-    const startSlideInterval = () => {
-      slideInterval = setInterval(nextSlide, slideIntervalDelay);
-    };
+  // إنشاء dots
+  slides.forEach((_, index) => {
+    const btn = document.createElement('button');
+    if (index === 0) btn.classList.add('active');
 
-    const resetSlideInterval = () => {
-      clearInterval(slideInterval);
-      startSlideInterval();
-    };
-
-    // إنشاء dots للـ Hero Slider
-    heroSlides.forEach((_, index) => {
-      const dotBtn = document.createElement('button');
-      if (index === 0) dotBtn.classList.add('active');
-      dotBtn.addEventListener('click', () => {
-        goToSlide(index);
-        resetSlideInterval();
-      });
-      heroDotsWrapper.appendChild(dotBtn);
+    btn.addEventListener('click', () => {
+      goToSlide(index);
+      resetInterval();
     });
 
-    const heroDots = heroDotsWrapper.querySelectorAll('button');
+    dotsWrapper.appendChild(btn);
+  });
 
-    startSlideInterval();
+  const dots = dotsWrapper.querySelectorAll('button');
+
+  function goToSlide(index) {
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+
+    current = index;
+
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
   }
-}
+
+  function nextSlide() {
+    let next = (current + 1) % slides.length;
+    goToSlide(next);
+  }
+
+  function startInterval() {
+    interval = setInterval(nextSlide, delay);
+  }
+
+  function resetInterval() {
+    clearInterval(interval);
+    startInterval();
+  }
+
+  startInterval();
+});
 
   /* ================================= */
   /* سلايدر الحلقات الجديدة (Episodes Slider) */
