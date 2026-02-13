@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const body = document.body;
 
   /* ================================= */
-  /* التحكم في فتح/إغلاق القائمة */
+  /* القائمة (Menu) */
   /* ================================= */
   const menuToggleBtn = document.querySelector('.menu-toggle');
   if (menuToggleBtn) {
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ================================= */
-  /* زر البحث */
+  /* البحث (Search) */
   /* ================================= */
   const searchButton = document.querySelector('.search-btn');
   if (searchButton) {
@@ -24,130 +24,117 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-/* ================================= */
-/* Hero Slider */
-/* ================================= */
-'use strict';
-
-document.addEventListener('DOMContentLoaded', () => {
-
+  /* ================================= */
+  /* Hero Slider */
+  /* ================================= */
   const hero = document.querySelector('.hero');
-  if (!hero) return;
+  if (hero) {
+    const slider = hero.querySelector('.hero-slider');
+    const slides = slider ? slider.querySelectorAll('.hero-slide') : [];
+    const dotsWrapper = hero.querySelector('.hero-dots');
 
-  const slider = hero.querySelector('.hero-slider');
-  const slides = slider.querySelectorAll('.hero-slide');
-  const dotsWrapper = hero.querySelector('.hero-dots');
+    if (slider && dotsWrapper && slides.length > 1) {
+      let current = 0;
+      const delay = 4000;
+      let interval;
 
-  if (slides.length < 2) return;
+      // إنشاء النقاط
+      slides.forEach((_, index) => {
+        const dot = document.createElement('button');
+        if (index === 0) dot.classList.add('active');
 
-  let current = 0;
-  const delay = 4000;
-  let interval;
+        dot.addEventListener('click', () => {
+          goToSlide(index);
+          resetInterval();
+        });
 
-  // إنشاء dots
-  slides.forEach((_, index) => {
-    const btn = document.createElement('button');
-    if (index === 0) btn.classList.add('active');
-
-    btn.addEventListener('click', () => {
-      goToSlide(index);
-      resetInterval();
-    });
-
-    dotsWrapper.appendChild(btn);
-  });
-
-  const dots = dotsWrapper.querySelectorAll('button');
-
-  function goToSlide(index) {
-    slides[current].classList.remove('active');
-    dots[current].classList.remove('active');
-
-    current = index;
-
-    slides[current].classList.add('active');
-    dots[current].classList.add('active');
-  }
-
-  function nextSlide() {
-    let next = (current + 1) % slides.length;
-    goToSlide(next);
-  }
-
-  function startInterval() {
-    interval = setInterval(nextSlide, delay);
-  }
-
-  function resetInterval() {
-    clearInterval(interval);
-    startInterval();
-  }
-
-  startInterval();
-});
-
-  /* ================================= */
-  /* سلايدر الحلقات الجديدة (Episodes Slider) */
-  /* ================================= */
-  const episodesSliderContainer = document.getElementById('episodesSlider');
-  if (episodesSliderContainer) {
-    const episodesSliderWrapper = episodesSliderContainer.parentElement;
-    const episodesNextBtn = episodesSliderWrapper.querySelector('.next');
-    const episodesPrevBtn = episodesSliderWrapper.querySelector('.prev');
-
-    if (episodesNextBtn && episodesPrevBtn) {
-      const getScrollAmount = () => {
-        const card = episodesSliderContainer.querySelector('.episode-card');
-        if (!card) return 0;
-        const gapValue = parseInt(getComputedStyle(episodesSliderContainer).gap) || 0;
-        return card.offsetWidth + gapValue;
-      };
-
-      episodesNextBtn.addEventListener('click', () => {
-        episodesSliderContainer.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+        dotsWrapper.appendChild(dot);
       });
 
-      episodesPrevBtn.addEventListener('click', () => {
-        episodesSliderContainer.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
-      });
+      const dots = dotsWrapper.querySelectorAll('button');
+
+      function goToSlide(index) {
+        slides[current].classList.remove('active');
+        dots[current].classList.remove('active');
+
+        current = index;
+
+        slides[current].classList.add('active');
+        dots[current].classList.add('active');
+      }
+
+      function nextSlide() {
+        goToSlide((current + 1) % slides.length);
+      }
+
+      function startInterval() {
+        interval = setInterval(nextSlide, delay);
+      }
+
+      function resetInterval() {
+        clearInterval(interval);
+        startInterval();
+      }
+
+      startInterval();
     }
   }
 
   /* ================================= */
-  /* سلايدر الأكثر مشاهدة (Most Watched Slider) */
+  /* Episodes Slider */
   /* ================================= */
-  const mostWatchedSliderContainer = document.getElementById('mostWatchedSlider');
+  const episodesSlider = document.getElementById('episodesSlider');
+  if (episodesSlider) {
+    const wrapper = episodesSlider.parentElement;
+    const nextBtn = wrapper?.querySelector('.next');
+    const prevBtn = wrapper?.querySelector('.prev');
+
+    const getScrollAmount = () => {
+      const card = episodesSlider.querySelector('.episode-card');
+      if (!card) return 0;
+      const gap = parseInt(getComputedStyle(episodesSlider).gap) || 0;
+      return card.offsetWidth + gap;
+    };
+
+    nextBtn?.addEventListener('click', () => {
+      episodesSlider.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+    });
+
+    prevBtn?.addEventListener('click', () => {
+      episodesSlider.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+    });
+  }
+
+  /* ================================= */
+  /* Most Watched Slider */
+  /* ================================= */
+  const mostWatchedSlider = document.getElementById('mostWatchedSlider');
   const mostWatchedDotsWrapper = document.getElementById('mostWatchedDots');
 
-  if (mostWatchedSliderContainer && mostWatchedDotsWrapper) {
-    const slidesElements = [...mostWatchedSliderContainer.children];
-    const slidesPerViewCount = window.innerWidth < 768 ? 2 : 5;
-    const dotsNeededCount = Math.ceil(slidesElements.length / slidesPerViewCount);
+  if (mostWatchedSlider && mostWatchedDotsWrapper) {
+    const slides = [...mostWatchedSlider.children];
+    const perView = window.innerWidth < 768 ? 2 : 5;
+    const dotsCount = Math.ceil(slides.length / perView);
 
-    // تنظيف الدوتس القديمة
     mostWatchedDotsWrapper.innerHTML = '';
 
-    for (let i = 0; i < dotsNeededCount; i++) {
-      const dotSpan = document.createElement('span');
-      if (i === 0) dotSpan.classList.add('active');
-      mostWatchedDotsWrapper.appendChild(dotSpan);
+    for (let i = 0; i < dotsCount; i++) {
+      const dot = document.createElement('span');
+      if (i === 0) dot.classList.add('active');
+      mostWatchedDotsWrapper.appendChild(dot);
     }
 
-    const mostWatchedDots = mostWatchedDotsWrapper.children;
+    const dots = mostWatchedDotsWrapper.children;
 
-    mostWatchedSliderContainer.addEventListener('scroll', () => {
-      const maxScrollLeft = mostWatchedSliderContainer.scrollWidth - mostWatchedSliderContainer.clientWidth;
-      const scrollLeft = mostWatchedSliderContainer.scrollLeft;
-      let activeDotIndex = 0;
+    mostWatchedSlider.addEventListener('scroll', () => {
+      const maxScroll = mostWatchedSlider.scrollWidth - mostWatchedSlider.clientWidth;
+      const index = maxScroll
+        ? Math.round((mostWatchedSlider.scrollLeft / maxScroll) * (dotsCount - 1))
+        : 0;
 
-      if (maxScrollLeft > 0) {
-        activeDotIndex = Math.round((scrollLeft / maxScrollLeft) * (dotsNeededCount - 1));
-      }
-
-      [...mostWatchedDots].forEach(dot => dot.classList.remove('active'));
-      if (mostWatchedDots[activeDotIndex]) {
-        mostWatchedDots[activeDotIndex].classList.add('active');
-      }
+      [...dots].forEach(d => d.classList.remove('active'));
+      dots[index]?.classList.add('active');
     });
   }
+
 });
