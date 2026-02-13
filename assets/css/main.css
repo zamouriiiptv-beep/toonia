@@ -213,34 +213,26 @@ header {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  border: none;
-  background: #ffffff;   /* أبيض صافي */
-  opacity: 0.4;          /* خفوت */
+  background: transparent;        /* بدون تعبئة */
+  border: 2px solid #ffffff;       /* أبيض حقيقي */
   cursor: pointer;
   padding: 0;
-  transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
+  transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
 }
 
 /* النقطة النشطة */
 .hero-dots button.active {
   background: #F5C518;
-  opacity: 1;
+  border-color: #F5C518;
   transform: scale(1.4);
 }
 
-.hero-dots button {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: transparent;              /* فارغة */
-  border: 2px solid #ffffff;             /* أبيض حقيقي */
-  cursor: pointer;
-  padding: 0;
-  transition: transform 0.3s ease, background-color 0.3s ease;
+/* hover */
+.hero-dots button:hover {
+  transform: scale(1.2);
 }
 
-
-/* تحسين للموبايل */
+/* موبايل */
 @media (max-width: 768px) {
   .hero-dots {
     right: 10px;
