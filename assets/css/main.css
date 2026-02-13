@@ -214,16 +214,23 @@ header {
   height: 10px;
   border-radius: 50%;
   border: none;
-  background: rgba(255, 255, 255, 0.4);
+  background: #ffffff;   /* أبيض صافي */
+  opacity: 0.4;          /* خفوت */
   cursor: pointer;
   padding: 0;
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
 }
 
 /* النقطة النشطة */
 .hero-dots button.active {
   background: #F5C518;
+  opacity: 1;
   transform: scale(1.4);
+}
+
+/* تحسين تجربة الاستخدام */
+.hero-dots button:hover {
+  opacity: 1;
 }
 
 /* تحسين للموبايل */
