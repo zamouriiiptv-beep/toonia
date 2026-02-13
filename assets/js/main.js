@@ -1,140 +1,93 @@
 'use strict';
 
-document.addEventListener('DOMContentLoaded', () => {
+/* ===================================== */
+/*  انتظار تحميل الصفحة بالكامل          */
+/* ===================================== */
 
-  const body = document.body;
+document.addEventListener('DOMContentLoaded', function () {
 
-  /* ================================= */
-  /* القائمة (Menu) */
-  /* ================================= */
-  const menuToggleBtn = document.querySelector('.menu-toggle');
-  if (menuToggleBtn) {
-    menuToggleBtn.addEventListener('click', () => {
-      body.classList.toggle('menu-open');
-    });
-  }
+    /* ================================= */
+    /*  التحكم في فتح/إغلاق القائمة      */
+    /* ================================= */
 
-  /* ================================= */
-  /* البحث (Search) */
-  /* ================================= */
-  const searchButton = document.querySelector('.search-btn');
-  if (searchButton) {
-    searchButton.addEventListener('click', () => {
-      body.classList.toggle('search-open');
-    });
-  }
+    const menuToggle = document.querySelector('.menu-toggle');
+    const body = document.body;
 
-  /* ================================= */
-  /* Hero Slider */
-  /* ================================= */
-  const hero = document.querySelector('.hero');
-  if (hero) {
-    const slider = hero.querySelector('.hero-slider');
-    const slides = slider ? slider.querySelectorAll('.hero-slide') : [];
-    const dotsWrapper = hero.querySelector('.hero-dots');
+    if (menuToggle) {
+        menuToggle.addEventListener('click', function () {
+            body.classList.toggle('menu-open');
+        });
+    }
 
-    if (slider && dotsWrapper && slides.length > 1) {
-      let current = 0;
-      const delay = 4000;
-      let interval;
+    /* ================================= */
+    /*  زر البحث                         */
+    /* ================================= */
 
-      // إنشاء النقاط
-      slides.forEach((_, index) => {
-        const dot = document.createElement('button');
-        if (index === 0) dot.classList.add('active');
+    const searchBtn = document.querySelector('.search-btn');
 
-        dot.addEventListener('click', () => {
-          goToSlide(index);
-          resetInterval();
+    if (searchBtn) {
+        searchBtn.addEventListener('click', function () {
+            body.classList.toggle('search-open');
+        });
+    }
+
+   
+    /* ================================== */
+    /*  سلايدر الحلقات الجديدة             */
+    /* ================================== */
+
+    const episodesSlider = document.getElementById('episodesSlider');
+    const nextBtn = document.querySelector('.next');
+    const prevBtn = document.querySelector('.prev');
+
+    if (episodesSlider && nextBtn && prevBtn) {
+
+        const scrollAmount = () => {
+            const card = episodesSlider.querySelector('.episode-card');
+            if (!card) return 0;
+
+            const gap = parseInt(getComputedStyle(episodesSlider).gap) || 0;
+            return card.offsetWidth + gap;
+        };
+
+        nextBtn.addEventListener('click', () => {
+            episodesSlider.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
         });
 
-        dotsWrapper.appendChild(dot);
-      });
-
-      const dots = dotsWrapper.querySelectorAll('button');
-
-      function goToSlide(index) {
-        slides[current].classList.remove('active');
-        dots[current].classList.remove('active');
-
-        current = index;
-
-        slides[current].classList.add('active');
-        dots[current].classList.add('active');
-      }
-
-      function nextSlide() {
-        goToSlide((current + 1) % slides.length);
-      }
-
-      function startInterval() {
-        interval = setInterval(nextSlide, delay);
-      }
-
-      function resetInterval() {
-        clearInterval(interval);
-        startInterval();
-      }
-
-      startInterval();
-    }
-  }
-
-  /* ================================= */
-  /* Episodes Slider */
-  /* ================================= */
-  const episodesSlider = document.getElementById('episodesSlider');
-  if (episodesSlider) {
-    const wrapper = episodesSlider.parentElement;
-    const nextBtn = wrapper?.querySelector('.next');
-    const prevBtn = wrapper?.querySelector('.prev');
-
-    const getScrollAmount = () => {
-      const card = episodesSlider.querySelector('.episode-card');
-      if (!card) return 0;
-      const gap = parseInt(getComputedStyle(episodesSlider).gap) || 0;
-      return card.offsetWidth + gap;
-    };
-
-    nextBtn?.addEventListener('click', () => {
-      episodesSlider.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
-    });
-
-    prevBtn?.addEventListener('click', () => {
-      episodesSlider.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
-    });
-  }
-
-  /* ================================= */
-  /* Most Watched Slider */
-  /* ================================= */
-  const mostWatchedSlider = document.getElementById('mostWatchedSlider');
-  const mostWatchedDotsWrapper = document.getElementById('mostWatchedDots');
-
-  if (mostWatchedSlider && mostWatchedDotsWrapper) {
-    const slides = [...mostWatchedSlider.children];
-    const perView = window.innerWidth < 768 ? 2 : 5;
-    const dotsCount = Math.ceil(slides.length / perView);
-
-    mostWatchedDotsWrapper.innerHTML = '';
-
-    for (let i = 0; i < dotsCount; i++) {
-      const dot = document.createElement('span');
-      if (i === 0) dot.classList.add('active');
-      mostWatchedDotsWrapper.appendChild(dot);
+        prevBtn.addEventListener('click', () => {
+            episodesSlider.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
+        });
     }
 
-    const dots = mostWatchedDotsWrapper.children;
+    /* ================================== */
+    /*  سلايدر الأكثر مشاهدة              */
+    /* ================================== */
 
-    mostWatchedSlider.addEventListener('scroll', () => {
-      const maxScroll = mostWatchedSlider.scrollWidth - mostWatchedSlider.clientWidth;
-      const index = maxScroll
-        ? Math.round((mostWatchedSlider.scrollLeft / maxScroll) * (dotsCount - 1))
-        : 0;
+    const mostSlider = document.getElementById('mostWatchedSlider');
+    const dotsContainer = document.getElementById('mostWatchedDots');
 
-      [...dots].forEach(d => d.classList.remove('active'));
-      dots[index]?.classList.add('active');
-    });
-  }
+    if (mostSlider && dotsContainer) {
+
+        const slides = mostSlider.children;
+        const slidesPerView = window.innerWidth < 768 ? 2 : 5;
+        const dotsCount = Math.ceil(slides.length / slidesPerView);
+
+        for (let i = 0; i < dotsCount; i++) {
+            const dot = document.createElement('span');
+            if (i === 0) dot.classList.add('active');
+            dotsContainer.appendChild(dot);
+        }
+
+        const dots = dotsContainer.children;
+
+        mostSlider.addEventListener('scroll', () => {
+            const index = Math.round(
+                mostSlider.scrollLeft / (mostSlider.scrollWidth / dotsCount)
+            );
+
+            [...dots].forEach(dot => dot.classList.remove('active'));
+            if (dots[index]) dots[index].classList.add('active');
+        });
+    }
 
 });
