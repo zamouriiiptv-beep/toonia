@@ -204,31 +204,32 @@ header {
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
-  gap: 8px;              /* تقليل المسافة */
+  gap: 7px;              /* مسافة قريبة من aniwatch */
   z-index: 10;
 }
 
 .hero-dots button {
-  width: 7px;            /* تصغير الحجم */
-  height: 7px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  background: #ffffff;   /* باقي الدوائر بيضاء */
-  border: 1.5px solid #ffffff;
-  cursor: pointer;
+  background: #ffffff;   /* نقاط بيضاء */
+  border: none;          /* ❌ إزالة البوردر (فرق أساسي) */
   padding: 0;
-  transition: transform 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
+  cursor: pointer;
+  opacity: 0.85;
+  transition: transform 0.25s ease, background-color 0.25s ease, opacity 0.25s ease;
 }
 
 /* النقطة النشطة */
 .hero-dots button.active {
   background: #F5C518;   /* صفراء */
-  border-color: #F5C518;
-  transform: scale(1.35);
+  opacity: 1;
+  transform: scale(1.25); /* تكبير خفيف مثل aniwatch */
 }
 
 /* hover */
 .hero-dots button:hover {
-  transform: scale(1.2);
+  opacity: 1;
 }
 
 /* موبايل */
@@ -238,8 +239,8 @@ header {
   }
 
   .hero-dots button {
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
   }
 }
 
