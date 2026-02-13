@@ -79,29 +79,16 @@
 
   <div class="hero-slider">
 
-    <!-- Slide 1 (LCP) -->
     <div class="hero-slide active">
-      <img 
-        src="https://i.ibb.co/5W0bk4y3/demon-slayer-2880x1800-23615.jpg"
-        alt="Demon Slayer Anime Poster"
-        loading="eager"
-        fetchpriority="high">
+      <img src="assets/img/slide1.webp" alt="Featured Anime 1">
     </div>
 
-    <!-- Slide 2 -->
     <div class="hero-slide">
-      <img 
-        src="https://i.ibb.co/zhBwvf36/thumb-1920-1081458.jpg"
-        alt="Anime Featured Banner"
-        loading="lazy">
+      <img src="assets/img/slide2.webp" alt="Featured Anime 2">
     </div>
 
-    <!-- Slide 3 -->
     <div class="hero-slide">
-      <img 
-        src="https://i.ibb.co/DD1LmqBp/thumb-1920-1319290.jpg"
-        alt="Anime Featured Banner 2"
-        loading="lazy">
+      <img src="assets/img/slide3.webp" alt="Featured Anime 3">
     </div>
 
   </div>
@@ -464,70 +451,15 @@
 </section>
 
 <!-- ================================== -->
-<!--  ملف JavaScript الرئيسي             -->
+<!--  ملفات JavaScript                  -->
 <!-- ================================== -->
 
-<!-- defer: يضمن تحميل JS بعد HTML -->
+<!-- Hero Slider (مستقل) -->
+<script src="./assets/js/hero-slider.js" defer></script>
+
+<!-- الملف الرئيسي -->
 <script src="./assets/js/main.js" defer></script>
 
-<script>
-'use strict';
-
-document.addEventListener('DOMContentLoaded', () => {
-
-  const hero = document.querySelector('.hero');
-  if (!hero) return;
-
-  const slides = hero.querySelectorAll('.hero-slide');
-  const dotsWrapper = hero.querySelector('.hero-dots');
-
-  if (slides.length < 2 || !dotsWrapper) return;
-
-  let current = 0;
-  const delay = 4000;
-
-  // ضمان وجود active
-  slides.forEach(s => s.classList.remove('active'));
-  slides[0].classList.add('active');
-
-  // إنشاء dots
-  dotsWrapper.innerHTML = '';
-  slides.forEach((_, i) => {
-    const dot = document.createElement('button');
-    if (i === 0) dot.classList.add('active');
-
-    dot.addEventListener('click', () => {
-      goTo(i);
-      reset();
-    });
-
-    dotsWrapper.appendChild(dot);
-  });
-
-  const dots = dotsWrapper.querySelectorAll('button');
-  let interval = setInterval(next, delay);
-
-  function goTo(index) {
-    slides[current].classList.remove('active');
-    dots[current].classList.remove('active');
-
-    current = index;
-
-    slides[current].classList.add('active');
-    dots[current].classList.add('active');
-  }
-
-  function next() {
-    goTo((current + 1) % slides.length);
-  }
-
-  function reset() {
-    clearInterval(interval);
-    interval = setInterval(next, delay);
-  }
-
-});
-</script>
 
 </body>
 </html>
