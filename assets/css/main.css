@@ -204,29 +204,29 @@ header {
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;              /* تقليل المسافة */
   z-index: 10;
 }
 
 .hero-dots button {
-  width: 10px;
-  height: 10px;
+  width: 7px;            /* تصغير الحجم */
+  height: 7px;
   border-radius: 50%;
-  background: #ffffff;          /* باقي الدوائر بيضاء */
-  border: 2px solid #ffffff;    /* محيط أبيض */
+  background: #ffffff;   /* باقي الدوائر بيضاء */
+  border: 1.5px solid #ffffff;
   cursor: pointer;
   padding: 0;
-  transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+  transition: transform 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
 }
 
 /* النقطة النشطة */
 .hero-dots button.active {
-  background: #F5C518;          /* تعبئة صفراء */
-  border-color: #F5C518;        /* محيط أصفر */
-  transform: scale(1.4);
+  background: #F5C518;   /* صفراء */
+  border-color: #F5C518;
+  transform: scale(1.35);
 }
 
-/* hover (اختياري) */
+/* hover */
 .hero-dots button:hover {
   transform: scale(1.2);
 }
@@ -235,6 +235,11 @@ header {
 @media (max-width: 768px) {
   .hero-dots {
     right: 10px;
+  }
+
+  .hero-dots button {
+    width: 6px;
+    height: 6px;
   }
 }
 
