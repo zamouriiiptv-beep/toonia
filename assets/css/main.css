@@ -159,66 +159,136 @@ header {
 /*                 سلايدر الهيرو                */
 /* ============================================= */
 
-.hero {
-  position: relative;
-  width: 100%;
-  max-height: 500px;
-  overflow: hidden;
-  background: #000;
-}
-
-/* حاوية السلايدر */
 .hero-slider {
   position: relative;
-  height: 420px; /* مهم لأن السلايدات absolute */
+  width: 100%;
+  height: 50vh;          /* تعديل حسب الحاجة */
+  min-height: 280px;
+  max-height: 520px;     /* حسب التصميم */
+  overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
 }
 
-/* السلايدات */
-.hero-slide {
+/* كل شريحة */
+.hero-slider .slide {
   position: absolute;
   inset: 0;
+  background: var(--bg-url) center/cover no-repeat;
   opacity: 0;
-  transition: opacity .6s ease;
-  z-index: 1;
-  will-change: opacity; /* تحسين الأداء */
+  transition: opacity 0.8s ease;
+  display: flex;
+  align-items: flex-end;
+  padding: 0 5% 36px;
+  box-sizing: border-box;
 }
 
-.hero-slide.active {
+/* الشريحة النشطة */
+.hero-slider .slide.active {
   opacity: 1;
   z-index: 2;
 }
 
-/* الصورة */
-.hero-slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* ================= DOTS ================= */
-
-.hero-dots {
+/* طبقة تدرج داكن */
+.hero-slider .slide::before {
+  content: "";
   position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 40%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* المحتوى النصي داخل الشريحة */
+.hero-slider .slide-content {
+  position: relative;
+  z-index: 2;
+  color: #fff;
+  max-width: 55%;  /* ديناميكي؛ يمكن تغييره */
+}
+
+/* العنوان */
+.hero-slider .title {
+  font-size: 1.6rem;   /* يمكن تعديل */
+  font-weight: 700;
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+
+/* الأزرار */
+.hero-slider .buttons {
   display: flex;
-  gap: 8px;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 8px;
 }
 
-.hero-dots button {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  border: none;
-  background: rgba(255,255,255,.4);
+.hero-slider .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
   cursor: pointer;
-  transition: .3s;
+  transition: all 0.3s ease;
+  border: none;
+  white-space: nowrap;
 }
 
-.hero-dots button.active {
-  background: #F5C518;
+/* زر المشاهدة */
+.hero-slider .btn-play {
+  background-color: #ffc107;
+  color: #000;
+}
+
+/* زر التفاصيل */
+.hero-slider .btn-info {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  backdrop-filter: blur(8px);
+}
+
+/* تأثير hover */
+.hero-slider .btn-play:hover,
+.hero-slider .btn-info:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+/* الأيقونات داخل الأزرار */
+.hero-slider .btn i {
+  margin-left: 6px;
+  font-size: 12px;
+}
+
+/* نقاط التصفح العمودية: على اليمين */
+.hero-slider .dots {
+  position: absolute;
+  right: 20px;           /* على الجانب الأيمن */
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 3;
+}
+
+.hero-slider .dots .dot {
+  width: 7px;
+  height: 7px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.3s, background 0.3s;
+}
+
+.hero-slider .dots .dot.active {
+  background: #ffc107;
+  transform: scale(1.2);
+  box-shadow: 0 0 8px #ffc107;
 }
 
 /* ================================== */
