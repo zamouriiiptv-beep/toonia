@@ -196,15 +196,17 @@ header {
   display: block;
 }
 
-/* ================= DOTS ================= */
+/* ================= HERO VERTICAL DOTS ================= */
 
 .hero-dots {
   position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
   display: flex;
-  gap: 8px;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 10;
 }
 
 .hero-dots button {
@@ -212,13 +214,23 @@ header {
   height: 10px;
   border-radius: 50%;
   border: none;
-  background: rgba(255,255,255,.4);
+  background: rgba(255, 255, 255, 0.4);
   cursor: pointer;
-  transition: .3s;
+  padding: 0;
+  transition: all 0.3s ease;
 }
 
+/* النقطة النشطة */
 .hero-dots button.active {
   background: #F5C518;
+  transform: scale(1.4);
+}
+
+/* تحسين للموبايل */
+@media (max-width: 768px) {
+  .hero-dots {
+    right: 10px;
+  }
 }
 
 /* ================================== */
