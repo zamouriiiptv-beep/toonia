@@ -45,17 +45,16 @@ body {
 /* الهيكل العام للشريط العلوي */
 header {
     background-color: #26262c;
-    height: 65px;
+    min-height: 48px;          /* ارتفاع منطقي للهيدر */
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
+    padding: 6px 16px;         /* قلّل الـ padding */
     border-bottom: 1px solid #222;
     position: sticky;
     top: 0;
     z-index: 1000;
 }
-
 
 /* ================================== */
 /*  الهيدر - الجهة اليمنى              */
