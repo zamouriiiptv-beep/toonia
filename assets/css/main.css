@@ -228,10 +228,17 @@ header {
   transform: scale(1.4);
 }
 
-/* تحسين تجربة الاستخدام */
-.hero-dots button:hover {
-  opacity: 1;
+.hero-dots button {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: transparent;              /* فارغة */
+  border: 2px solid #ffffff;             /* أبيض حقيقي */
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.3s ease, background-color 0.3s ease;
 }
+
 
 /* تحسين للموبايل */
 @media (max-width: 768px) {
