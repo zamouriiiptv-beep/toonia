@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
     /* ================================= */
 
     const menuToggle = document.querySelector('.menu-toggle');
+
     if (menuToggle) {
         menuToggle.addEventListener('click', function () {
             body.classList.toggle('menu-open');
@@ -24,6 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
     /* ================================= */
 
     const searchBtn = document.querySelector('.search-btn');
+
     if (searchBtn) {
         searchBtn.addEventListener('click', function () {
             body.classList.toggle('search-open');
@@ -65,33 +67,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const sliderId = dotsContainer.getAttribute('data-slider');
         const slider = document.getElementById(sliderId);
+
         if (!slider) return;
 
         const wrapper = slider.closest('.slider-wrapper');
         let dots = [];
 
-        function getCardMetrics() {
-            const card = slider.querySelector('.slide');
-            if (!card) return null;
-
-            const gap = parseInt(getComputedStyle(slider).gap) || 0;
-            return card.offsetWidth + gap;
-        }
-
         function createDots() {
             dotsContainer.innerHTML = '';
             dots = [];
 
-            const cardWidth = getCardMetrics();
-            if (!cardWidth) return;
-
-            const visibleCards = Math.max(
-                1,
-                Math.floor(wrapper.offsetWidth / cardWidth)
-            );
-
-            const totalCards = slider.children.length;
-            const pages = Math.ceil(totalCards / visibleCards);
+            const wrapperWidth = wrapper.offsetWidth;
+            const totalWidth = slider.scrollWidth;
+            const pages = Math.ceil(totalWidth / wrapperWidth);
 
             if (pages <= 1) {
                 dotsContainer.style.display = 'none';
@@ -102,11 +90,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
             for (let i = 0; i < pages; i++) {
                 const dot = document.createElement('button');
+
                 if (i === 0) dot.classList.add('active');
 
                 dot.addEventListener('click', () => {
                     slider.scrollTo({
-                        left: i * cardWidth * visibleCards,
+                        left: i * wrapperWidth,
                         behavior: 'smooth'
                     });
                 });
@@ -117,24 +106,15 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         function updateActiveDot() {
-            const cardWidth = getCardMetrics();
-            if (!cardWidth) return;
-
-            const visibleCards = Math.max(
-                1,
-                Math.floor(wrapper.offsetWidth / cardWidth)
-            );
-
-            const index = Math.round(
-                slider.scrollLeft / (cardWidth * visibleCards)
-            );
+            const wrapperWidth = wrapper.offsetWidth;
+            const index = Math.round(slider.scrollLeft / wrapperWidth);
 
             dots.forEach((dot, i) => {
                 dot.classList.toggle('active', i === index);
             });
         }
 
-        /* تشغيل */
+        // تشغيل
         createDots();
 
         slider.addEventListener('scroll', () => {
