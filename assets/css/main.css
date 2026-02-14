@@ -372,6 +372,64 @@ header {
   }
 }
 
+
+/* =============================== */
+/*  Audience Types Section         */
+/* =============================== */
+
+.audience-types {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 12px 0;
+  margin: 10px 0 18px;
+  scroll-snap-type: x mandatory;
+}
+
+.audience-types::-webkit-scrollbar {
+  display: none;
+}
+
+.audience-card {
+  flex-shrink: 0;
+  min-width: 110px;
+  height: 70px;
+  background: #1e1e1e;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #fff;
+  scroll-snap-align: start;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.audience-card .icon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.audience-card .label {
+  font-size: 13px;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+/* Hover / Tap */
+.audience-card:hover {
+  transform: translateY(-2px);
+  background: #ffcc00;
+  color: #000;
+}
+
+/* تمييز بسيط لكل نوع (اختياري) */
+.audience-card.cartoon { border: 1px solid #ffb70333; }
+.audience-card.anime   { border: 1px solid #ff006e33; }
+.audience-card.family  { border: 1px solid #8ecae633; }
+.audience-card.teen    { border: 1px solid #8338ec33; }
+
 /* ================================== */
 /*  قسم الأعمال الأكثر مشاهدة          */
 /*  يعرض أكثر الأعمال رواجًا بناءً     */
