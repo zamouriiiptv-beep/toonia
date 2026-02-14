@@ -371,6 +371,55 @@ header {
     flex: 0 0 calc(23.53% - 9px);
   }
 }
+ 
+ /* ================================== */
+/*  قسم الأسهم يمينا و يسارا  */
+/* ================================== */
+ .slider-wrapper {
+  position: relative;
+}
+
+/* الأسهم */
+.slider-arrow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  background: rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(4px);
+  border: none;
+  color: #fff;
+  font-size: 32px;
+  cursor: pointer;
+  z-index: 20;
+  opacity: 0;
+  transition: opacity 0.3s ease, background 0.3s ease;
+}
+
+/* إظهار عند hover */
+.slider-wrapper:hover .slider-arrow {
+  opacity: 1;
+}
+
+.slider-arrow:hover {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+/* الاتجاهات */
+.slider-arrow.prev {
+  left: 0;
+}
+
+.slider-arrow.next {
+  right: 0;
+}
+
+/* موبايل */
+@media (max-width: 768px) {
+  .slider-arrow {
+    display: none;
+  }
+}
 
 /* ================================== */
 /*  قسم الأعمال الأكثر مشاهدة          */
@@ -691,34 +740,6 @@ header {
 }
 
 
-/* =============================== */
-/* Slider Dots                     */
-/* =============================== */
-
-.slider-dots {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin: 10px 0 18px;
-}
-
-.slider-dots button {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #666;
-  border: none;
-  padding: 0;
-  opacity: 0.6;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.slider-dots button.active {
-  background: #ffcc00;
-  opacity: 1;
-  transform: scale(1.3);
-}
 
 
 
