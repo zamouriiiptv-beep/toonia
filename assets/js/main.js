@@ -59,73 +59,95 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    /* ================================== */
-    /*  Slider Dots (عام لكل السلايدرات) */
-    /* ================================== */
+   /* ================================== */
+/*  Slider Dots (عام لكل السلايدرات) */
+/* ================================== */
 
-    document.querySelectorAll('.slider-dots').forEach(dotsContainer => {
+document.querySelectorAll('.slider-dots').forEach(dotsContainer => {
 
-        const sliderId = dotsContainer.getAttribute('data-slider');
-        const slider = document.getElementById(sliderId);
+    const sliderId = dotsContainer.getAttribute('data-slider');
+    const slider = document.getElementById(sliderId);
 
-        if (!slider) return;
+    if (!slider) return;
 
-        const wrapper = slider.closest('.slider-wrapper');
-        let dots = [];
+    const wrapper = slider.closest('.slider-wrapper');
+    let dots = [];
 
-        function createDots() {
-            dotsContainer.innerHTML = '';
-            dots = [];
+    function getCardMetrics() {
+        const card = slider.querySelector('.slide');
+        if (!card) return null;
 
-            const wrapperWidth = wrapper.offsetWidth;
-            const totalWidth = slider.scrollWidth;
-            const pages = Math.ceil(totalWidth / wrapperWidth);
+        const gap = parseInt(getComputedStyle(slider).gap) || 0;
+        const cardWidth = card.offsetWidth + gap;
 
-            if (pages <= 1) {
-                dotsContainer.style.display = 'none';
-                return;
-            }
+        return { cardWidth };
+    }
 
-            dotsContainer.style.display = 'flex';
+    function createDots() {
+        dotsContainer.innerHTML = '';
+        dots = [];
 
-            for (let i = 0; i < pages; i++) {
-                const dot = document.createElement('button');
+        const metrics = getCardMetrics();
+        if (!metrics) return;
 
-                if (i === 0) dot.classList.add('active');
+        const { cardWidth } = metrics;
 
-                dot.addEventListener('click', () => {
-                    slider.scrollTo({
-                        left: i * wrapperWidth,
-                        behavior: 'smooth'
-                    });
+        const visibleCards = Math.floor(wrapper.offsetWidth / cardWidth);
+        const totalCards = slider.children.length;
+
+        const pages = Math.ceil(totalCards / visibleCards);
+
+        if (pages <= 1) {
+            dotsContainer.style.display = 'none';
+            return;
+        }
+
+        dotsContainer.style.display = 'flex';
+
+        for (let i = 0; i < pages; i++) {
+            const dot = document.createElement('button');
+
+            if (i === 0) dot.classList.add('active');
+
+            dot.addEventListener('click', () => {
+                slider.scrollTo({
+                    left: i * cardWidth * visibleCards,
+                    behavior: 'smooth'
                 });
-
-                dotsContainer.appendChild(dot);
-                dots.push(dot);
-            }
-        }
-
-        function updateActiveDot() {
-            const wrapperWidth = wrapper.offsetWidth;
-            const index = Math.round(slider.scrollLeft / wrapperWidth);
-
-            dots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === index);
             });
+
+            dotsContainer.appendChild(dot);
+            dots.push(dot);
         }
+    }
 
-        // تشغيل
+    function updateActiveDot() {
+        const metrics = getCardMetrics();
+        if (!metrics) return;
+
+        const { cardWidth } = metrics;
+        const visibleCards = Math.floor(wrapper.offsetWidth / cardWidth);
+
+        const index = Math.round(
+            slider.scrollLeft / (cardWidth * visibleCards)
+        );
+
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === index);
+        });
+    }
+
+    // تشغيل
+    createDots();
+
+    slider.addEventListener('scroll', () => {
+        requestAnimationFrame(updateActiveDot);
+    });
+
+    window.addEventListener('resize', () => {
         createDots();
-
-        slider.addEventListener('scroll', () => {
-            requestAnimationFrame(updateActiveDot);
-        });
-
-        window.addEventListener('resize', () => {
-            createDots();
-            updateActiveDot();
-        });
-
+        updateActiveDot();
     });
 
 });
+
