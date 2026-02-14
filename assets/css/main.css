@@ -375,7 +375,7 @@ header {
  /* ================================== */
 /*  قسم الأسهم يمينا و يسارا  */
 /* ================================== */
- .slider-wrapper {
+.slider-wrapper {
   position: relative;
 }
 
@@ -384,25 +384,21 @@ header {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 60px;
-  background: rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(4px);
+  width: 52px;
+  background: linear-gradient(
+    to right,
+    rgba(0,0,0,0.45),
+    rgba(0,0,0,0)
+  );
   border: none;
   color: #fff;
-  font-size: 32px;
+  font-size: 34px;
   cursor: pointer;
-  z-index: 20;
-  opacity: 0;
-  transition: opacity 0.3s ease, background 0.3s ease;
-}
-
-/* إظهار عند hover */
-.slider-wrapper:hover .slider-arrow {
-  opacity: 1;
-}
-
-.slider-arrow:hover {
-  background: rgba(0, 0, 0, 0.4);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.25s ease, color 0.25s ease;
 }
 
 /* الاتجاهات */
@@ -412,12 +408,23 @@ header {
 
 .slider-arrow.next {
   right: 0;
+  background: linear-gradient(
+    to left,
+    rgba(0,0,0,0.45),
+    rgba(0,0,0,0)
+  );
+}
+
+/* Hover */
+.slider-arrow:hover {
+  color: #f5c518; /* لون الهوية */
 }
 
 /* موبايل */
 @media (max-width: 768px) {
   .slider-arrow {
-    display: none;
+    width: 44px;
+    font-size: 30px;
   }
 }
 
