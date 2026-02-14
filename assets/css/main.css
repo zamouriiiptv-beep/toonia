@@ -375,56 +375,44 @@ header {
  /* ================================== */
 /*  قسم الأسهم يمينا و يسارا  */
 /* ================================== */
-.slider-wrapper {
+.most-watched {
   position: relative;
 }
 
-/* الأسهم */
-.slider-arrow {
+/* الأسهم الجانبية */
+.section-arrow {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 52px;
-  background: linear-gradient(
-    to right,
-    rgba(0,0,0,0.45),
-    rgba(0,0,0,0)
-  );
+  top: 55%;
+  transform: translateY(-50%);
+  background: none;
   border: none;
-  color: #fff;
-  font-size: 34px;
+  color: #bdbdbd;
+  font-size: 36px;
   cursor: pointer;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.25s ease, color 0.25s ease;
+  z-index: 20;
+  padding: 0;
+  line-height: 1;
 }
 
-/* الاتجاهات */
-.slider-arrow.prev {
-  left: 0;
+/* أماكنها */
+.section-arrow.prev {
+  left: 8px;
 }
 
-.slider-arrow.next {
-  right: 0;
-  background: linear-gradient(
-    to left,
-    rgba(0,0,0,0.45),
-    rgba(0,0,0,0)
-  );
+.section-arrow.next {
+  right: 8px;
 }
 
-/* Hover */
-.slider-arrow:hover {
-  color: #f5c518; /* لون الهوية */
+/* Hover خفيف */
+.section-arrow:hover {
+  color: #fff;
 }
 
 /* موبايل */
 @media (max-width: 768px) {
-  .slider-arrow {
-    width: 44px;
+  .section-arrow {
     font-size: 30px;
+    opacity: 0.9;
   }
 }
 
