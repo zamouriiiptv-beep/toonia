@@ -371,50 +371,6 @@ header {
     flex: 0 0 calc(23.53% - 9px);
   }
 }
- 
- /* ================================== */
-/*  قسم الأسهم يمينا و يسارا  */
-/* ================================== */
-.most-watched {
-  position: relative;
-}
-
-/* الأسهم الجانبية */
-.section-arrow {
-  position: absolute;
-  top: 55%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: #bdbdbd;
-  font-size: 36px;
-  cursor: pointer;
-  z-index: 20;
-  padding: 0;
-  line-height: 1;
-}
-
-/* أماكنها */
-.section-arrow.prev {
-  left: 8px;
-}
-
-.section-arrow.next {
-  right: 8px;
-}
-
-/* Hover خفيف */
-.section-arrow:hover {
-  color: #fff;
-}
-
-/* موبايل */
-@media (max-width: 768px) {
-  .section-arrow {
-    font-size: 30px;
-    opacity: 0.9;
-  }
-}
 
 /* ================================== */
 /*  قسم الأعمال الأكثر مشاهدة          */
