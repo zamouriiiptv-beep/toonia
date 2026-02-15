@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
     /* ================================= */
 
     const menuToggle = document.querySelector('.menu-toggle');
+
     if (menuToggle) {
         menuToggle.addEventListener('click', function () {
             body.classList.toggle('menu-open');
@@ -24,6 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
     /* ================================= */
 
     const searchBtn = document.querySelector('.search-btn');
+
     if (searchBtn) {
         searchBtn.addEventListener('click', function () {
             body.classList.toggle('search-open');
@@ -31,33 +33,31 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     /* ================================== */
-    /*  أسهم السلايدر (عام لكل الأقسام)  */
+    /*  سلايدر الحلقات الجديدة (أزرار)   */
     /* ================================== */
 
-    document.querySelectorAll('.slider-arrow').forEach(arrow => {
+    const episodesSlider = document.getElementById('episodesSlider');
+    const nextBtn = document.querySelector('.next');
+    const prevBtn = document.querySelector('.prev');
 
-        arrow.addEventListener('click', () => {
+    if (episodesSlider && nextBtn && prevBtn) {
 
-            const sliderId = arrow.getAttribute('data-target');
-            const slider = document.getElementById(sliderId);
+        const scrollAmount = () => {
+            const card = episodesSlider.querySelector('.episode-card');
+            if (!card) return 0;
 
-            if (!slider) return;
+            const gap = parseInt(getComputedStyle(episodesSlider).gap) || 0;
+            return card.offsetWidth + gap;
+        };
 
-            const slide = slider.querySelector('.slide');
-            if (!slide) return;
-
-            const gap = parseInt(getComputedStyle(slider).gap) || 0;
-            const scrollAmount = slide.offsetWidth + gap;
-
-            if (arrow.classList.contains('next')) {
-                slider.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-            } else {
-                slider.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-            }
-
+        nextBtn.addEventListener('click', () => {
+            episodesSlider.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
         });
 
-    });
+        prevBtn.addEventListener('click', () => {
+            episodesSlider.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
+        });
+    }
 
     /* ================================== */
     /*  Slider Dots (عام لكل السلايدرات) */
@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 
-        /* تشغيل */
+        // تشغيل
         createDots();
 
         slider.addEventListener('scroll', () => {
