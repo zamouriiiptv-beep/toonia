@@ -695,74 +695,42 @@ header {
 
 
 
-/* =============================== */
-/*  Section Header & Arrows        */
-/* =============================== */
-
-.most-watched {
-  padding-inline: 16px;
-}
-
 .section-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
   margin-bottom: 14px;
-  flex-wrap: nowrap;
+  flex-wrap: nowrap;        /* مهم */
 }
 
 .section-header h2 {
   font-size: 20px;
   font-weight: 600;
-  white-space: nowrap;
+  white-space: nowrap;     /* يمنع كسر العنوان */
 }
 
 .section-arrows {
   display: flex;
   gap: 10px;
-  flex-shrink: 0;
+  flex-shrink: 0;          /* يمنع نزول الأسهم */
 }
 
-/* الأسهم */
 .section-arrows .arrow {
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: #000000;          /* الدائرة سوداء */
-  color: #f5c518;               /* السهم أصفر */
-  border: 1px solid rgba(255,255,255,.15);
+  background: #1b1b1b;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.12);
   cursor: pointer;
-  transition: background .2s ease, color .2s ease, transform .1s ease;
+  transition: all .2s ease;
 }
 
-/* hover: لا تغيير */
 .section-arrows .arrow:hover {
-  background: #000000;
-  color: #f5c518;
+  background: #f5c518;
+  color: #000;
 }
-
-/* active: عند الضغط */
-.section-arrows .arrow:active {
-  background: #000000;          /* تبقى سوداء */
-  color: #ffffff;               /* السهم أبيض */
-  transform: scale(0.92);
-}
-
-/* تحسين للموبايل */
-@media (max-width: 600px) {
-  .section-header h2 {
-    font-size: 18px;
-  }
-
-  .section-arrows .arrow {
-    width: 32px;
-    height: 32px;
-    font-size: 16px;
-  }
-}
-
-
 
 
 
