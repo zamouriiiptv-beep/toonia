@@ -720,11 +720,21 @@ header {
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: #1b1b1b;
-  color: #fff;
-  border: 1px solid rgba(255,255,255,.12);
+  background: #ffffff;              /* الدائرة */
+  color: #f5c518;                   /* السهم */
+  border: 1px solid rgba(0,0,0,.08);
   cursor: pointer;
-  transition: all .2s ease;
+  transition: background .2s ease, color .2s ease;
+}
+
+.section-arrows .arrow:hover {
+  background: #ffffff;              /* تبقى بيضاء */
+  color: #f5c518;                   /* يبقى أصفر */
+}
+
+.section-arrows .arrow:active {
+  background: #f5c518;              /* عند الضغط */
+  color: #ffffff;                   /* السهم أبيض */
 }
 
 .section-arrows .arrow:hover {
