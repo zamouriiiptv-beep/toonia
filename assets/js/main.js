@@ -33,31 +33,32 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     /* ================================== */
-    /*  سلايدر الحلقات الجديدة (أزرار)   */
+    /*  أسهم السلايدر (عام لكل الأقسام)  */
     /* ================================== */
 
-    const episodesSlider = document.getElementById('episodesSlider');
-    const nextBtn = document.querySelector('.next');
-    const prevBtn = document.querySelector('.prev');
+    document.querySelectorAll('.section-arrows .arrow').forEach(btn => {
 
-    if (episodesSlider && nextBtn && prevBtn) {
+        btn.addEventListener('click', () => {
 
-        const scrollAmount = () => {
-            const card = episodesSlider.querySelector('.episode-card');
-            if (!card) return 0;
+            const sliderId = btn.dataset.target;
+            const slider = document.getElementById(sliderId);
+            if (!slider) return;
 
-            const gap = parseInt(getComputedStyle(episodesSlider).gap) || 0;
-            return card.offsetWidth + gap;
-        };
+            const card = slider.querySelector('.episode-card, .card');
+            if (!card) return;
 
-        nextBtn.addEventListener('click', () => {
-            episodesSlider.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
+            const gap = parseInt(getComputedStyle(slider).gap) || 0;
+            const scrollAmount = card.offsetWidth + gap;
+
+            if (btn.classList.contains('prev')) {
+                slider.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            } else {
+                slider.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+            }
+
         });
 
-        prevBtn.addEventListener('click', () => {
-            episodesSlider.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
-        });
-    }
+    });
 
     /* ================================== */
     /*  Slider Dots (عام لكل السلايدرات) */
@@ -67,7 +68,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const sliderId = dotsContainer.getAttribute('data-slider');
         const slider = document.getElementById(sliderId);
-
         if (!slider) return;
 
         const wrapper = slider.closest('.slider-wrapper');
@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 
-        // تشغيل
+        /* تشغيل */
         createDots();
 
         slider.addEventListener('scroll', () => {
