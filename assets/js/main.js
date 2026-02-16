@@ -6,126 +6,136 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    const body = document.body;
+  const body = document.body;
 
-    /* ================================= */
-    /*  التحكم في فتح/إغلاق القائمة      */
-    /* ================================= */
+  /* ================================= */
+  /*  التحكم في فتح/إغلاق القائمة      */
+  /* ================================= */
 
-    const menuToggle = document.querySelector('.menu-toggle');
+  const menuToggle = document.querySelector('.menu-toggle');
+  if (menuToggle) {
+    menuToggle.addEventListener('click', function () {
+      body.classList.toggle('menu-open');
+    });
+  }
 
-    if (menuToggle) {
-        menuToggle.addEventListener('click', function () {
-            body.classList.toggle('menu-open');
-        });
-    }
+  /* ================================= */
+  /*  زر البحث                         */
+  /* ================================= */
 
-    /* ================================= */
-    /*  زر البحث                         */
-    /* ================================= */
+  const searchBtn = document.querySelector('.search-btn');
+  if (searchBtn) {
+    searchBtn.addEventListener('click', function () {
+      body.classList.toggle('search-open');
+    });
+  }
 
-    const searchBtn = document.querySelector('.search-btn');
+  /* ================================== */
+  /*  أسهم السلايدر (Transform Based)  */
+  /* ================================== */
 
-    if (searchBtn) {
-        searchBtn.addEventListener('click', function () {
-            body.classList.toggle('search-open');
-        });
-    }
+  document.querySelectorAll('.section-arrows .arrow').forEach(btn => {
 
-    /* ================================== */
-    /*  أسهم السلايدر (عام لكل الأقسام)  */
-    /* ================================== */
+    const sliderId = btn.dataset.target;
+    const track = document.getElementById(sliderId);
+    if (!track) return;
 
-    document.querySelectorAll('.section-arrows .arrow').forEach(btn => {
+    const slides = track.children;
+    if (!slides.length) return;
 
-        btn.addEventListener('click', () => {
+    const gap = parseInt(getComputedStyle(track).gap) || 0;
+    const slideWidth = slides[0].offsetWidth + gap;
 
-            const sliderId = btn.dataset.target;
-            const slider = document.getElementById(sliderId);
-            if (!slider) return;
+    let index = 0;
+    const maxIndex = slides.length - 1;
 
-            const card = slider.querySelector('.episode-card, .card');
-            if (!card) return;
+    btn.addEventListener('click', () => {
 
-            const gap = parseInt(getComputedStyle(slider).gap) || 0;
-            const scrollAmount = card.offsetWidth + gap;
+      if (btn.classList.contains('next')) {
+        if (index < maxIndex) index++;
+      } else {
+        if (index > 0) index--;
+      }
 
-            if (btn.classList.contains('prev')) {
-                slider.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-            } else {
-                slider.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-            }
-
-        });
-
+      track.style.transform =
+        `translateX(-${index * slideWidth}px)`;
     });
 
-    /* ================================== */
-    /*  Slider Dots (عام لكل السلايدرات) */
-    /* ================================== */
+  });
 
-    document.querySelectorAll('.slider-dots').forEach(dotsContainer => {
+  /* ================================== */
+  /*  Slider Dots (Transform Based)     */
+  /* ================================== */
 
-        const sliderId = dotsContainer.getAttribute('data-slider');
-        const slider = document.getElementById(sliderId);
-        if (!slider) return;
+  document.querySelectorAll('.slider-dots').forEach(dotsContainer => {
 
-        const wrapper = slider.closest('.slider-wrapper');
-        let dots = [];
+    const sliderId = dotsContainer.dataset.slider;
+    const track = document.getElementById(sliderId);
+    if (!track) return;
 
-        function createDots() {
-            dotsContainer.innerHTML = '';
-            dots = [];
+    const wrapper = track.closest('.slider-wrapper');
+    const slides = track.children;
+    if (!slides.length) return;
 
-            const wrapperWidth = wrapper.offsetWidth;
-            const totalWidth = slider.scrollWidth;
-            const pages = Math.ceil(totalWidth / wrapperWidth);
+    const gap = parseInt(getComputedStyle(track).gap) || 0;
+    const slideWidth = slides[0].offsetWidth + gap;
 
-            if (pages <= 1) {
-                dotsContainer.style.display = 'none';
-                return;
-            }
+    let dots = [];
+    let index = 0;
 
-            dotsContainer.style.display = 'flex';
+    function createDots() {
+      dotsContainer.innerHTML = '';
+      dots = [];
 
-            for (let i = 0; i < pages; i++) {
-                const dot = document.createElement('button');
+      const wrapperWidth = wrapper.offsetWidth;
+      const slidesPerView = Math.floor(wrapperWidth / slideWidth);
+      const pages = Math.ceil(slides.length / slidesPerView);
 
-                if (i === 0) dot.classList.add('active');
+      if (pages <= 1) {
+        dotsContainer.style.display = 'none';
+        return;
+      }
 
-                dot.addEventListener('click', () => {
-                    slider.scrollTo({
-                        left: i * wrapperWidth,
-                        behavior: 'smooth'
-                    });
-                });
+      dotsContainer.style.display = 'flex';
 
-                dotsContainer.appendChild(dot);
-                dots.push(dot);
-            }
-        }
+      for (let i = 0; i < pages; i++) {
+        const dot = document.createElement('button');
 
-        function updateActiveDot() {
-            const wrapperWidth = wrapper.offsetWidth;
-            const index = Math.round(slider.scrollLeft / wrapperWidth);
+        if (i === 0) dot.classList.add('active');
 
-            dots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === index);
-            });
-        }
-
-        /* تشغيل */
-        createDots();
-
-        slider.addEventListener('scroll', () => {
-            requestAnimationFrame(updateActiveDot);
+        dot.addEventListener('click', () => {
+          index = i * slidesPerView;
+          track.style.transform =
+            `translateX(-${index * slideWidth}px)`;
+          updateActiveDot();
         });
 
-        window.addEventListener('resize', () => {
-            createDots();
-            updateActiveDot();
-        });
+        dotsContainer.appendChild(dot);
+        dots.push(dot);
+      }
+    }
 
+    function updateActiveDot() {
+      const slidesPerView =
+        Math.floor(wrapper.offsetWidth / slideWidth);
+
+      const activeIndex =
+        Math.floor(index / slidesPerView);
+
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === activeIndex);
+      });
+    }
+
+    /* تشغيل */
+    createDots();
+    updateActiveDot();
+
+    window.addEventListener('resize', () => {
+      createDots();
+      updateActiveDot();
     });
+
+  });
 
 });
