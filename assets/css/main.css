@@ -695,6 +695,14 @@ header {
 
 
 
+/* =============================== */
+/*  Section Header & Arrows        */
+/* =============================== */
+
+.most-watched {
+  padding-inline: 16px;
+}
+
 .section-header {
   display: flex;
   align-items: center;
@@ -716,31 +724,32 @@ header {
   flex-shrink: 0;
 }
 
+/* الأسهم */
 .section-arrows .arrow {
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: #ffffff;          /* الدائرة بيضاء */
+  background: #000000;          /* الدائرة سوداء */
   color: #f5c518;               /* السهم أصفر */
-  border: 1px solid rgba(0,0,0,.08);
+  border: 1px solid rgba(255,255,255,.15);
   cursor: pointer;
   transition: background .2s ease, color .2s ease, transform .1s ease;
 }
 
 /* hover: لا تغيير */
 .section-arrows .arrow:hover {
-  background: #ffffff;
+  background: #000000;
   color: #f5c518;
 }
 
 /* active: عند الضغط */
 .section-arrows .arrow:active {
-  background: #f5c518;
-  color: #ffffff;
+  background: #000000;          /* تبقى سوداء */
+  color: #ffffff;               /* السهم أبيض */
   transform: scale(0.92);
 }
 
-/* تحسين اختياري للموبايل */
+/* تحسين للموبايل */
 @media (max-width: 600px) {
   .section-header h2 {
     font-size: 18px;
@@ -752,6 +761,7 @@ header {
     font-size: 16px;
   }
 }
+
 
 
 
