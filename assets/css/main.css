@@ -701,46 +701,58 @@ header {
   justify-content: space-between;
   gap: 12px;
   margin-bottom: 14px;
-  flex-wrap: nowrap;        /* مهم */
+  flex-wrap: nowrap;
 }
 
 .section-header h2 {
   font-size: 20px;
   font-weight: 600;
-  white-space: nowrap;     /* يمنع كسر العنوان */
+  white-space: nowrap;
 }
 
 .section-arrows {
   display: flex;
   gap: 10px;
-  flex-shrink: 0;          /* يمنع نزول الأسهم */
+  flex-shrink: 0;
 }
 
 .section-arrows .arrow {
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: #ffffff;              /* الدائرة */
-  color: #f5c518;                   /* السهم */
+  background: #ffffff;          /* الدائرة بيضاء */
+  color: #f5c518;               /* السهم أصفر */
   border: 1px solid rgba(0,0,0,.08);
   cursor: pointer;
-  transition: background .2s ease, color .2s ease;
+  transition: background .2s ease, color .2s ease, transform .1s ease;
 }
 
+/* hover: لا تغيير */
 .section-arrows .arrow:hover {
-  background: #ffffff;              /* تبقى بيضاء */
-  color: #f5c518;                   /* يبقى أصفر */
+  background: #ffffff;
+  color: #f5c518;
 }
 
+/* active: عند الضغط */
 .section-arrows .arrow:active {
-  background: #f5c518;              /* عند الضغط */
-  color: #ffffff;                   /* السهم أبيض */
+  background: #f5c518;
+  color: #ffffff;
+  transform: scale(0.92);
 }
 
-.section-arrows .arrow:hover {
-  background: #f5c518;
-  color: #000;
+/* تحسين اختياري للموبايل */
+@media (max-width: 600px) {
+  .section-header h2 {
+    font-size: 18px;
+  }
+
+  .section-arrows .arrow {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
 }
+
 
 
 
