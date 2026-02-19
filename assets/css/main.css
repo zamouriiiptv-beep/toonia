@@ -757,12 +757,23 @@ header {
 /* ================================== */
 
 .site-footer {
-  background: #2b2d33; /* أغمق بدرجة خفيفة جدًا */
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background-color: #26272d; /* أغمق قليلًا من الموقع */
   padding: 32px 16px 24px;
   text-align: center;
   color: #bdbdbd;
   font-size: 14px;
+  position: relative;
+}
+
+/* فاصل علوي بلون خلفية الموقع */
+.site-footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: #2F2E33; /* نفس لون الموقع */
 }
 
 /* ================================== */
