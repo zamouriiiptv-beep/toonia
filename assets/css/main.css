@@ -753,34 +753,33 @@ header {
 }
 
 /* ================================== */
-/* Footer                             */
-/* الفوتر: تنويه قانوني + سوشيال + حقوق */
+/* الفوتر الرئيسي                      */
 /* ================================== */
 
 .site-footer {
-  background: #0f0f0f;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: #1f2024; /* رمادي داكن متناسق مع الموقع */
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   padding: 32px 16px 24px;
   text-align: center;
   color: #aaa;
   font-size: 14px;
 }
 
-/* ============================== */
-/* Disclaimer                     */
-/* ============================== */
+/* ================================== */
+/* التنويه القانوني                   */
+/* ================================== */
 
 .footer-disclaimer {
   max-width: 720px;
   margin: 0 auto 24px;
   line-height: 1.6;
   font-size: 13px;
-  color: #888;
+  color: #b5b5b5;
 }
 
-/* ============================== */
-/* Social Icons                   */
-/* ============================== */
+/* ================================== */
+/* أيقونات التواصل الاجتماعي          */
+/* ================================== */
 
 .footer-social {
   display: flex;
@@ -793,7 +792,7 @@ header {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -810,9 +809,9 @@ header {
   border-color: #ffb703;
 }
 
-/* ============================== */
-/* Bottom Section                 */
-/* ============================== */
+/* ================================== */
+/* القسم السفلي للفوتر                */
+/* ================================== */
 
 .footer-bottom {
   display: flex;
@@ -821,36 +820,46 @@ header {
   gap: 10px;
 }
 
+/* ================================== */
+/* شعار واسم الموقع                   */
+/* ================================== */
+
 .footer-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-site-name {
   font-size: 22px;
   font-weight: 700;
   color: #ffffff;
+  letter-spacing: 0.3px;
 }
 
-.brand-dot {
-  font-size: 20px;
-  vertical-align: middle;
+.footer-site-name span {
+  color: #ffb703; /* لون الهوية */
 }
 
-/* ============================== */
-/* Copyright                      */
-/* ============================== */
+/* ================================== */
+/* حقوق النشر                         */
+/* ================================== */
 
 .footer-copy {
   font-size: 13px;
-  color: #999;
+  color: #b0b0b0;
 }
 
-/* ============================== */
-/* Footer Links                   */
-/* ============================== */
+/* ================================== */
+/* روابط الفوتر                       */
+/* ================================== */
 
 .footer-links {
   font-size: 13px;
 }
 
 .footer-links a {
-  color: #ccc;
+  color: #d0d0d0;
   text-decoration: none;
   transition: color 0.2s ease;
 }
@@ -861,35 +870,21 @@ header {
 
 .footer-links span {
   margin: 0 6px;
-  color: #555;
+  color: #666;
 }
 
-/* ============================== */
-/* Responsive tweaks              */
-/* ============================== */
+/* ================================== */
+/* تحسينات العرض على الشاشات الصغيرة  */
+/* ================================== */
 
 @media (max-width: 480px) {
   .footer-disclaimer {
     font-size: 12px;
   }
 
-  .footer-brand {
+  .footer-site-name {
     font-size: 20px;
   }
-}
-/* ============================== */
-/* Footer Site Name (FIX)         */
-/* ============================== */
-
-.footer-site-name {
-  font-size: 22px;
-  font-weight: 700;
-  color: #ffffff;          /* أبيض واضح */
-  letter-spacing: 0.3px;
-}
-
-.footer-site-name span {
-  color: #ffb703;          /* لون البراند */
 }
 
 
