@@ -757,7 +757,7 @@ header {
 /* ================================== */
 
 .site-footer {
-  background-color: #26272d; /* أغمق قليلًا من الموقع */
+  background-color: #26272d; /* أغمق قليلًا من خلفية الموقع */
   padding: 32px 16px 24px;
   text-align: center;
   color: #bdbdbd;
@@ -765,7 +765,7 @@ header {
   position: relative;
 }
 
-/* فاصل علوي بلون خلفية الموقع */
+/* فاصل علوي بلون خلفية الموقع الحقيقي */
 .site-footer::before {
   content: "";
   position: absolute;
@@ -773,7 +773,7 @@ header {
   left: 0;
   right: 0;
   height: 1px;
-  background-color: #2F2E33; /* نفس لون الموقع */
+  background-color: #282832; /* لون خلفية الموقع */
 }
 
 /* ================================== */
