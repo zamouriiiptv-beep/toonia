@@ -756,7 +756,6 @@ header {
 /* الفوتر الرئيسي                      */
 /* ================================== */
 
-/* الفوتر – نفس لون خلفية الموقع */
 .site-footer {
   background-color: #282832; /* لون خلفية الموقع */
   padding: 32px 16px 24px;
@@ -764,15 +763,6 @@ header {
   color: #bdbdbd;
   font-size: 14px;
   position: relative;
-}
-
-/* القسم الداخلي (النص + الروابط) */
-.site-footer .footer-inner {
-  background-color: #26272d; /* أغمق بدرجة خفيفة */
-  border-radius: 16px;
-  padding: 24px 16px;
-  max-width: 1100px;
-  margin: 0 auto;
 }
 
 /* فاصل علوي ناعم جدًا */
@@ -831,10 +821,15 @@ header {
 }
 
 /* ================================== */
-/* القسم السفلي للفوتر                */
+/* القسم السفلي للفوتر (الكتلة الداكنة) */
 /* ================================== */
 
 .footer-bottom {
+  background-color: #26272d; /* أغمق قليلًا من الخلفية */
+  border-radius: 16px;
+  padding: 24px 16px;
+  max-width: 1100px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
