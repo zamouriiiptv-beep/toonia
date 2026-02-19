@@ -908,3 +908,37 @@ header {
     font-size: 20px;
   }
 }
+
+
+
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-search {
+  flex: 1;
+  max-width: 260px;
+}
+
+.section-search input {
+  width: 100%;
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 20px;
+  background-color: #1f2026;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+}
+
+.section-search input::placeholder {
+  color: #9a9a9a;
+}
+
+.section-search input:focus {
+  border-color: var(--accent-color);
+}
