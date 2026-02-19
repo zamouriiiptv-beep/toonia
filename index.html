@@ -336,12 +336,23 @@
 <section class="most-watched">
 
   <div class="section-header">
+
     <h2>الأكثر مشاهدة</h2>
+
+    <!-- خانة البحث (فعليّة) -->
+    <div class="section-search">
+      <input
+        type="search"
+        placeholder="ابحث في الأكثر مشاهدة..."
+        aria-label="بحث في الأكثر مشاهدة"
+        data-search-target="mostWatchedSlider">
+    </div>
 
     <div class="section-arrows">
       <button class="arrow prev" data-target="mostWatchedSlider" aria-label="السابق">‹</button>
       <button class="arrow next" data-target="mostWatchedSlider" aria-label="التالي">›</button>
     </div>
+
   </div>
 
   <div class="slider-wrapper">
