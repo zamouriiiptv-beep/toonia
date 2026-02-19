@@ -763,7 +763,7 @@ header {
 /* ================================== */
 
 .site-footer {
-  background-color: #282832; /* لون خلفية الموقع */
+  background-color: var(--site-bg-color); /* نفس لون خلفية الموقع */
   padding: 32px 16px 24px;
   text-align: center;
   color: #bdbdbd;
