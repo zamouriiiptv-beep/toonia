@@ -877,7 +877,20 @@ header {
     font-size: 20px;
   }
 }
+/* ============================== */
+/* Footer Site Name (FIX)         */
+/* ============================== */
 
+.footer-site-name {
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff;          /* أبيض واضح */
+  letter-spacing: 0.3px;
+}
+
+.footer-site-name span {
+  color: #ffb703;          /* لون البراند */
+}
 
 
 
