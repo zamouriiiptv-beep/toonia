@@ -604,7 +604,6 @@ header {
     color: #2F2E33;
 }
 
-
 /* ================================== */
 /*  أزرار الإجراءات السريعة            */
 /* ================================== */
@@ -638,7 +637,6 @@ header {
     color: var(--accent-color);
 }
 
-
 /* ================================== */
 /*  رابط المجتمع                       */
 /* ================================== */
@@ -658,7 +656,6 @@ header {
 .ani-community-link:hover {
     filter: brightness(1.15);
 }
-
 
 /* ================================== */
 /*  قائمة التنقل                       */
@@ -690,18 +687,9 @@ header {
     box-shadow: inset 4px 0 var(--accent-color);
 }
 
-
-
-
-
-
 /* =============================== */
 /*  Section Header & Arrows        */
 /* =============================== */
-
-/* ============================== */
-/*  Section Header                */
-/* ============================== */
 
 .section-header {
   display: flex;
@@ -764,7 +752,131 @@ header {
   border-color: #f5c518;            /* اختياري */
 }
 
+/* ================================== */
+/* Footer                             */
+/* الفوتر: تنويه قانوني + سوشيال + حقوق */
+/* ================================== */
 
+.site-footer {
+  background: #0f0f0f;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 32px 16px 24px;
+  text-align: center;
+  color: #aaa;
+  font-size: 14px;
+}
+
+/* ============================== */
+/* Disclaimer                     */
+/* ============================== */
+
+.footer-disclaimer {
+  max-width: 720px;
+  margin: 0 auto 24px;
+  line-height: 1.6;
+  font-size: 13px;
+  color: #888;
+}
+
+/* ============================== */
+/* Social Icons                   */
+/* ============================== */
+
+.footer-social {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.footer-social a {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 18px;
+  transition: background-color 0.25s ease,
+              color 0.25s ease,
+              border-color 0.25s ease;
+}
+
+.footer-social a:hover {
+  background-color: #ffb703;
+  color: #000;
+  border-color: #ffb703;
+}
+
+/* ============================== */
+/* Bottom Section                 */
+/* ============================== */
+
+.footer-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-brand {
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.brand-dot {
+  font-size: 20px;
+  vertical-align: middle;
+}
+
+/* ============================== */
+/* Copyright                      */
+/* ============================== */
+
+.footer-copy {
+  font-size: 13px;
+  color: #999;
+}
+
+/* ============================== */
+/* Footer Links                   */
+/* ============================== */
+
+.footer-links {
+  font-size: 13px;
+}
+
+.footer-links a {
+  color: #ccc;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+  color: #ffb703;
+}
+
+.footer-links span {
+  margin: 0 6px;
+  color: #555;
+}
+
+/* ============================== */
+/* Responsive tweaks              */
+/* ============================== */
+
+@media (max-width: 480px) {
+  .footer-disclaimer {
+    font-size: 12px;
+  }
+
+  .footer-brand {
+    font-size: 20px;
+  }
+}
 
 
 
