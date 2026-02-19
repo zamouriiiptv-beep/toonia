@@ -757,11 +757,11 @@ header {
 /* ================================== */
 
 .site-footer {
-  background: #24262b; /* رمادي داكن متناسق مع الموقع */
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: #24262b; /* رمادي داكن أغمق قليلًا من الموقع */
+  border-top: 1px solid rgba(255, 255, 255, 0.10);
   padding: 32px 16px 24px;
   text-align: center;
-  color: #aaa;
+  color: #b5b5b5;
   font-size: 14px;
 }
 
