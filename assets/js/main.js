@@ -33,32 +33,33 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     /* ================================== */
-    /*  أسهم السلايدر (عام لكل الأقسام)  */
-    /* ================================== */
+/*  أسهم السلايدر (عام لكل الأقسام)  */
+/* ================================== */
 
-    document.querySelectorAll('.section-arrows .arrow').forEach(btn => {
+document.querySelectorAll('.section-arrows .arrow').forEach(btn => {
 
-        btn.addEventListener('click', () => {
+    btn.addEventListener('click', () => {
 
-            const sliderId = btn.dataset.target;
-            const slider = document.getElementById(sliderId);
-            if (!slider) return;
+        const sliderId = btn.dataset.target;
+        const slider = document.getElementById(sliderId);
+        if (!slider) return;
 
-            const card = slider.querySelector('.episode-card, .card');
-            if (!card) return;
+        const slide = slider.querySelector('.slide');
+        if (!slide) return;
 
-            const gap = parseInt(getComputedStyle(slider).gap) || 0;
-            const scrollAmount = card.offsetWidth + gap;
+        const gap = parseInt(getComputedStyle(slider).gap) || 0;
+        const scrollAmount = slide.offsetWidth + gap;
 
-            if (btn.classList.contains('prev')) {
-                slider.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-            } else {
-                slider.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-            }
-
+        slider.scrollBy({
+            left: btn.classList.contains('next')
+                ? scrollAmount
+                : -scrollAmount,
+            behavior: 'smooth'
         });
 
     });
+
+});
 
     /* ================================== */
     /*  Slider Dots (عام لكل السلايدرات) */
