@@ -1,1 +1,174 @@
-.
+/* █████████████████████████████████████████ */
+/*  hero.css                                 */
+/*  قسم الهيرو (Hero Section)                */
+/* █████████████████████████████████████████ */
+
+
+/* █████████████████████████████████████████ */
+/*  الحاوية الرئيسية للهيرو                 */
+/* █████████████████████████████████████████ */
+
+.hero {
+  position: relative;
+  width: 100%;
+  max-height: 500px;
+  overflow: hidden;
+  background-color: #000;
+}
+
+
+/* ───────────────────────────────────── */
+/*  تراكب بصري (Vignette Effect)          */
+/* ───────────────────────────────────── */
+/* يعطي تركيزًا بصريًا في منتصف الصورة */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0) 55%,
+    rgba(0, 0, 0, 0.45) 100%
+  );
+}
+
+
+/* ───────────────────────────────────── */
+/*  تدرج علوي/سفلي لتحسين وضوح النص       */
+/* ───────────────────────────────────── */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.15),
+    rgba(0, 0, 0, 0.65)
+  );
+}
+
+
+/* █████████████████████████████████████████ */
+/*  السلايدر داخل الهيرو                    */
+/* █████████████████████████████████████████ */
+
+/* حاوية السلايدر */
+.hero-slider {
+  position: relative;
+  height: 420px;
+}
+
+/* السلايد الواحد */
+.hero-slide {
+  position: absolute;
+  inset: 0;
+
+  opacity: 0;
+  z-index: 1;
+
+  transition: opacity 0.6s ease;
+  will-change: opacity;
+}
+
+/* السلايد النشط */
+.hero-slide.active {
+  opacity: 1;
+  z-index: 2;
+}
+
+/* صورة السلايد */
+.hero-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+
+/* █████████████████████████████████████████ */
+/*  محتوى الهيرو (نص / أزرار)              */
+/* █████████████████████████████████████████ */
+
+.hero-content {
+  position: relative;
+  z-index: 6;
+}
+
+
+/* █████████████████████████████████████████ */
+/*  نقاط التنقّل الخاصة بالهيرو            */
+/* █████████████████████████████████████████ */
+
+/* حاوية النقاط */
+.hero-dots {
+  position: absolute;
+  top: 50%;
+  right: 20px; /* دعم RTL */
+
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  z-index: 10;
+}
+
+/* زر النقطة */
+.hero-dots button {
+  width: 10px;
+  height: 10px;
+
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+
+  background-color: #ffffff;
+  opacity: 0.9;
+
+  cursor: pointer;
+  transition:
+    transform 0.25s ease,
+    background-color 0.25s ease,
+    opacity 0.25s ease;
+}
+
+/* النقطة النشطة */
+.hero-dots button.active {
+  background-color: var(--accent-color);
+  opacity: 1;
+  transform: scale(1.25);
+}
+
+/* تأثير التحويم */
+.hero-dots button:hover {
+  opacity: 1;
+}
+
+
+/* █████████████████████████████████████████ */
+/*  تحسين العرض على الشاشات الصغيرة        */
+/* █████████████████████████████████████████ */
+
+@media (max-width: 768px) {
+
+  /* تقليل ارتفاع الهيرو */
+  .hero-slider {
+    height: 42vh;
+  }
+
+  /* تحجيم النقاط */
+  .hero-dots {
+    right: 12px;
+  }
+
+  .hero-dots button {
+    width: 9px;
+    height: 9px;
+  }
+}
