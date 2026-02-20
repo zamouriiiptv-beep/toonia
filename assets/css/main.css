@@ -942,3 +942,19 @@ header {
 .section-search input:focus {
   border-color: var(--accent-color);
 }
+
+/* =============================== */
+/*  الخط الافتراضي للموقع بالكامل */
+/* =============================== */
+:root {
+  --font-main: 'Cairo', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+html {
+  font-family: var(--font-main);
+}
+
+body {
+  font-family: inherit;
+  font-weight: 400;
+}
