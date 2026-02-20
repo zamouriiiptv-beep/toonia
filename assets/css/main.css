@@ -997,15 +997,15 @@ body {
     max-width: none;
   }
 }
+
 /* ================================ */
-/*  Genres — Your Original Colors  */
+/*  Genres — Example Style          */
 /* ================================ */
 
 .genres {
   display: flex;
   gap: 10px;
   overflow-x: auto;
-  padding-bottom: 4px;
   scrollbar-width: none;
 }
 
@@ -1013,7 +1013,6 @@ body {
   display: none;
 }
 
-/* زر النوع */
 .genre {
   background: rgba(0, 0, 0, 0.04);
   border: 1px solid transparent;
@@ -1023,7 +1022,7 @@ body {
   font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
-  transition: background .2s ease, transform .2s ease, border-color .2s ease;
+  transition: background .2s ease, transform .2s ease;
 }
 
 /* hover */
@@ -1032,18 +1031,7 @@ body {
   transform: translateY(-1px);
 }
 
-/* الحالة النشطة (بلون الموقع فقط) */
-.genre.active {
-  background: var(--accent-color);
-  color: #000;
-  border-color: var(--accent-color);
-  transform: none;
-}
-
-/* ================================ */
-/*  ألوان الأنواع — كما هي          */
-/* ================================ */
-
+/* ألوان الأنواع (نص + border فقط) */
 .genre.all {
   color: #6c757d;
   border-color: rgba(108, 117, 125, 0.35);
