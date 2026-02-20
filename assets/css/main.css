@@ -931,6 +931,16 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 14px;
+  margin-bottom: 14px;
+}
+
+/* العنوان */
+.section-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 38px; /* مطابق تمامًا لارتفاع البحث */
+  white-space: nowrap;
 }
 
 /* حاوية البحث */
@@ -938,13 +948,14 @@ body {
   position: relative;
   width: 100%;
   max-width: 260px;
+  height: 38px;
   flex-shrink: 0;
 }
 
 /* أيقونة البحث */
 .section-search .search-icon {
   position: absolute;
-  right: 14px;              /* RTL */
+  inset-inline-end: 14px;   /* يدعم RTL و LTR */
   top: 50%;
   transform: translateY(-50%);
   font-size: 15px;
@@ -955,11 +966,12 @@ body {
 /* حقل البحث */
 .section-search input {
   width: 100%;
-  height: 38px;
+  height: 100%;
 
-  padding: 0 40px 0 14px;   /* مساحة للأيقونة */
+  padding-inline-end: 40px; /* مساحة للأيقونة */
+  padding-inline-start: 14px;
+
   border-radius: 20px;
-
   background-color: #1f2026;
   border: 1px solid rgba(255, 255, 255, 0.12);
 
@@ -967,8 +979,10 @@ body {
   font-size: 14px;
   font-family: var(--font-main);
 
+  box-sizing: border-box;
   outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  will-change: box-shadow;
 }
 
 /* placeholder */
@@ -983,12 +997,13 @@ body {
 }
 
 /* =============================== */
-/*  تحسين العرض على الهواتف           */
+/*  تحسين العرض على الهواتف        */
 /* =============================== */
 
 @media (max-width: 768px) {
   .section-header {
-    flex-wrap: wrap;
+    flex-direction: column;   /* بدل wrap */
+    align-items: stretch;     /* عرض كامل */
     gap: 10px;
   }
 
@@ -997,9 +1012,10 @@ body {
     max-width: none;
   }
 }
-/* ================================ */
-/*  Genres — Example Style          */
-/* ================================ */
+
+/* =============================== */
+/*  Genres                         */
+/* =============================== */
 
 .genres {
   display: flex;
@@ -1024,13 +1040,12 @@ body {
   transition: background .2s ease, transform .2s ease;
 }
 
-/* hover */
 .genre:hover {
   background: rgba(0, 0, 0, 0.07);
   transform: translateY(-1px);
 }
 
-/* ألوان الأنواع (نص + border فقط) */
+/* ألوان الأنواع */
 .genre.all {
   color: #6c757d;
   border-color: rgba(108, 117, 125, 0.35);
