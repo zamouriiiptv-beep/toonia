@@ -22,17 +22,40 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- ================================== -->
-    <!--  ملفات CSS الخارجية                -->
-    <!-- ================================== -->
+<!--  ملفات CSS الخارجية                -->
+<!-- ================================== -->
 
-    <!-- مكتبة Font Awesome للأيقونات -->
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
+<!-- Font Awesome Icons -->
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+/>
 
-    <!-- ملف التنسيقات الرئيسي للموقع -->
-    <link rel="stylesheet" href="./assets/css/main.css">
+<!-- ================================== -->
+<!--  ملفات CSS الخاصة بالموقع           -->
+<!-- ================================== -->
+
+<!-- الأساس العام (Variables + Reset) -->
+<link rel="stylesheet" href="assets/css/base.css">
+
+<!-- تخطيط الموقع العام (Header / Footer) -->
+<link rel="stylesheet" href="assets/css/layout.css">
+
+<!-- مكونات الواجهة القابلة لإعادة الاستخدام -->
+<link rel="stylesheet" href="assets/css/components.css">
+
+<!-- نظام التنقّل (Sidebar / Navigation) -->
+<link rel="stylesheet" href="assets/css/navigation.css">
+
+<!-- تنسيقات الأقسام -->
+<link rel="stylesheet" href="assets/css/sections.css">
+
+<!-- قسم الهيرو -->
+<link rel="stylesheet" href="assets/css/hero.css">
+
+<!-- نظام السلايدر القابل لإعادة الاستخدام -->
+<link rel="stylesheet" href="assets/css/slider.css">
+
 </head>
 <body>
 
@@ -690,8 +713,17 @@
 <!--  ملفات JavaScript                  -->
 <!-- ================================== -->
 
-<script src="./assets/js/hero-slider.js" defer></script>
-<script src="./assets/js/main.js" defer></script>
+<!-- التهيئة العامة (إن وُجدت) -->
+<script src="assets/js/base.js" defer></script>
+
+<!-- نظام التنقّل (القائمة + البحث) -->
+<script src="assets/js/navigation.js" defer></script>
+
+<!-- السلايدر العام (أسهم + dots) -->
+<script src="assets/js/slider.js" defer></script>
+
+<!-- سلايدر الهيرو فقط -->
+<script src="assets/js/hero.js" defer></script>
 
 </body>
 </html>
