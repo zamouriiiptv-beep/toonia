@@ -998,7 +998,7 @@ body {
   }
 }
 /* ================================ */
-/*  Genres فقط                      */
+/*  Genres — Example Style          */
 /* ================================ */
 
 .genres {
@@ -1006,7 +1006,6 @@ body {
   gap: 10px;
   overflow-x: auto;
   scrollbar-width: none;
-  padding: 4px 0;
 }
 
 .genres::-webkit-scrollbar {
@@ -1014,30 +1013,50 @@ body {
 }
 
 .genre {
-  border: none;
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid transparent;
   padding: 7px 16px;
   border-radius: 999px;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
-  color: #fff;
-  background-color: #999; /* افتراضي */
-  opacity: 0.95;
-  transition: background-color 0.2s ease,
-              transform 0.2s ease,
-              opacity 0.2s ease;
+  transition: background .2s ease, transform .2s ease;
 }
 
+/* hover */
 .genre:hover {
+  background: rgba(0, 0, 0, 0.07);
   transform: translateY(-1px);
-  opacity: 1;
 }
 
-/* ألوان الأنواع */
-.genre.all       { background-color: #6c757d; }
-.genre.action    { background-color: #e74c3c; }
-.genre.adventure { background-color: #3498db; }
-.genre.comedy    { background-color: #f1c40f; color: #000; }
-.genre.drama     { background-color: #9b59b6; }
-.genre.fantasy   { background-color: #1abc9c; }
+/* ألوان الأنواع (نص + border فقط) */
+.genre.all {
+  color: #6c757d;
+  border-color: rgba(108, 117, 125, 0.35);
+}
+
+.genre.action {
+  color: #e74c3c;
+  border-color: rgba(231, 76, 60, 0.35);
+}
+
+.genre.adventure {
+  color: #3498db;
+  border-color: rgba(52, 152, 219, 0.35);
+}
+
+.genre.comedy {
+  color: #f1c40f;
+  border-color: rgba(241, 196, 15, 0.45);
+}
+
+.genre.drama {
+  color: #9b59b6;
+  border-color: rgba(155, 89, 182, 0.35);
+}
+
+.genre.fantasy {
+  color: #1abc9c;
+  border-color: rgba(26, 188, 156, 0.35);
+}
