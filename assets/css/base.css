@@ -1,1 +1,232 @@
-.
+/* █████████████████████████████████████████ */
+/*  base.css                                 */
+/*  الأساس العام لتنسيقات الموقع             */
+/*  (يُحمَّل في جميع الصفحات)               */
+/* █████████████████████████████████████████ */
+
+
+/* ───────────────────────────────────── */
+/*  المتغيرات العامة (Design Tokens)     */
+/* ───────────────────────────────────── */
+/* تُستخدم لتوحيد الألوان والخطوط وسهولة التعديل لاحقًا */
+:root {
+
+  /* لون خلفية الموقع العامة */
+  --site-bg-color: #2C2D33;
+
+  /* لون خلفيات الأقسام والبطاقات */
+  --section-bg-color: #26272d;
+
+  /* ألوان الهوية */
+  --accent-color: #F5C518;
+  --accent-hover-color: #d0a413;
+  --accent-soft-color: #f9e88f;
+
+  /* الخط الافتراضي للموقع */
+  --font-main: 'Cairo', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+
+/* ───────────────────────────────────── */
+/*  Reset (إعادة ضبط القيم الافتراضية)  */
+/* ───────────────────────────────────── */
+/* إزالة الهوامش والحشوات الافتراضية */
+/* وتوحيد حساب الأحجام */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+/* ───────────────────────────────────── */
+/*  إعدادات المستند الأساسية             */
+/* ───────────────────────────────────── */
+
+/* تطبيق الخط الافتراضي */
+html {
+  font-family: var(--font-main);
+}
+
+/* إعدادات جسم الصفحة */
+body {
+  background-color: #2F2E33;
+  color: #ffffff;
+  font-family: inherit;
+  font-weight: 400;
+}
+
+
+/* █████████████████████████████████████████ */
+/*  رأس الأقسام (Component عام)              */
+/* █████████████████████████████████████████ */
+
+/* الحاوية العامة لرأس القسم */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 14px;
+  flex-wrap: nowrap;
+}
+
+/* عنوان القسم */
+.section-header h2 {
+  font-size: 20px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+
+/* ───────────────────────────────────── */
+/*  البحث داخل رأس القسم                 */
+/* ───────────────────────────────────── */
+
+/* حاوية البحث */
+.section-search {
+  position: relative;
+  width: 100%;
+  max-width: 260px;
+  flex-shrink: 0;
+}
+
+/* أيقونة البحث */
+.section-search .search-icon {
+  position: absolute;
+  right: 14px; /* دعم الاتجاه RTL */
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 15px;
+  color: #9a9a9a;
+  pointer-events: none;
+}
+
+/* حقل الإدخال */
+.section-search input {
+  width: 100%;
+  height: 38px;
+  padding: 0 40px 0 14px;
+  border-radius: 20px;
+
+  background-color: #1f2026;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  color: #ffffff;
+  font-size: 14px;
+  font-family: var(--font-main);
+
+  outline: none;
+  transition: border-color 0.2s ease,
+              box-shadow 0.2s ease;
+}
+
+/* نص placeholder */
+.section-search input::placeholder {
+  color: #9a9a9a;
+}
+
+/* حالة التركيز */
+.section-search input:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(245, 197, 24, 0.15);
+}
+
+
+/* ───────────────────────────────────── */
+/*  تحسين العرض على الهواتف              */
+/* ───────────────────────────────────── */
+@media (max-width: 768px) {
+
+  /* السماح بتكديس عناصر العنوان */
+  .section-header {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  /* جعل البحث بعرض كامل */
+  .section-search {
+    max-width: none;
+  }
+}
+
+
+/* █████████████████████████████████████████ */
+/*  شريط الأنواع (Genres Component)         */
+/* █████████████████████████████████████████ */
+
+/* حاوية أزرار الأنواع */
+.genres {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+}
+
+/* إخفاء شريط التمرير في Chrome */
+.genres::-webkit-scrollbar {
+  display: none;
+}
+
+/* زر النوع */
+.genre {
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid transparent;
+  padding: 7px 16px;
+  border-radius: 999px;
+
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+
+  transition: background 0.2s ease,
+              transform 0.2s ease;
+}
+
+/* تأثير التحويم */
+.genre:hover {
+  background: rgba(0, 0, 0, 0.07);
+  transform: translateY(-1px);
+}
+
+
+/* ───────────────────────────────────── */
+/*  ألوان الأنواع                         */
+/* ───────────────────────────────────── */
+
+/* الكل */
+.genre.all {
+  color: #6c757d;
+  border-color: rgba(108, 117, 125, 0.35);
+}
+
+/* أكشن */
+.genre.action {
+  color: #e74c3c;
+  border-color: rgba(231, 76, 60, 0.35);
+}
+
+/* مغامرة */
+.genre.adventure {
+  color: #3498db;
+  border-color: rgba(52, 152, 219, 0.35);
+}
+
+/* كوميديا */
+.genre.comedy {
+  color: #f1c40f;
+  border-color: rgba(241, 196, 15, 0.45);
+}
+
+/* دراما */
+.genre.drama {
+  color: #9b59b6;
+  border-color: rgba(155, 89, 182, 0.35);
+}
+
+/* فانتازيا */
+.genre.fantasy {
+  color: #1abc9c;
+  border-color: rgba(26, 188, 156, 0.35);
+}
