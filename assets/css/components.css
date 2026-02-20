@@ -1,1 +1,188 @@
-.
+/* █████████████████████████████████████████ */
+/*  components.css                           */
+/*  مكوّنات الواجهة القابلة لإعادة الاستخدام */
+/* █████████████████████████████████████████ */
+
+
+/* █████████████████████████████████████████ */
+/*  أزرار الأسهم الدائرية (Slider Arrows)   */
+/* █████████████████████████████████████████ */
+
+/* حاوية الأسهم */
+.section-arrows {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* زر السهم */
+.section-arrows .arrow {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  background-color: #1b1b1b;
+
+  color: #ffffff;
+  font-size: 18px;
+  line-height: 1;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+/* تأثير التحويم */
+.section-arrows .arrow:hover {
+  color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+
+/* █████████████████████████████████████████ */
+/*  أزرار النقاط (Dots Navigation)           */
+/* █████████████████████████████████████████ */
+
+/* حاوية النقاط */
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+/* النقطة */
+.dots span {
+  width: 8px;
+  height: 8px;
+
+  background: #555;
+  border-radius: 50%;
+  opacity: 0.4;
+
+  transition: opacity 0.2s ease,
+              background-color 0.2s ease;
+}
+
+/* الحالة النشطة */
+.dots span.active {
+  background: #ffffff;
+  opacity: 1;
+}
+
+
+/* █████████████████████████████████████████ */
+/*  الشارات (Badges)                         */
+/* █████████████████████████████████████████ */
+
+/* شارة عامة */
+.badge {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+
+  background: #000;
+  color: #fff;
+
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  line-height: 1;
+}
+
+/* شارة بارزة */
+.badge.highlight {
+  background: var(--accent-color);
+  color: #000;
+}
+
+
+/* █████████████████████████████████████████ */
+/*  الأزرار العامة (Buttons)                 */
+/* █████████████████████████████████████████ */
+
+/* زر أساسي */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 8px 18px;
+  border-radius: 20px;
+
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+
+  border: none;
+  outline: none;
+
+  transition: background-color 0.2s ease,
+              transform 0.2s ease;
+}
+
+/* زر بلون الهوية */
+.btn-primary {
+  background-color: var(--accent-color);
+  color: #000;
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-hover-color);
+  transform: translateY(-2px);
+}
+
+/* زر ثانوي */
+.btn-secondary {
+  background-color: #1f2026;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+
+/* █████████████████████████████████████████ */
+/*  بطاقات عامة (Cards Base)                */
+/* █████████████████████████████████████████ */
+
+/* بطاقة أساسية */
+.card {
+  background-color: var(--section-bg-color);
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* صورة داخل البطاقة */
+.card img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+
+/* █████████████████████████████████████████ */
+/*  روابط تفاعلية عامة                      */
+/* █████████████████████████████████████████ */
+
+.link {
+  color: #d0d0d0;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: var(--accent-color);
+}
