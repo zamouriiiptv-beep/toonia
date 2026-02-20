@@ -1,132 +1,54 @@
 'use strict';
 
-/* ===================================== */
-/*  انتظار تحميل الصفحة بالكامل          */
-/* ===================================== */
+document.addEventListener('DOMContentLoaded', () => {
 
-document.addEventListener('DOMContentLoaded', function () {
+  const hero = document.querySelector('.hero');
+  if (!hero) return;
 
-    const body = document.body;
+  const slides = hero.querySelectorAll('.hero-slide');
+  const dotsWrapper = hero.querySelector('.hero-dots');
 
-    /* ================================= */
-    /*  التحكم في فتح/إغلاق القائمة      */
-    /* ================================= */
+  if (slides.length < 2 || !dotsWrapper) return;
 
-    const menuToggle = document.querySelector('.menu-toggle');
+  let current = 0;
+  const delay = 4000;
 
-    if (menuToggle) {
-        menuToggle.addEventListener('click', function () {
-            body.classList.toggle('menu-open');
-        });
-    }
+  slides.forEach(s => s.classList.remove('active'));
+  slides[0].classList.add('active');
 
-    /* ================================= */
-    /*  زر البحث                         */
-    /* ================================= */
+  dotsWrapper.innerHTML = '';
+  slides.forEach((_, i) => {
+    const dot = document.createElement('button');
+    if (i === 0) dot.classList.add('active');
 
-    const searchBtn = document.querySelector('.search-btn');
-
-    if (searchBtn) {
-        searchBtn.addEventListener('click', function () {
-            body.classList.toggle('search-open');
-        });
-    }
-
-    /* ================================== */
-/*  أسهم السلايدر (عام لكل الأقسام)  */
-/* ================================== */
-
-document.querySelectorAll('.section-arrows .arrow').forEach(btn => {
-
-    btn.addEventListener('click', () => {
-
-        const sliderId = btn.dataset.target;
-        const slider = document.getElementById(sliderId);
-        if (!slider) return;
-
-        const slide = slider.querySelector('.slide');
-        if (!slide) return;
-
-        const gap = parseInt(getComputedStyle(slider).gap) || 0;
-        const scrollAmount = slide.offsetWidth + gap;
-
-        slider.scrollBy({
-            left: btn.classList.contains('next')
-                ? scrollAmount
-                : -scrollAmount,
-            behavior: 'smooth'
-        });
-
+    dot.addEventListener('click', () => {
+      goTo(i);
+      reset();
     });
 
-});
+    dotsWrapper.appendChild(dot);
+  });
 
-    /* ================================== */
-    /*  Slider Dots (عام لكل السلايدرات) */
-    /* ================================== */
+  const dots = dotsWrapper.querySelectorAll('button');
+  let interval = setInterval(next, delay);
 
-    document.querySelectorAll('.slider-dots').forEach(dotsContainer => {
+  function goTo(index) {
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
 
-        const sliderId = dotsContainer.getAttribute('data-slider');
-        const slider = document.getElementById(sliderId);
-        if (!slider) return;
+    current = index;
 
-        const wrapper = slider.closest('.slider-wrapper');
-        let dots = [];
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+  }
 
-        function createDots() {
-            dotsContainer.innerHTML = '';
-            dots = [];
+  function next() {
+    goTo((current + 1) % slides.length);
+  }
 
-            const wrapperWidth = wrapper.offsetWidth;
-            const totalWidth = slider.scrollWidth;
-            const pages = Math.ceil(totalWidth / wrapperWidth);
-
-            if (pages <= 1) {
-                dotsContainer.style.display = 'none';
-                return;
-            }
-
-            dotsContainer.style.display = 'flex';
-
-            for (let i = 0; i < pages; i++) {
-                const dot = document.createElement('button');
-
-                if (i === 0) dot.classList.add('active');
-
-                dot.addEventListener('click', () => {
-                    slider.scrollTo({
-                        left: i * wrapperWidth,
-                        behavior: 'smooth'
-                    });
-                });
-
-                dotsContainer.appendChild(dot);
-                dots.push(dot);
-            }
-        }
-
-        function updateActiveDot() {
-            const wrapperWidth = wrapper.offsetWidth;
-            const index = Math.round(slider.scrollLeft / wrapperWidth);
-
-            dots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === index);
-            });
-        }
-
-        /* تشغيل */
-        createDots();
-
-        slider.addEventListener('scroll', () => {
-            requestAnimationFrame(updateActiveDot);
-        });
-
-        window.addEventListener('resize', () => {
-            createDots();
-            updateActiveDot();
-        });
-
-    });
+  function reset() {
+    clearInterval(interval);
+    interval = setInterval(next, delay);
+  }
 
 });
