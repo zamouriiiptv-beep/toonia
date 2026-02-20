@@ -907,40 +907,6 @@ header {
   }
 }
 
-
-
-
-.section-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.section-search {
-  flex: 1;
-  max-width: 260px;
-}
-
-.section-search input {
-  width: 100%;
-  height: 40px;
-  padding: 0 14px;
-  border-radius: 20px;
-  background-color: #1f2026;
-  border: 1px solid rgba(255,255,255,0.12);
-  color: #fff;
-  font-size: 14px;
-  outline: none;
-}
-
-.section-search input::placeholder {
-  color: #9a9a9a;
-}
-
-.section-search input:focus {
-  border-color: var(--accent-color);
-}
-
 /* =============================== */
 /*  الخط الافتراضي للموقع بالكامل */
 /* =============================== */
@@ -955,4 +921,79 @@ html {
 body {
   font-family: inherit;
   font-weight: 400;
+}
+/* ================================== */
+/*  خانة البحث داخل عنوان القسم        */
+/* ================================== */
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+/* حاوية البحث */
+.section-search {
+  position: relative;
+  width: 100%;
+  max-width: 260px;
+  flex-shrink: 0;
+}
+
+/* أيقونة البحث */
+.section-search .search-icon {
+  position: absolute;
+  right: 14px;              /* RTL */
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 15px;
+  color: #9a9a9a;
+  pointer-events: none;
+}
+
+/* حقل البحث */
+.section-search input {
+  width: 100%;
+  height: 38px;
+
+  padding: 0 40px 0 14px;   /* مساحة للأيقونة */
+  border-radius: 20px;
+
+  background-color: #1f2026;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  color: #ffffff;
+  font-size: 14px;
+  font-family: var(--font-main);
+
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* placeholder */
+.section-search input::placeholder {
+  color: #9a9a9a;
+}
+
+/* focus */
+.section-search input:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(245, 197, 24, 0.15);
+}
+
+/* =============================== */
+/*  تحسين العرض على الهواتف           */
+/* =============================== */
+
+@media (max-width: 768px) {
+  .section-header {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .section-search {
+    width: 100%;
+    max-width: none;
+  }
 }
