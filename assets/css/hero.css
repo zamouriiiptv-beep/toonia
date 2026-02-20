@@ -172,16 +172,3 @@
     height: 9px;
   }
 }
-
-
-
-/* DEBUG — لا تحذفه إلا بعد النتيجة */
-.hero,
-.hero * {
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-.hero img {
-  display: block !important;
-}
