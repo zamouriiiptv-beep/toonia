@@ -1,1 +1,349 @@
-.
+/* █████████████████████████████████████████ */
+/*  layout.css                               */
+/*  تخطيط الموقع العام (Header / Sidebar / Footer) */
+/* █████████████████████████████████████████ */
+
+
+/* █████████████████████████████████████████ */
+/*  الهيدر الرئيسي (Site Header)             */
+/* █████████████████████████████████████████ */
+
+/* الحاوية العامة للهيدر */
+header {
+  background-color: #26262c;
+  min-height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 6px 16px;
+  border-bottom: 1px solid #222;
+
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* الجهة اليمنى (زر القائمة + الشعار) */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* زر فتح القائمة الجانبية */
+.menu-icon {
+  padding: 5px;
+  cursor: pointer;
+
+  color: #ffffff;
+  font-size: 22px;
+  transition: color 0.3s ease;
+}
+
+.menu-icon:hover {
+  color: var(--accent-color);
+}
+
+/* حاوية الشعار */
+.logo-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+/* صورة الشعار */
+.logo-box img {
+  height: 38px;
+  width: auto;
+  border-radius: 4px;
+}
+
+/* اسم الموقع */
+.site-name {
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: capitalize;
+}
+
+/* تلوين جزء من الاسم */
+.site-name span {
+  color: var(--accent-color);
+}
+
+/* الجهة اليسرى (بحث + تسجيل الدخول) */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* أيقونة البحث */
+.search-trigger {
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 18px;
+  transition: color 0.3s ease;
+}
+
+.search-trigger:hover {
+  color: var(--accent-hover-color);
+}
+
+/* زر تسجيل الدخول */
+.login-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 28px;
+  padding: 0 12px;
+
+  background-color: var(--accent-color);
+  color: #000;
+
+  font-size: 10px;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+
+  border-radius: 4px;
+  transition: background-color 0.2s ease,
+              transform 0.2s ease;
+}
+
+/* تأثير التحويم */
+.login-button:hover {
+  background-color: var(--accent-hover-color);
+  transform: translateY(-2px);
+}
+
+
+/* █████████████████████████████████████████ */
+/*  القائمة الجانبية (Sidebar System)        */
+/* █████████████████████████████████████████ */
+
+/* طبقة التعتيم الخلفية */
+.ani-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(47, 46, 51, 0.75);
+  z-index: 9998;
+  display: none;
+
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* الحاوية الرئيسية للقائمة */
+.ani-sidebar {
+  position: fixed;
+  top: 0;
+  right: -300px;
+
+  width: 280px;
+  height: 100vh;
+
+  background: rgba(47, 46, 51, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  direction: rtl;
+
+  border-left: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: -3px 0 10px rgba(0, 0, 0, 0.6);
+
+  transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* حالة الفتح */
+.ani-sidebar.active {
+  right: 0;
+}
+
+/* منطقة زر الإغلاق */
+.ani-close-wrapper {
+  padding: 20px 15px;
+}
+
+/* زر الإغلاق */
+.ani-close-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 8px 18px;
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.1);
+  color: #eee;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  font-size: 14px;
+  cursor: pointer;
+
+  transition: background-color 0.3s ease,
+              color 0.3s ease;
+}
+
+.ani-close-btn:hover {
+  background: var(--accent-color);
+  color: #2F2E33;
+}
+
+
+/* ───────────────────────────────────── */
+/*  روابط التنقل داخل القائمة            */
+/* ───────────────────────────────────── */
+
+.ani-nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.ani-nav-list li {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.ani-nav-list a {
+  display: block;
+  padding: 15px 25px;
+
+  color: #eee;
+  text-decoration: none;
+  font-size: 15px;
+
+  transition: background-color 0.2s ease,
+              color 0.2s ease;
+}
+
+.ani-nav-list a:hover {
+  background: rgba(245, 197, 24, 0.15);
+  color: var(--accent-color);
+  box-shadow: inset 4px 0 var(--accent-color);
+}
+
+
+/* █████████████████████████████████████████ */
+/*  الفوتر الرئيسي (Site Footer)             */
+/* █████████████████████████████████████████ */
+
+/* الحاوية العامة للفوتر */
+.site-footer {
+  background-color: var(--site-bg-color);
+  padding: 32px 16px 24px;
+  text-align: center;
+  color: #bdbdbd;
+  font-size: 14px;
+  position: relative;
+}
+
+/* فاصل علوي ناعم */
+.site-footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+/* النص القانوني */
+.footer-disclaimer {
+  max-width: 720px;
+  margin: 0 auto 24px;
+  line-height: 1.6;
+  font-size: 13px;
+  color: #b5b5b5;
+}
+
+/* أيقونات التواصل */
+.footer-social {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.footer-social a {
+  width: 40px;
+  height: 40px;
+
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #ffffff;
+  font-size: 18px;
+
+  transition: background-color 0.25s ease,
+              color 0.25s ease,
+              border-color 0.25s ease;
+}
+
+.footer-social a:hover {
+  background-color: var(--accent-color);
+  color: #000;
+  border-color: var(--accent-color);
+}
+
+/* الكتلة السفلية */
+.footer-bottom {
+  background-color: #26272d;
+  border-radius: 16px;
+  padding: 24px 16px;
+
+  max-width: 1100px;
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/* اسم الموقع في الفوتر */
+.footer-site-name {
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.footer-site-name span {
+  color: var(--accent-color);
+}
+
+/* حقوق النشر */
+.footer-copy {
+  font-size: 13px;
+  color: #b0b0b0;
+}
+
+/* روابط الفوتر */
+.footer-links {
+  font-size: 13px;
+}
+
+.footer-links a {
+  color: #d0d0d0;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+  color: var(--accent-color);
+}
