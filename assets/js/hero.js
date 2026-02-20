@@ -1,51 +1,132 @@
 'use strict';
 
 /* ===================================== */
-/*  hero.js                              */
-/*  سلايدر الهيرو                        */
+/*  انتظار تحميل الصفحة بالكامل          */
 /* ===================================== */
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function () {
 
-  const slides = document.querySelectorAll('.hero-slide');
-  const dots   = document.querySelectorAll('.hero-dots button');
+    const body = document.body;
 
-  if (!slides.length || !dots.length) return;
+    /* ================================= */
+    /*  التحكم في فتح/إغلاق القائمة      */
+    /* ================================= */
 
-  let index = 0;
-  let timer = null;
+    const menuToggle = document.querySelector('.menu-toggle');
 
-  function show(i) {
-    slides.forEach(s => s.classList.remove('active'));
-    dots.forEach(d => d.classList.remove('active'));
+    if (menuToggle) {
+        menuToggle.addEventListener('click', function () {
+            body.classList.toggle('menu-open');
+        });
+    }
 
-    slides[i].classList.add('active');
-    dots[i].classList.add('active');
-    index = i;
-  }
+    /* ================================= */
+    /*  زر البحث                         */
+    /* ================================= */
 
-  function next() {
-    show((index + 1) % slides.length);
-  }
+    const searchBtn = document.querySelector('.search-btn');
 
-  // auto-play
-  function start() {
-    stop();
-    timer = setInterval(next, 6000);
-  }
+    if (searchBtn) {
+        searchBtn.addEventListener('click', function () {
+            body.classList.toggle('search-open');
+        });
+    }
 
-  function stop() {
-    if (timer) clearInterval(timer);
-  }
+    /* ================================== */
+/*  أسهم السلايدر (عام لكل الأقسام)  */
+/* ================================== */
 
-  // ربط dots
-  dots.forEach((dot, i) => {
-    dot.addEventListener('click', () => {
-      show(i);
-      start();
+document.querySelectorAll('.section-arrows .arrow').forEach(btn => {
+
+    btn.addEventListener('click', () => {
+
+        const sliderId = btn.dataset.target;
+        const slider = document.getElementById(sliderId);
+        if (!slider) return;
+
+        const slide = slider.querySelector('.slide');
+        if (!slide) return;
+
+        const gap = parseInt(getComputedStyle(slider).gap) || 0;
+        const scrollAmount = slide.offsetWidth + gap;
+
+        slider.scrollBy({
+            left: btn.classList.contains('next')
+                ? scrollAmount
+                : -scrollAmount,
+            behavior: 'smooth'
+        });
+
     });
-  });
 
-  start();
+});
+
+    /* ================================== */
+    /*  Slider Dots (عام لكل السلايدرات) */
+    /* ================================== */
+
+    document.querySelectorAll('.slider-dots').forEach(dotsContainer => {
+
+        const sliderId = dotsContainer.getAttribute('data-slider');
+        const slider = document.getElementById(sliderId);
+        if (!slider) return;
+
+        const wrapper = slider.closest('.slider-wrapper');
+        let dots = [];
+
+        function createDots() {
+            dotsContainer.innerHTML = '';
+            dots = [];
+
+            const wrapperWidth = wrapper.offsetWidth;
+            const totalWidth = slider.scrollWidth;
+            const pages = Math.ceil(totalWidth / wrapperWidth);
+
+            if (pages <= 1) {
+                dotsContainer.style.display = 'none';
+                return;
+            }
+
+            dotsContainer.style.display = 'flex';
+
+            for (let i = 0; i < pages; i++) {
+                const dot = document.createElement('button');
+
+                if (i === 0) dot.classList.add('active');
+
+                dot.addEventListener('click', () => {
+                    slider.scrollTo({
+                        left: i * wrapperWidth,
+                        behavior: 'smooth'
+                    });
+                });
+
+                dotsContainer.appendChild(dot);
+                dots.push(dot);
+            }
+        }
+
+        function updateActiveDot() {
+            const wrapperWidth = wrapper.offsetWidth;
+            const index = Math.round(slider.scrollLeft / wrapperWidth);
+
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+        }
+
+        /* تشغيل */
+        createDots();
+
+        slider.addEventListener('scroll', () => {
+            requestAnimationFrame(updateActiveDot);
+        });
+
+        window.addEventListener('resize', () => {
+            createDots();
+            updateActiveDot();
+        });
+
+    });
 
 });
