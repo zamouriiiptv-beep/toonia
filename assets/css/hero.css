@@ -139,6 +139,7 @@
 
 
 
-
-.hero { background: red !important; }
-.hero-slider { background: blue !important; }
+.hero {
+  height: 300px !important;
+  background: red !important;
+}
