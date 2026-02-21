@@ -2,7 +2,9 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  // Get index of slide closest to the horizontal center of the slider viewport
+  /* ============================== */
+  /*  تحديد الشريحة حسب المركز     */
+  /* ============================== */
   function getIndexByCenter(slider) {
     const slides = slider.querySelectorAll('.slide');
     if (!slides.length) return 0;
@@ -27,7 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
     return closestIndex;
   }
 
-  // Sync active dot based on current active slide visually detected
+  /* ============================== */
+  /*  مزامنة النقاط                */
+  /* ============================== */
   function syncDots(slider) {
     const dotsContainer = document.querySelector(
       `.slider-dots[data-slider="${slider.id}"]`
@@ -46,7 +50,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // On arrow click, scroll to next/prev slide visually
+  /* ============================== */
+  /*  الأسهم                       */
+  /* ============================== */
   document.querySelectorAll('.section-arrows .arrow').forEach(btn => {
     btn.addEventListener('click', () => {
       const slider = document.getElementById(btn.dataset.target);
@@ -68,10 +74,17 @@ document.addEventListener('DOMContentLoaded', () => {
         block: 'nearest',
         inline: 'start'
       });
+
+      // 🔴 مهم: فرض التحديث حتى لو لم يحدث scroll
+      requestAnimationFrame(() => {
+        syncDots(slider);
+      });
     });
   });
 
-  // Setup pagination dots for each slider and sync on scroll interaction
+  /* ============================== */
+  /*  النقاط + التهيئة             */
+  /* ============================== */
   document.querySelectorAll('.slider-dots').forEach(dotsContainer => {
     const slider = document.getElementById(dotsContainer.dataset.slider);
     if (!slider) return;
@@ -81,7 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     slider._hasInteracted = false;
 
-    // Create one dot per slide
     dotsContainer.innerHTML = '';
 
     if (slides.length <= 1) {
@@ -103,17 +115,33 @@ document.addEventListener('DOMContentLoaded', () => {
           block: 'nearest',
           inline: 'start'
         });
+
+        // 🔴 نفس الفكرة هنا
+        requestAnimationFrame(() => {
+          syncDots(slider);
+        });
       });
 
       dotsContainer.appendChild(dot);
     });
 
-    // Force correct initial active dot on load
+    /* ============================== */
+    /*  فرض البداية الصحيحة          */
+    /* ============================== */
+    const firstSlide = slides[0];
+    firstSlide.scrollIntoView({
+      block: 'nearest',
+      inline: 'start'
+    });
+
+    slider._hasInteracted = false;
     syncDots(slider);
 
+    /* ============================== */
+    /*  التمرير اليدوي              */
+    /* ============================== */
     let ticking = false;
 
-    // On scroll, update active dot using getIndexByCenter
     slider.addEventListener('scroll', () => {
       slider._hasInteracted = true;
 
