@@ -3,47 +3,87 @@
 document.addEventListener('DOMContentLoaded', () => {
 
   /* ===================================== */
-  /*  تحديد الشريحة الأقرب إلى المنتصف     */
+  /*  أدوات مساعدة                         */
   /* ===================================== */
+
+  function getSlides(slider) {
+    return Array.from(slider.querySelectorAll('.slide'));
+  }
+
+  function getSliderRect(slider) {
+    return slider.getBoundingClientRect();
+  }
+
+  /* الشريحة الأقرب للمركز (للنقاط فقط) */
   function getIndexByCenter(slider) {
-    const slides = slider.querySelectorAll('.slide');
+    const slides = getSlides(slider);
     if (!slides.length) return 0;
 
-    const sliderRect = slider.getBoundingClientRect();
-    const sliderCenter = sliderRect.left + sliderRect.width / 2;
+    const sliderRect = getSliderRect(slider);
+    const center = sliderRect.left + sliderRect.width / 2;
 
-    let closestIndex = 0;
-    let minDistance = Infinity;
+    let index = 0;
+    let min = Infinity;
 
-    slides.forEach((slide, index) => {
-      const rect = slide.getBoundingClientRect();
-      const slideCenter = rect.left + rect.width / 2;
-      const distance = Math.abs(slideCenter - sliderCenter);
-
-      if (distance < minDistance) {
-        minDistance = distance;
-        closestIndex = index;
+    slides.forEach((slide, i) => {
+      const r = slide.getBoundingClientRect();
+      const c = r.left + r.width / 2;
+      const d = Math.abs(c - center);
+      if (d < min) {
+        min = d;
+        index = i;
       }
     });
 
-    return closestIndex;
+    return index;
+  }
+
+  /* ===================================== */
+  /*  الأسهم – منطق صحيح                   */
+  /* ===================================== */
+
+  function scrollNext(slider) {
+    const slides = getSlides(slider);
+    const sliderRect = getSliderRect(slider);
+
+    // أول شريحة غير مرئية بالكامل
+    const target = slides.find(slide => {
+      const r = slide.getBoundingClientRect();
+      return r.right > sliderRect.right + 1;
+    });
+
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+    }
+  }
+
+  function scrollPrev(slider) {
+    const slides = getSlides(slider);
+    const sliderRect = getSliderRect(slider);
+
+    // آخر شريحة غير مرئية بالكامل
+    const target = [...slides].reverse().find(slide => {
+      const r = slide.getBoundingClientRect();
+      return r.left < sliderRect.left - 1;
+    });
+
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+    }
   }
 
   /* ===================================== */
   /*  مزامنة النقاط                        */
   /* ===================================== */
-  function syncDots(slider) {
-    const dotsContainer = document.querySelector(
-      `.slider-dots[data-slider="${slider.id}"]`
-    );
-    if (!dotsContainer) return;
 
-    const dots = dotsContainer.querySelectorAll('button');
+  function syncDots(slider) {
+    const dotsWrap = document.querySelector(`.slider-dots[data-slider="${slider.id}"]`);
+    if (!dotsWrap) return;
+
+    const dots = dotsWrap.querySelectorAll('button');
     if (!dots.length) return;
 
-    const index = slider._hasInteracted
-      ? getIndexByCenter(slider)
-      : 0;
+    const index = slider._hasInteracted ? getIndexByCenter(slider) : 0;
 
     dots.forEach((dot, i) => {
       dot.classList.toggle('active', i === index);
@@ -51,109 +91,61 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ===================================== */
-  /*  الأسهم (Prev / Next)                 */
+  /*  ربط الأسهم                           */
   /* ===================================== */
+
   document.querySelectorAll('.section-arrows .arrow').forEach(btn => {
     btn.addEventListener('click', () => {
-
       const slider = document.getElementById(btn.dataset.target);
       if (!slider) return;
 
-      const slides = slider.querySelectorAll('.slide');
-      if (!slides.length) return;
-
       slider._hasInteracted = true;
 
-      let currentIndex = getIndexByCenter(slider);
-
-      /* ---- إصلاح سهم الرجوع ---- */
-      if (btn.classList.contains('prev')) {
-        const rect = slides[currentIndex].getBoundingClientRect();
-        const sliderRect = slider.getBoundingClientRect();
-
-        // إذا لم تكن الشريحة الحالية مصطفّة فعليًا للبداية
-        if (rect.left > sliderRect.left + 1 && currentIndex > 0) {
-          currentIndex -= 1;
-        }
+      if (btn.classList.contains('next')) {
+        scrollNext(slider);
+      } else {
+        scrollPrev(slider);
       }
 
-      const direction = btn.classList.contains('next') ? 1 : -1;
-
-      let targetIndex = currentIndex + direction;
-      targetIndex = Math.max(0, Math.min(slides.length - 1, targetIndex));
-
-      slides[targetIndex].scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-        inline: 'start'
-      });
-
-      // فرض تحديث النقاط حتى لو لم يحدث scroll فعلي
-      requestAnimationFrame(() => {
-        syncDots(slider);
-      });
+      requestAnimationFrame(() => syncDots(slider));
     });
   });
 
   /* ===================================== */
   /*  النقاط + التهيئة                     */
   /* ===================================== */
-  document.querySelectorAll('.slider-dots').forEach(dotsContainer => {
 
-    const slider = document.getElementById(dotsContainer.dataset.slider);
+  document.querySelectorAll('.slider-dots').forEach(dotsWrap => {
+    const slider = document.getElementById(dotsWrap.dataset.slider);
     if (!slider) return;
 
-    const slides = slider.querySelectorAll('.slide');
+    const slides = getSlides(slider);
     if (!slides.length) return;
 
     slider._hasInteracted = false;
-    dotsContainer.innerHTML = '';
+    dotsWrap.innerHTML = '';
 
-    if (slides.length <= 1) {
-      dotsContainer.style.display = 'none';
-      return;
-    }
-
-    dotsContainer.style.display = 'flex';
-
-    slides.forEach((_, index) => {
+    slides.forEach((_, i) => {
       const dot = document.createElement('button');
       dot.type = 'button';
 
       dot.addEventListener('click', () => {
         slider._hasInteracted = true;
-
-        slides[index].scrollIntoView({
-          behavior: 'smooth',
-          block: 'nearest',
-          inline: 'start'
-        });
-
-        requestAnimationFrame(() => {
-          syncDots(slider);
-        });
+        slides[i].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+        requestAnimationFrame(() => syncDots(slider));
       });
 
-      dotsContainer.appendChild(dot);
+      dotsWrap.appendChild(dot);
     });
 
-    /* ---- فرض البداية من أول شريحة ---- */
-    slides[0].scrollIntoView({
-      block: 'nearest',
-      inline: 'start'
-    });
-
-    slider._hasInteracted = false;
+    /* فرض البداية */
+    slides[0].scrollIntoView({ inline: 'start', block: 'nearest' });
     syncDots(slider);
 
-    /* ===================================== */
-    /*  التمرير اليدوي (Drag / Wheel)       */
-    /* ===================================== */
+    /* تمرير يدوي */
     let ticking = false;
-
     slider.addEventListener('scroll', () => {
       slider._hasInteracted = true;
-
       if (!ticking) {
         requestAnimationFrame(() => {
           syncDots(slider);
@@ -162,10 +154,6 @@ document.addEventListener('DOMContentLoaded', () => {
         ticking = true;
       }
     }, { passive: true });
-
-    window.addEventListener('resize', () => {
-      syncDots(slider);
-    });
   });
 
 });
