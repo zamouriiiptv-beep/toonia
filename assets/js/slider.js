@@ -7,82 +7,80 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* ─────────── مزامنة النقاط ─────────── */
-  function syncDots(slider) {
+  function getStep(slider) {
+    const slide = slider.querySelector('.slide');
+    if (!slide) return 0;
+
+    const gap = parseInt(getComputedStyle(slider).gap, 10) || 0;
+    return slide.offsetWidth + gap;
+  }
+
+  function syncDots(slider, step) {
     const dotsContainer = document.querySelector(
       `.slider-dots[data-slider="${slider.id}"]`
     );
     if (!dotsContainer) return;
 
-    const wrapper = slider.closest('.slider-wrapper');
     const dots = dotsContainer.querySelectorAll('button');
     if (!dots.length) return;
 
-    const index = Math.round(slider.scrollLeft / wrapper.offsetWidth);
-    dots.forEach((d, i) => d.classList.toggle('active', i === index));
+    const index = Math.round(slider.scrollLeft / step);
+    dots.forEach((dot, i) =>
+      dot.classList.toggle('active', i === index)
+    );
   }
 
-  /* ─────────── أسهم السلايدر ─────────── */
+  /* ─────────── الأسهم ─────────── */
   document.querySelectorAll('.section-arrows .arrow').forEach(btn => {
 
     btn.addEventListener('click', () => {
 
-      const sliderId = btn.dataset.target;
-      const slider = document.getElementById(sliderId);
+      const slider = document.getElementById(btn.dataset.target);
       if (!slider) return;
 
-      const slide = slider.querySelector('.slide');
-      if (!slide) return;
-
-      const gap = parseInt(getComputedStyle(slider).gap, 10) || 0;
-      const amount = slide.offsetWidth + gap;
+      const step = getStep(slider);
 
       slider.scrollBy({
-        left: btn.classList.contains('next') ? amount : -amount,
+        left: btn.classList.contains('next') ? step : -step,
         behavior: 'smooth'
       });
 
-      /* مزامنة النقاط بعد حركة السهم */
-      setTimeout(() => syncDots(slider), 300);
-
+      setTimeout(() => syncDots(slider, step), 300);
     });
 
   });
 
-  /* ─────────── نقاط السلايدر (Dots) ─────────── */
+  /* ─────────── النقاط ─────────── */
   document.querySelectorAll('.slider-dots').forEach(dotsContainer => {
 
-    const sliderId = dotsContainer.dataset.slider;
-    const slider = document.getElementById(sliderId);
+    const slider = document.getElementById(dotsContainer.dataset.slider);
     if (!slider) return;
 
-    const wrapper = slider.closest('.slider-wrapper');
     let dots = [];
 
     function createDots() {
       dotsContainer.innerHTML = '';
       dots = [];
 
-      const wrapperWidth = wrapper.offsetWidth;
+      const step = getStep(slider);
+      if (!step) return;
 
-      const pages = Math.ceil(
-        (slider.scrollWidth - wrapperWidth) / wrapperWidth
-      ) + 1;
+      const count = Math.round(slider.scrollWidth / step);
 
-      if (pages <= 1) {
+      if (count <= 1) {
         dotsContainer.style.display = 'none';
         return;
       }
 
       dotsContainer.style.display = 'flex';
 
-      for (let i = 0; i < pages; i++) {
+      for (let i = 0; i < count; i++) {
         const dot = document.createElement('button');
         if (i === 0) dot.classList.add('active');
 
         dot.addEventListener('click', () => {
           slider.scrollTo({
-            left: i * wrapperWidth,
+            left: i * step,
             behavior: 'smooth'
           });
         });
@@ -92,22 +90,16 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    function updateActiveDot() {
-      const index = Math.round(slider.scrollLeft / wrapper.offsetWidth);
-      dots.forEach((d, i) => d.classList.toggle('active', i === index));
+    function onScroll() {
+      const step = getStep(slider);
+      requestAnimationFrame(() => syncDots(slider, step));
     }
 
     createDots();
-    updateActiveDot();
+    onScroll();
 
-    slider.addEventListener('scroll', () => {
-      requestAnimationFrame(updateActiveDot);
-    });
-
-    window.addEventListener('resize', () => {
-      createDots();
-      updateActiveDot();
-    });
+    slider.addEventListener('scroll', onScroll);
+    window.addEventListener('resize', createDots);
 
   });
 
