@@ -515,35 +515,40 @@
 
     <section class="all-works-preview" aria-label="جميع الأعمال">
 
-  <!-- عنوان القسم + البحث -->
   <div class="section-header">
 
-    <h2>جميع الأعمال</h2>
-    
-        <!-- الأنواع -->
-    <div class="genres">
-  <button class="genre all">الكل</button>
-  <button class="genre action">أكشن</button>
-  <button class="genre adventure">مغامرة</button>
-  <button class="genre comedy">كوميديا</button>
-  <button class="genre drama">دراما</button>
-  <button class="genre fantasy">فانتازيا</button>
-</div>
+    <!-- ✅ السطر الأول: العنوان + البحث -->
+    <div class="section-header-top">
+      <h2>جميع الأعمال</h2>
 
-    <!-- خانة البحث -->
-    <div class="section-search">
-      <i class="fas fa-search search-icon"></i>
-      <input
-        type="search"
-        placeholder="البحث في المرفوعات"
-        aria-label="البحث في جميع الأعمال"
-      >
+      <div class="section-search">
+        <i class="fas fa-search search-icon"></i>
+        <input
+          type="search"
+          placeholder="البحث في المرفوعات"
+          aria-label="البحث في جميع الأعمال"
+        >
+      </div>
+    </div>
+
+    <!-- ✅ السطر الثاني: الأنواع فقط -->
+    <div class="genres">
+      <button class="genre all">الكل</button>
+      <button class="genre action">أكشن</button>
+      <button class="genre adventure">مغامرة</button>
+      <button class="genre comedy">كوميديا</button>
+      <button class="genre drama">دراما</button>
+      <button class="genre fantasy">فانتازيا</button>
     </div>
 
   </div>
 
   <!-- شبكة عرض الأعمال -->
   <div class="works-grid">
+    ...
+  </div>
+
+</section>
 
     <article class="work-card">
       <a href="/work/conan">
