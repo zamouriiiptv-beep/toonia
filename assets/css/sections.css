@@ -93,6 +93,23 @@ section .section-header h2 {
   }
 }
 
+
+.section-search input {
+  width: 100%;
+  padding: 10px 14px 10px 42px; /* مساحة للّوجو */
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background-color: rgba(255,255,255,0.05);
+
+  /* اللوجو */
+  background-image: url("assets/img/logo-mini.svg");
+  background-repeat: no-repeat;
+  background-size: 14px 14px;
+  background-position: left 14px center;
+
+  color: #fff;
+  font-size: 0.95rem;
+}
 /* █████████████████████████████████████████ */
 /*  أقسام تعتمد على Slider                  */
 /*  (أحدث الحلقات / الأكثر مشاهدة)          */
