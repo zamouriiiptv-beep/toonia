@@ -2,7 +2,7 @@
 
 /* ===================================== */
 /*  slider.js                            */
-/*  Scroll-based slider (CSS-safe)       */
+/*  Scroll-based slider (Final Stable)   */
 /* ===================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
   function getStep(slider) {
     const slides = slider.querySelectorAll('.slide');
     if (slides.length < 2) return 0;
-
     return slides[1].offsetLeft - slides[0].offsetLeft;
   }
 
@@ -30,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ============================== */
-  /*  مزامنة النقاط (نهائي)         */
+  /*  مزامنة النقاط                 */
   /* ============================== */
   function syncDots(slider) {
     const dotsWrap = document.querySelector(
@@ -52,6 +51,15 @@ document.addEventListener('DOMContentLoaded', () => {
     dots.forEach((dot, i) => {
       dot.classList.toggle('active', i === index);
     });
+  }
+
+  /* ============================== */
+  /*  فرض البداية من أول صورة       */
+  /* ============================== */
+  function forceStart(slider) {
+    // نضع السلايدر على أول عنصر فعليًا
+    slider.scrollTo({ left: 0, behavior: 'auto' });
+    syncDots(slider);
   }
 
   /* ─────────── الأسهم ─────────── */
@@ -107,7 +115,8 @@ document.addEventListener('DOMContentLoaded', () => {
         dotsWrap.appendChild(dot);
       }
 
-      syncDots(slider);
+      // ⬅️ مهم: فرض البداية بعد إنشاء النقاط
+      forceStart(slider);
     }
 
     slider.addEventListener('scroll', () => {
