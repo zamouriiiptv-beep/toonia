@@ -39,6 +39,7 @@ section .section-header h2 {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  flex-wrap: nowrap; /* يمنع الكسر */
 }
 
 .section-header-top h2 {
@@ -64,10 +65,10 @@ section .section-header h2 {
   display: none;
 }
 
-/* تحسين العرض على الهواتف */
+/* موبايل: العنوان + البحث يبقيان في سطر واحد */
 @media (max-width: 768px) {
   .section-search {
-    max-width: 100%;
+    max-width: 180px; /* مهم جدًا */
   }
 }
 
