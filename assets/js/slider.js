@@ -7,6 +7,21 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+  /* ─────────── مزامنة النقاط ─────────── */
+  function syncDots(slider) {
+    const dotsContainer = document.querySelector(
+      `.slider-dots[data-slider="${slider.id}"]`
+    );
+    if (!dotsContainer) return;
+
+    const wrapper = slider.closest('.slider-wrapper');
+    const dots = dotsContainer.querySelectorAll('button');
+    if (!dots.length) return;
+
+    const index = Math.round(slider.scrollLeft / wrapper.offsetWidth);
+    dots.forEach((d, i) => d.classList.toggle('active', i === index));
+  }
+
   /* ─────────── أسهم السلايدر ─────────── */
   document.querySelectorAll('.section-arrows .arrow').forEach(btn => {
 
@@ -27,6 +42,9 @@ document.addEventListener('DOMContentLoaded', () => {
         behavior: 'smooth'
       });
 
+      /* مزامنة النقاط بعد حركة السهم */
+      setTimeout(() => syncDots(slider), 300);
+
     });
 
   });
@@ -46,7 +64,10 @@ document.addEventListener('DOMContentLoaded', () => {
       dots = [];
 
       const wrapperWidth = wrapper.offsetWidth;
-      const pages = Math.ceil(slider.scrollWidth / wrapperWidth);
+
+      const pages = Math.ceil(
+        (slider.scrollWidth - wrapperWidth) / wrapperWidth
+      ) + 1;
 
       if (pages <= 1) {
         dotsContainer.style.display = 'none';
@@ -60,7 +81,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (i === 0) dot.classList.add('active');
 
         dot.addEventListener('click', () => {
-          slider.scrollTo({ left: i * wrapperWidth, behavior: 'smooth' });
+          slider.scrollTo({
+            left: i * wrapperWidth,
+            behavior: 'smooth'
+          });
         });
 
         dotsContainer.appendChild(dot);
@@ -74,8 +98,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     createDots();
-    slider.addEventListener('scroll', () => requestAnimationFrame(updateActiveDot));
-    window.addEventListener('resize', () => { createDots(); updateActiveDot(); });
+    updateActiveDot();
+
+    slider.addEventListener('scroll', () => {
+      requestAnimationFrame(updateActiveDot);
+    });
+
+    window.addEventListener('resize', () => {
+      createDots();
+      updateActiveDot();
+    });
 
   });
 
