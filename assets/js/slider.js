@@ -2,10 +2,23 @@
 
 /* ===================================== */
 /*  slider.js                            */
-/*  منطق سلايدر احترافي (RTL Safe)      */
+/*  منطق السلايدر العام                  */
 /* ===================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
+
+  /* ============================== */
+  /*  حساب خطوة السلايدر            */
+  /* ============================== */
+  function getStep(slider) {
+    const slide = slider.querySelector('.slide');
+    if (!slide) return 0;
+
+    const styles = getComputedStyle(slider);
+    const gap = parseFloat(styles.columnGap || styles.gap) || 0;
+
+    return slide.getBoundingClientRect().width + gap;
+  }
 
   /* ============================== */
   /*  حساب الإندكس حسب المنتصف      */
@@ -48,16 +61,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const index = slider._hasInteracted
       ? getIndexByCenter(slider)
-      : 0;
+      : 0; // أول صورة دائمًا عند التحميل
 
     dots.forEach((dot, i) => {
       dot.classList.toggle('active', i === index);
     });
   }
 
-  /* ============================== */
-  /*  الأسهم (Prev / Next)          */
-  /* ============================== */
+  /* ─────────── الأسهم ─────────── */
   document.querySelectorAll('.section-arrows .arrow').forEach(btn => {
 
     btn.addEventListener('click', () => {
@@ -65,89 +76,84 @@ document.addEventListener('DOMContentLoaded', () => {
       const slider = document.getElementById(btn.dataset.target);
       if (!slider) return;
 
-      const slides = slider.querySelectorAll('.slide');
-      if (!slides.length) return;
-
       slider._hasInteracted = true;
 
-      const currentIndex = getIndexByCenter(slider);
+      const step = getStep(slider);
+      if (!step) return;
+
       const direction = btn.classList.contains('next') ? 1 : -1;
 
-      let targetIndex = currentIndex + direction;
-      targetIndex = Math.max(0, Math.min(slides.length - 1, targetIndex));
-
-      slides[targetIndex].scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-        inline: 'start'
+      slider.scrollTo({
+        left: slider.scrollLeft + step * direction,
+        behavior: 'smooth'
       });
 
     });
 
   });
 
-  /* ============================== */
-  /*  النقاط (Pagination)           */
-  /* ============================== */
+  /* ─────────── النقاط ─────────── */
   document.querySelectorAll('.slider-dots').forEach(dotsContainer => {
 
     const slider = document.getElementById(dotsContainer.dataset.slider);
     if (!slider) return;
 
-    const slides = slider.querySelectorAll('.slide');
-    if (!slides.length) return;
-
     slider._hasInteracted = false;
 
-    /* إنشاء نقطة لكل شريحة */
-    dotsContainer.innerHTML = '';
+    function createDots() {
+      dotsContainer.innerHTML = '';
 
-    if (slides.length <= 1) {
-      dotsContainer.style.display = 'none';
-      return;
-    }
+      const step = getStep(slider);
+      if (!step) return;
 
-    dotsContainer.style.display = 'flex';
+      const count = Math.round(slider.scrollWidth / step);
 
-    slides.forEach((_, index) => {
-      const dot = document.createElement('button');
-      dot.type = 'button';
+      if (count <= 1) {
+        dotsContainer.style.display = 'none';
+        return;
+      }
 
-      dot.addEventListener('click', () => {
-        slider._hasInteracted = true;
+      dotsContainer.style.display = 'flex';
 
-        slides[index].scrollIntoView({
-          behavior: 'smooth',
-          block: 'nearest',
-          inline: 'start'
+      for (let i = 0; i < count; i++) {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+
+        dot.addEventListener('click', () => {
+          slider._hasInteracted = true;
+
+          slider.scrollTo({
+            left: i * step,
+            behavior: 'smooth'
+          });
         });
-      });
 
-      dotsContainer.appendChild(dot);
-    });
+        dotsContainer.appendChild(dot);
+      }
 
-    syncDots(slider);
+      syncDots(slider);
+    }
 
     /* ============================== */
     /*  التمرير (سحب / عجلة)         */
     /* ============================== */
-    let ticking = false;
+    let rafId = null;
 
-    slider.addEventListener('scroll', () => {
+    function onScroll() {
       slider._hasInteracted = true;
 
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          syncDots(slider);
-          ticking = false;
-        });
-        ticking = true;
-      }
-    }, { passive: true });
+      if (rafId) return;
 
-    window.addEventListener('resize', () => {
-      syncDots(slider);
-    });
+      rafId = requestAnimationFrame(() => {
+        syncDots(slider);
+        rafId = null;
+      });
+    }
+
+    createDots();
+
+    slider.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', createDots);
 
   });
 
