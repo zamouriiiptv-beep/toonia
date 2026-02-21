@@ -21,14 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ============================== */
-  /*  هل السلايدر في البداية        */
-  /* ============================== */
-  function isAtStart(slider) {
-    // في RTL البداية تكون scrollLeft قريب من 0
-    return slider.scrollLeft <= 1;
-  }
-
-  /* ============================== */
   /*  حساب الإندكس حسب المنتصف      */
   /* ============================== */
   function getIndexByCenter(slider) {
@@ -56,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ============================== */
-  /*  مزامنة النقاط                 */
+  /*  مزامنة النقاط (نهائي)         */
   /* ============================== */
   function syncDots(slider) {
     const dotsContainer = document.querySelector(
@@ -67,10 +59,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const dots = dotsContainer.querySelectorAll('button');
     if (!dots.length) return;
 
+    const step = getStep(slider);
+    const scroll = slider.scrollLeft;
+
     let index;
 
-    if (!slider._hasInteracted || isAtStart(slider)) {
-      // أول صورة دائمًا عند البداية
+    // عند بداية السلايدر فقط
+    if (!slider._hasInteracted || scroll < step / 2) {
       index = 0;
     } else {
       index = getIndexByCenter(slider);
