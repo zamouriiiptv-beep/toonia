@@ -2,129 +2,86 @@
 
 /* ===================================== */
 /*  slider.js                            */
-/*  Scroll-based slider (Final Fixed)    */
+/*  Bullet-proof slider dots             */
 /* ===================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* ============================== */
-  /*  حساب الخطوة الحقيقية          */
-  /* ============================== */
-  function getStep(slider) {
-    const slides = slider.querySelectorAll('.slide');
-    if (slides.length < 2) return 0;
-    return slides[1].offsetLeft - slides[0].offsetLeft;
-  }
+  document.querySelectorAll('.slider').forEach(slider => {
 
-  /* ============================== */
-  /*  تطبيع scrollLeft (RTL-safe)   */
-  /* ============================== */
-  function getScroll(slider) {
-    const dir = getComputedStyle(slider).direction;
-
-    if (dir !== 'rtl') return slider.scrollLeft;
-
-    const max = slider.scrollWidth - slider.clientWidth;
-    return Math.abs(slider.scrollLeft - max);
-  }
-
-  /* ============================== */
-  /*  مزامنة النقاط                 */
-  /* ============================== */
-  function syncDots(slider) {
-    const dotsWrap = document.querySelector(
-      `.slider-dots[data-slider="${slider.id}"]`
-    );
+    const dotsWrap = slider.closest('section')?.querySelector('.slider-dots');
     if (!dotsWrap) return;
 
-    const dots = dotsWrap.querySelectorAll('button');
-    if (!dots.length) return;
+    const slides = slider.querySelectorAll('.slide');
+    if (slides.length <= 1) return;
 
-    const step = getStep(slider);
-    if (!step) return;
+    dotsWrap.innerHTML = '';
+    dotsWrap.style.display = 'flex';
 
-    const scroll = getScroll(slider);
-    let index = Math.round(scroll / step);
-
-    index = Math.max(0, Math.min(index, dots.length - 1));
-
-    dots.forEach((dot, i) => {
-      dot.classList.toggle('active', i === index);
-    });
-  }
-
-  /* ============================== */
-  /*  فرض البداية من أول صورة       */
-  /* ============================== */
-  function forceStart(slider) {
-    slider.scrollTo({ left: 0, behavior: 'auto' });
-  }
-
-  /* ─────────── الأسهم ─────────── */
-  document.querySelectorAll('.section-arrows .arrow').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const slider = document.getElementById(btn.dataset.target);
-      if (!slider) return;
-
-      const step = getStep(slider);
-      if (!step) return;
-
-      const dir = btn.classList.contains('next') ? 1 : -1;
-
-      slider.scrollBy({
-        left: step * dir,
-        behavior: 'smooth'
-      });
-    });
-  });
-
-  /* ─────────── النقاط ─────────── */
-  document.querySelectorAll('.slider-dots').forEach(dotsWrap => {
-
-    const slider = document.getElementById(dotsWrap.dataset.slider);
-    if (!slider) return;
-
-    function createDots() {
-      dotsWrap.innerHTML = '';
-
-      const slides = slider.querySelectorAll('.slide');
-      const count = slides.length;
-
-      if (count <= 1) {
-        dotsWrap.style.display = 'none';
-        return;
-      }
-
-      dotsWrap.style.display = 'flex';
-
-      for (let i = 0; i < count; i++) {
-        const dot = document.createElement('button');
-        dot.type = 'button';
-
-        dot.addEventListener('click', () => {
-          const step = getStep(slider);
-          if (!step) return;
-
-          slider.scrollTo({
-            left: i * step,
-            behavior: 'smooth'
-          });
-        });
-
-        dotsWrap.appendChild(dot);
-      }
-
-      forceStart(slider);
-      syncDots(slider);
+    /* ============================== */
+    /*  حساب الخطوة الحقيقية          */
+    /* ============================== */
+    function getStep() {
+      if (slides.length < 2) return 0;
+      return slides[1].offsetLeft - slides[0].offsetLeft;
     }
 
-    slider.addEventListener('scroll', () => {
-      syncDots(slider);
-    }, { passive: true });
+    /* ============================== */
+    /*  تطبيع scrollLeft (RTL-safe)   */
+    /* ============================== */
+    function getScroll() {
+      const dir = getComputedStyle(slider).direction;
+      if (dir !== 'rtl') return slider.scrollLeft;
 
-    window.addEventListener('resize', createDots);
+      const max = slider.scrollWidth - slider.clientWidth;
+      return Math.abs(slider.scrollLeft - max);
+    }
 
-    createDots();
+    /* ============================== */
+    /*  إنشاء النقاط                  */
+    /* ============================== */
+    slides.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+
+      dot.addEventListener('click', () => {
+        const step = getStep();
+        if (!step) return;
+
+        slider.scrollTo({
+          left: i * step,
+          behavior: 'smooth'
+        });
+      });
+
+      dotsWrap.appendChild(dot);
+    });
+
+    const dots = dotsWrap.querySelectorAll('button');
+
+    /* ============================== */
+    /*  مزامنة النقطة النشطة          */
+    /* ============================== */
+    function syncDots() {
+      const step = getStep();
+      if (!step) return;
+
+      const index = Math.round(getScroll() / step);
+
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === index);
+      });
+    }
+
+    /* ============================== */
+    /*  البداية من أول صورة           */
+    /* ============================== */
+    slider.scrollTo({ left: 0, behavior: 'auto' });
+    syncDots();
+
+    slider.addEventListener('scroll', syncDots, { passive: true });
+    window.addEventListener('resize', syncDots);
+
   });
 
 });
