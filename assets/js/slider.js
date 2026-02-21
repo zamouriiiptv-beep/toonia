@@ -59,7 +59,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const dots = dotsContainer.querySelectorAll('button');
     if (!dots.length) return;
 
-    const index = getIndexByCenter(slider);
+    const index = slider._hasInteracted
+      ? getIndexByCenter(slider)
+      : 0; // أول صورة دائمًا عند التحميل
 
     dots.forEach((dot, i) => {
       dot.classList.toggle('active', i === index);
@@ -73,6 +75,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const slider = document.getElementById(btn.dataset.target);
       if (!slider) return;
+
+      slider._hasInteracted = true;
 
       const step = getStep(slider);
       if (!step) return;
@@ -94,11 +98,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const slider = document.getElementById(dotsContainer.dataset.slider);
     if (!slider) return;
 
-    let dots = [];
+    slider._hasInteracted = false;
 
     function createDots() {
       dotsContainer.innerHTML = '';
-      dots = [];
 
       const step = getStep(slider);
       if (!step) return;
@@ -117,6 +120,8 @@ document.addEventListener('DOMContentLoaded', () => {
         dot.type = 'button';
 
         dot.addEventListener('click', () => {
+          slider._hasInteracted = true;
+
           slider.scrollTo({
             left: i * step,
             behavior: 'smooth'
@@ -124,18 +129,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         dotsContainer.appendChild(dot);
-        dots.push(dot);
       }
 
       syncDots(slider);
     }
 
     /* ============================== */
-    /*  التمرير (سحب / عجلة / أسهم) */
+    /*  التمرير (سحب / عجلة)         */
     /* ============================== */
     let rafId = null;
 
     function onScroll() {
+      slider._hasInteracted = true;
+
       if (rafId) return;
 
       rafId = requestAnimationFrame(() => {
