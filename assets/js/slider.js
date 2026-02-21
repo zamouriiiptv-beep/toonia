@@ -1,15 +1,8 @@
 'use strict';
 
-/* ===================================== */
-/*  slider.js                            */
-/*  منطق سلايدر احترافي (RTL Safe)      */
-/* ===================================== */
-
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* ============================== */
-  /*  حساب الإندكس حسب المنتصف      */
-  /* ============================== */
+  // Get index of slide closest to the horizontal center of the slider viewport
   function getIndexByCenter(slider) {
     const slides = slider.querySelectorAll('.slide');
     if (!slides.length) return 0;
@@ -34,9 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return closestIndex;
   }
 
-  /* ============================== */
-  /*  مزامنة النقاط                 */
-  /* ============================== */
+  // Sync active dot based on current active slide visually detected
   function syncDots(slider) {
     const dotsContainer = document.querySelector(
       `.slider-dots[data-slider="${slider.id}"]`
@@ -55,13 +46,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  /* ============================== */
-  /*  الأسهم (Prev / Next)          */
-  /* ============================== */
+  // On arrow click, scroll to next/prev slide visually
   document.querySelectorAll('.section-arrows .arrow').forEach(btn => {
-
     btn.addEventListener('click', () => {
-
       const slider = document.getElementById(btn.dataset.target);
       if (!slider) return;
 
@@ -81,16 +68,11 @@ document.addEventListener('DOMContentLoaded', () => {
         block: 'nearest',
         inline: 'start'
       });
-
     });
-
   });
 
-  /* ============================== */
-  /*  النقاط (Pagination)           */
-  /* ============================== */
+  // Setup pagination dots for each slider and sync on scroll interaction
   document.querySelectorAll('.slider-dots').forEach(dotsContainer => {
-
     const slider = document.getElementById(dotsContainer.dataset.slider);
     if (!slider) return;
 
@@ -99,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     slider._hasInteracted = false;
 
-    /* إنشاء نقطة لكل شريحة */
+    // Create one dot per slide
     dotsContainer.innerHTML = '';
 
     if (slides.length <= 1) {
@@ -126,13 +108,12 @@ document.addEventListener('DOMContentLoaded', () => {
       dotsContainer.appendChild(dot);
     });
 
+    // Force correct initial active dot on load
     syncDots(slider);
 
-    /* ============================== */
-    /*  التمرير (سحب / عجلة)         */
-    /* ============================== */
     let ticking = false;
 
+    // On scroll, update active dot using getIndexByCenter
     slider.addEventListener('scroll', () => {
       slider._hasInteracted = true;
 
@@ -148,7 +129,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', () => {
       syncDots(slider);
     });
-
   });
 
 });
