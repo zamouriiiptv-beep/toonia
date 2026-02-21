@@ -2,61 +2,52 @@
 
 /* ===================================== */
 /*  slider.js                            */
-/*  RTL-safe – Stable Dot Sync           */
+/*  Scroll-based slider (CSS-safe)       */
 /* ===================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
 
   /* ============================== */
-  /*  حساب خطوة السلايدر            */
+  /*  حساب الخطوة الحقيقية          */
   /* ============================== */
   function getStep(slider) {
-    const slide = slider.querySelector('.slide');
-    if (!slide) return 0;
+    const slides = slider.querySelectorAll('.slide');
+    if (slides.length < 2) return 0;
 
-    const styles = getComputedStyle(slider);
-    const gap = parseFloat(styles.columnGap || styles.gap) || 0;
-
-    return slide.offsetWidth + gap;
+    return slides[1].offsetLeft - slides[0].offsetLeft;
   }
 
   /* ============================== */
-  /*  تطبيع scrollLeft في RTL       */
+  /*  تطبيع scrollLeft (RTL-safe)   */
   /* ============================== */
-  function getNormalizedScrollLeft(slider) {
+  function getScroll(slider) {
     const dir = getComputedStyle(slider).direction;
 
-    if (dir !== 'rtl') {
-      return slider.scrollLeft;
-    }
+    if (dir !== 'rtl') return slider.scrollLeft;
 
-    // RTL normalization (cross-browser)
-    const maxScroll =
-      slider.scrollWidth - slider.clientWidth;
-
-    return Math.abs(slider.scrollLeft - maxScroll);
+    const max = slider.scrollWidth - slider.clientWidth;
+    return Math.abs(slider.scrollLeft - max);
   }
 
   /* ============================== */
   /*  مزامنة النقاط (نهائي)         */
   /* ============================== */
   function syncDots(slider) {
-    const dotsContainer = document.querySelector(
+    const dotsWrap = document.querySelector(
       `.slider-dots[data-slider="${slider.id}"]`
     );
-    if (!dotsContainer) return;
+    if (!dotsWrap) return;
 
-    const dots = dotsContainer.querySelectorAll('button');
+    const dots = dotsWrap.querySelectorAll('button');
     if (!dots.length) return;
 
     const step = getStep(slider);
     if (!step) return;
 
-    const scroll = getNormalizedScrollLeft(slider);
-    const maxIndex = dots.length - 1;
-
+    const scroll = getScroll(slider);
     let index = Math.round(scroll / step);
-    index = Math.max(0, Math.min(index, maxIndex));
+
+    index = Math.max(0, Math.min(index, dots.length - 1));
 
     dots.forEach((dot, i) => {
       dot.classList.toggle('active', i === index);
@@ -65,9 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ─────────── الأسهم ─────────── */
   document.querySelectorAll('.section-arrows .arrow').forEach(btn => {
-
     btn.addEventListener('click', () => {
-
       const slider = document.getElementById(btn.dataset.target);
       if (!slider) return;
 
@@ -80,19 +69,17 @@ document.addEventListener('DOMContentLoaded', () => {
         left: step * dir,
         behavior: 'smooth'
       });
-
     });
-
   });
 
   /* ─────────── النقاط ─────────── */
-  document.querySelectorAll('.slider-dots').forEach(dotsContainer => {
+  document.querySelectorAll('.slider-dots').forEach(dotsWrap => {
 
-    const slider = document.getElementById(dotsContainer.dataset.slider);
+    const slider = document.getElementById(dotsWrap.dataset.slider);
     if (!slider) return;
 
     function createDots() {
-      dotsContainer.innerHTML = '';
+      dotsWrap.innerHTML = '';
 
       const step = getStep(slider);
       if (!step) return;
@@ -100,11 +87,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const count = Math.round(slider.scrollWidth / step);
 
       if (count <= 1) {
-        dotsContainer.style.display = 'none';
+        dotsWrap.style.display = 'none';
         return;
       }
 
-      dotsContainer.style.display = 'flex';
+      dotsWrap.style.display = 'flex';
 
       for (let i = 0; i < count; i++) {
         const dot = document.createElement('button');
@@ -117,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
           });
         });
 
-        dotsContainer.appendChild(dot);
+        dotsWrap.appendChild(dot);
       }
 
       syncDots(slider);
