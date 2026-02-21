@@ -69,44 +69,38 @@
 /*  نقاط السلايدر (Pagination Dots)         */
 /* █████████████████████████████████████████ */
 
-/* حاوية النقاط */
 .slider-dots {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 8px;
-
+  gap: 10px;
   margin-top: 14px;
-  user-select: none;
 }
 
-/* النقطة */
+/* النقطة الأساسية */
 .slider-dots button {
-  width: 8px;
-  height: 8px;
-
-  border-radius: 50%;
-  border: none;
-  padding: 0;
-
-  background: rgba(255, 255, 255, 0.35);
-  cursor: pointer;
-
-  transition:
-    width 0.25s ease,
-    background-color 0.25s ease,
-    border-radius 0.25s ease;
-}
-
-/* النقطة النشطة */
-.slider-dots button.active {
+  position: relative;
   width: 18px;
-  border-radius: 10px;
-  background: #ffffff;
+  height: 6px;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.25);
+  overflow: hidden;
+  cursor: pointer;
 }
 
-/* تحسين اللمس (موبايل) */
-.slider-dots button:focus-visible {
-  outline: 2px solid rgba(255,255,255,0.6);
-  outline-offset: 3px;
+/* طبقة الـ progress (النار 🔥) */
+.slider-dots button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  width: var(--progress, 0%);
+  background: #f5c518; /* أصفر الهيدر */
+  transition: width 0.1s linear;
+}
+
+/* نقطة غير نشطة */
+.slider-dots button:not(.active)::before {
+  width: 0%;
 }
