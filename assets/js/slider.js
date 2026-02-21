@@ -2,11 +2,12 @@
 
 /* ===================================== */
 /*  slider.js                            */
-/*  منطق السلايدر العام                  */
+/*  منطق السلايدر العام (Progress Dots) */
 /* ===================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
 
+  /* حساب خطوة الحركة (مرجع واحد للأسهم + النقاط) */
   function getStep(slider) {
     const slide = slider.querySelector('.slide');
     if (!slide) return 0;
@@ -15,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return slide.offsetWidth + gap;
   }
 
+  /* مزامنة النقاط بأسلوب Progress مثل الهيدر */
   function syncDots(slider, step) {
     const dotsContainer = document.querySelector(
       `.slider-dots[data-slider="${slider.id}"]`
@@ -22,12 +24,24 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!dotsContainer) return;
 
     const dots = dotsContainer.querySelectorAll('button');
-    if (!dots.length) return;
+    if (!dots.length || !step) return;
 
-    const index = Math.round(slider.scrollLeft / step);
-    dots.forEach((dot, i) =>
-      dot.classList.toggle('active', i === index)
-    );
+    const scroll = slider.scrollLeft;
+    const exactIndex = scroll / step;
+
+    const activeIndex = Math.floor(exactIndex);
+    const progress = exactIndex - activeIndex; // 0 → 1
+
+    dots.forEach((dot, i) => {
+      const isActive = i === activeIndex;
+      dot.classList.toggle('active', isActive);
+
+      /* progress بصري مثل الهيدر */
+      dot.style.setProperty(
+        '--progress',
+        isActive ? `${Math.min(progress * 100, 100)}%` : '0%'
+      );
+    });
   }
 
   /* ─────────── الأسهم ─────────── */
@@ -45,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         behavior: 'smooth'
       });
 
+      /* تحديث النقاط بعد حركة السهم */
       setTimeout(() => syncDots(slider, step), 300);
     });
 
@@ -99,7 +114,10 @@ document.addEventListener('DOMContentLoaded', () => {
     onScroll();
 
     slider.addEventListener('scroll', onScroll);
-    window.addEventListener('resize', createDots);
+    window.addEventListener('resize', () => {
+      createDots();
+      onScroll();
+    });
 
   });
 
