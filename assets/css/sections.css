@@ -21,6 +21,58 @@ section .section-header h2 {
 
 
 /* █████████████████████████████████████████ */
+/*  رأس قسم جميع الأعمال                    */
+/*  (عنوان + بحث في سطر / الأنواع تحته)     */
+/* █████████████████████████████████████████ */
+
+/* الحاوية العامة لرأس القسم */
+.section-header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+/* السطر العلوي: العنوان + البحث */
+.section-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.section-header-top h2 {
+  white-space: nowrap;
+}
+
+/* خانة البحث */
+.section-search {
+  width: 100%;
+  max-width: 260px;
+  flex-shrink: 0;
+}
+
+/* الأنواع (سطر مستقل) */
+.section-header .genres {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.section-header .genres::-webkit-scrollbar {
+  display: none;
+}
+
+/* تحسين العرض على الهواتف */
+@media (max-width: 768px) {
+  .section-search {
+    max-width: 100%;
+  }
+}
+
+
+/* █████████████████████████████████████████ */
 /*  قسم الحلقات الجديدة / الأكثر مشاهدة     */
 /*  (Sections تعتمد على Slider)              */
 /* █████████████████████████████████████████ */
@@ -34,7 +86,6 @@ section .section-header h2 {
 .slider {
   display: flex;
   gap: 12px;
-
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
