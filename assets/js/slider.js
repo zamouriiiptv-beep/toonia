@@ -21,11 +21,30 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ============================== */
-  /*  حساب الإندكس الحالي بدقة      */
+  /*  حساب الإندكس حسب المنتصف      */
   /* ============================== */
-  function getCurrentIndex(slider, step) {
-    if (!step) return 0;
-    return Math.round(slider.scrollLeft / step);
+  function getIndexByCenter(slider) {
+    const slides = slider.querySelectorAll('.slide');
+    if (!slides.length) return 0;
+
+    const sliderRect = slider.getBoundingClientRect();
+    const sliderCenter = sliderRect.left + sliderRect.width / 2;
+
+    let closestIndex = 0;
+    let minDistance = Infinity;
+
+    slides.forEach((slide, index) => {
+      const rect = slide.getBoundingClientRect();
+      const slideCenter = rect.left + rect.width / 2;
+      const distance = Math.abs(slideCenter - sliderCenter);
+
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestIndex = index;
+      }
+    });
+
+    return closestIndex;
   }
 
   /* ============================== */
@@ -40,8 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const dots = dotsContainer.querySelectorAll('button');
     if (!dots.length) return;
 
-    const step = getStep(slider);
-    const index = getCurrentIndex(slider, step);
+    const index = getIndexByCenter(slider);
 
     dots.forEach((dot, i) => {
       dot.classList.toggle('active', i === index);
