@@ -21,6 +21,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ============================== */
+  /*  هل السلايدر في البداية        */
+  /* ============================== */
+  function isAtStart(slider) {
+    // في RTL البداية تكون scrollLeft قريب من 0
+    return slider.scrollLeft <= 1;
+  }
+
+  /* ============================== */
   /*  حساب الإندكس حسب المنتصف      */
   /* ============================== */
   function getIndexByCenter(slider) {
@@ -59,9 +67,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const dots = dotsContainer.querySelectorAll('button');
     if (!dots.length) return;
 
-    const index = slider._hasInteracted
-      ? getIndexByCenter(slider)
-      : 0; // أول صورة دائمًا عند التحميل
+    let index;
+
+    if (!slider._hasInteracted || isAtStart(slider)) {
+      // أول صورة دائمًا عند البداية
+      index = 0;
+    } else {
+      index = getIndexByCenter(slider);
+    }
 
     dots.forEach((dot, i) => {
       dot.classList.toggle('active', i === index);
