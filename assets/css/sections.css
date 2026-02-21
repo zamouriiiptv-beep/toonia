@@ -45,6 +45,7 @@ section .section-header h2 {
 /* █████████████████████████████████████████ */
 
 .all-works-header {
+  display: flex;
   flex-direction: column;
   align-items: stretch;
   gap: 12px;
@@ -54,20 +55,19 @@ section .section-header h2 {
 .section-header-top {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
-  flex-wrap: nowrap;
 }
 
+/* العنوان */
 .section-header-top h2 {
   white-space: nowrap;
+  flex-shrink: 0; /* العنوان ثابت */
 }
 
 /* خانة البحث */
 .section-search {
-  width: 100%;
+  flex: 1;              /* ← يملأ الفراغ فقط */
   max-width: 260px;
-  flex-shrink: 0;
 }
 
 /* الأنواع */
@@ -84,11 +84,14 @@ section .section-header h2 {
 
 /* موبايل */
 @media (max-width: 768px) {
+  .section-header-top {
+    flex-wrap: wrap;
+  }
+
   .section-search {
-    max-width: 180px;
+    max-width: 100%;
   }
 }
-
 
 /* █████████████████████████████████████████ */
 /*  أقسام تعتمد على Slider                  */
