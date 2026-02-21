@@ -30,6 +30,13 @@ section .section-header h2 {
   justify-content: space-between;
   margin-bottom: 16px;
 }
+/* توسيط أزرار الأنواع */
+.all-works-header .genres {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap; /* يمنع overflow على الموبايل */
+}
 
 
 /* █████████████████████████████████████████ */
