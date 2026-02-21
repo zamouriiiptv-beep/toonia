@@ -16,21 +16,31 @@ section:not(.hero) {
 /* عنوان أي قسم */
 section .section-header h2 {
   font-size: 20px;
-  margin-bottom: 12px;
+  margin: 0;
 }
 
 
 /* █████████████████████████████████████████ */
-/*  رأس قسم جميع الأعمال                    */
+/*  رأس الأقسام (قاعدة عامة – أفقي)          */
+/* █████████████████████████████████████████ */
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+
+/* █████████████████████████████████████████ */
+/*  رأس قسم جميع الأعمال (حالة خاصة)         */
 /*  (عنوان + بحث في سطر / الأنواع تحته)     */
 /* █████████████████████████████████████████ */
 
-/* الحاوية العامة لرأس القسم */
-.section-header {
-  display: flex;
+.all-works-header {
   flex-direction: column;
+  align-items: stretch;
   gap: 12px;
-  margin-bottom: 16px;
 }
 
 /* السطر العلوي: العنوان + البحث */
@@ -39,7 +49,7 @@ section .section-header h2 {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  flex-wrap: nowrap; /* يمنع الكسر */
+  flex-wrap: nowrap;
 }
 
 .section-header-top h2 {
@@ -53,37 +63,35 @@ section .section-header h2 {
   flex-shrink: 0;
 }
 
-/* الأنواع (سطر مستقل) */
-.section-header .genres {
+/* الأنواع */
+.all-works-header .genres {
   display: flex;
   gap: 10px;
   overflow-x: auto;
   scrollbar-width: none;
 }
 
-.section-header .genres::-webkit-scrollbar {
+.all-works-header .genres::-webkit-scrollbar {
   display: none;
 }
 
-/* موبايل: العنوان + البحث يبقيان في سطر واحد */
+/* موبايل */
 @media (max-width: 768px) {
   .section-search {
-    max-width: 180px; /* مهم جدًا */
+    max-width: 180px;
   }
 }
 
 
 /* █████████████████████████████████████████ */
-/*  قسم الحلقات الجديدة / الأكثر مشاهدة     */
-/*  (Sections تعتمد على Slider)              */
+/*  أقسام تعتمد على Slider                  */
+/*  (أحدث الحلقات / الأكثر مشاهدة)          */
 /* █████████████████████████████████████████ */
 
-/* حاوية السلايدر */
 .slider-wrapper {
   overflow: hidden;
 }
 
-/* السلايدر الأفقي */
 .slider {
   display: flex;
   gap: 12px;
@@ -92,19 +100,16 @@ section .section-header h2 {
   -webkit-overflow-scrolling: touch;
 }
 
-/* إخفاء شريط التمرير */
 .slider::-webkit-scrollbar {
   display: none;
 }
 
-/* عنصر داخل السلايدر */
 .slide {
   position: relative;
-  flex: 0 0 calc(30.77% - 9px); /* 📱 3.25 عنصر */
+  flex: 0 0 calc(30.77% - 9px);
   scroll-snap-align: start;
 }
 
-/* صورة العنصر */
 .slide img {
   width: 100%;
   aspect-ratio: 2 / 3;
@@ -113,10 +118,9 @@ section .section-header h2 {
   border-radius: 12px;
 }
 
-/* تحسين العرض على الشاشات الكبيرة */
 @media (min-width: 768px) {
   .slide {
-    flex: 0 0 calc(23.53% - 9px); /* 🖥️ 4.25 عنصر */
+    flex: 0 0 calc(23.53% - 9px);
   }
 }
 
@@ -125,14 +129,12 @@ section .section-header h2 {
 /*  قسم جميع الأعمال (Grid Preview)          */
 /* █████████████████████████████████████████ */
 
-/* شبكة عرض الأعمال */
 .works-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 📱 3 عناصر */
+  grid-template-columns: repeat(3, 1fr);
   gap: 12px;
 }
 
-/* صورة العمل */
 .work-card img {
   width: 100%;
   aspect-ratio: 2 / 3;
@@ -141,24 +143,20 @@ section .section-header h2 {
   display: block;
 }
 
-/* زر عرض المزيد */
 .view-all-btn {
   display: block;
   margin: 16px auto 0;
   padding: 10px 18px;
-
   background-color: #222;
   color: #fff;
   text-decoration: none;
-
   font-size: 14px;
   text-align: center;
   border-radius: 20px;
 }
 
-/* تحسين العرض (تابلت وما فوق) */
 @media (min-width: 768px) {
   .works-grid {
-    grid-template-columns: repeat(4, 1fr); /* 🖥️ 4 عناصر */
+    grid-template-columns: repeat(4, 1fr);
   }
 }
