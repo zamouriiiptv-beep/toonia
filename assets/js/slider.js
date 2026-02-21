@@ -2,45 +2,49 @@
 
 /* ===================================== */
 /*  slider.js                            */
-/*  منطق السلايدر العام (Progress Dots) */
+/*  منطق السلايدر العام                  */
 /* ===================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* حساب خطوة الحركة (مرجع واحد للأسهم + النقاط) */
+  /* ============================== */
+  /*  حساب خطوة السلايدر            */
+  /* ============================== */
   function getStep(slider) {
     const slide = slider.querySelector('.slide');
     if (!slide) return 0;
 
-    const gap = parseInt(getComputedStyle(slider).gap, 10) || 0;
-    return slide.offsetWidth + gap;
+    const styles = getComputedStyle(slider);
+    const gap = parseFloat(styles.columnGap || styles.gap) || 0;
+
+    return slide.getBoundingClientRect().width + gap;
   }
 
-  /* مزامنة النقاط بأسلوب Progress مثل الهيدر */
-  function syncDots(slider, step) {
+  /* ============================== */
+  /*  حساب الإندكس الحالي بدقة      */
+  /* ============================== */
+  function getCurrentIndex(slider, step) {
+    if (!step) return 0;
+    return Math.round(slider.scrollLeft / step);
+  }
+
+  /* ============================== */
+  /*  مزامنة النقاط                 */
+  /* ============================== */
+  function syncDots(slider) {
     const dotsContainer = document.querySelector(
       `.slider-dots[data-slider="${slider.id}"]`
     );
     if (!dotsContainer) return;
 
     const dots = dotsContainer.querySelectorAll('button');
-    if (!dots.length || !step) return;
+    if (!dots.length) return;
 
-    const scroll = slider.scrollLeft;
-    const exactIndex = scroll / step;
-
-    const activeIndex = Math.floor(exactIndex);
-    const progress = exactIndex - activeIndex; // 0 → 1
+    const step = getStep(slider);
+    const index = getCurrentIndex(slider, step);
 
     dots.forEach((dot, i) => {
-      const isActive = i === activeIndex;
-      dot.classList.toggle('active', isActive);
-
-      /* progress بصري مثل الهيدر */
-      dot.style.setProperty(
-        '--progress',
-        isActive ? `${Math.min(progress * 100, 100)}%` : '0%'
-      );
+      dot.classList.toggle('active', i === index);
     });
   }
 
@@ -53,14 +57,15 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!slider) return;
 
       const step = getStep(slider);
+      if (!step) return;
 
-      slider.scrollBy({
-        left: btn.classList.contains('next') ? step : -step,
+      const direction = btn.classList.contains('next') ? 1 : -1;
+
+      slider.scrollTo({
+        left: slider.scrollLeft + step * direction,
         behavior: 'smooth'
       });
 
-      /* تحديث النقاط بعد حركة السهم */
-      setTimeout(() => syncDots(slider, step), 300);
     });
 
   });
@@ -91,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       for (let i = 0; i < count; i++) {
         const dot = document.createElement('button');
-        if (i === 0) dot.classList.add('active');
+        dot.type = 'button';
 
         dot.addEventListener('click', () => {
           slider.scrollTo({
@@ -103,21 +108,28 @@ document.addEventListener('DOMContentLoaded', () => {
         dotsContainer.appendChild(dot);
         dots.push(dot);
       }
+
+      syncDots(slider);
     }
 
+    /* ============================== */
+    /*  التمرير (سحب / عجلة / أسهم) */
+    /* ============================== */
+    let rafId = null;
+
     function onScroll() {
-      const step = getStep(slider);
-      requestAnimationFrame(() => syncDots(slider, step));
+      if (rafId) return;
+
+      rafId = requestAnimationFrame(() => {
+        syncDots(slider);
+        rafId = null;
+      });
     }
 
     createDots();
-    onScroll();
 
-    slider.addEventListener('scroll', onScroll);
-    window.addEventListener('resize', () => {
-      createDots();
-      onScroll();
-    });
+    slider.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', createDots);
 
   });
 
