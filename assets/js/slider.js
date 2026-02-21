@@ -1,33 +1,41 @@
 'use strict';
 
-/* ===================================== */
-/*  slider.js                            */
-/*  منطق السلايدر العام                  */
-/* ===================================== */
-
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* ============================== */
-  /*  حساب خطوة السلايدر            */
-  /* ============================== */
-  function getStep(slider) {
-    const slide = slider.querySelector('.slide');
-    if (!slide) return 0;
+  /* ===================================== */
+  /*  أدوات مساعدة                         */
+  /* ===================================== */
 
-    const styles = getComputedStyle(slider);
-    const gap = parseFloat(styles.columnGap || styles.gap) || 0;
-
-    return slide.getBoundingClientRect().width + gap;
+  function getSlides(slider) {
+    return Array.from(slider.querySelectorAll('.slide'));
   }
 
-  /* ============================== */
-  /*  حساب الإندكس حسب المنتصف      */
-  /* ============================== */
-  function getIndexByCenter(slider) {
-    const slides = slider.querySelectorAll('.slide');
+  function getSliderRect(slider) {
+    return slider.getBoundingClientRect();
+  }
+
+  /* ===================================== */
+  /*  تحديد الشريحة النشطة (حواف + مركز)  */
+  /* ===================================== */
+  function getActiveIndex(slider) {
+    const slides = getSlides(slider);
     if (!slides.length) return 0;
 
-    const sliderRect = slider.getBoundingClientRect();
+    const sliderRect = getSliderRect(slider);
+
+    // بداية السلايدر
+    const firstRect = slides[0].getBoundingClientRect();
+    if (firstRect.left >= sliderRect.left - 1) {
+      return 0;
+    }
+
+    // نهاية السلايدر
+    const lastRect = slides[slides.length - 1].getBoundingClientRect();
+    if (lastRect.right <= sliderRect.right + 1) {
+      return slides.length - 1;
+    }
+
+    // الحالة العادية: الأقرب إلى المركز
     const sliderCenter = sliderRect.left + sliderRect.width / 2;
 
     let closestIndex = 0;
@@ -47,114 +55,151 @@ document.addEventListener('DOMContentLoaded', () => {
     return closestIndex;
   }
 
-  /* ============================== */
-  /*  مزامنة النقاط                 */
-  /* ============================== */
+  /* ===================================== */
+  /*  مزامنة النقاط                        */
+  /* ===================================== */
   function syncDots(slider) {
-    const dotsContainer = document.querySelector(
+    const dotsWrap = document.querySelector(
       `.slider-dots[data-slider="${slider.id}"]`
     );
-    if (!dotsContainer) return;
+    if (!dotsWrap) return;
 
-    const dots = dotsContainer.querySelectorAll('button');
+    const dots = dotsWrap.querySelectorAll('button');
     if (!dots.length) return;
 
     const index = slider._hasInteracted
-      ? getIndexByCenter(slider)
-      : 0; // أول صورة دائمًا عند التحميل
+      ? getActiveIndex(slider)
+      : 0;
 
     dots.forEach((dot, i) => {
       dot.classList.toggle('active', i === index);
     });
   }
 
-  /* ─────────── الأسهم ─────────── */
+  /* ===================================== */
+  /*  منطق الأسهم (Viewport-based)        */
+  /* ===================================== */
+
+  function scrollNext(slider) {
+    const slides = getSlides(slider);
+    const sliderRect = getSliderRect(slider);
+
+    const target = slides.find(slide => {
+      const r = slide.getBoundingClientRect();
+      return r.right > sliderRect.right + 1;
+    });
+
+    if (target) {
+      target.scrollIntoView({
+        behavior: 'smooth',
+        inline: 'start',
+        block: 'nearest'
+      });
+    }
+  }
+
+  function scrollPrev(slider) {
+    const slides = getSlides(slider);
+    const sliderRect = getSliderRect(slider);
+
+    const target = [...slides].reverse().find(slide => {
+      const r = slide.getBoundingClientRect();
+      return r.left < sliderRect.left - 1;
+    });
+
+    if (target) {
+      target.scrollIntoView({
+        behavior: 'smooth',
+        inline: 'start',
+        block: 'nearest'
+      });
+    }
+  }
+
+  /* ===================================== */
+  /*  ربط الأسهم                           */
+  /* ===================================== */
   document.querySelectorAll('.section-arrows .arrow').forEach(btn => {
-
     btn.addEventListener('click', () => {
-
       const slider = document.getElementById(btn.dataset.target);
       if (!slider) return;
 
       slider._hasInteracted = true;
 
-      const step = getStep(slider);
-      if (!step) return;
+      if (btn.classList.contains('next')) {
+        scrollNext(slider);
+      } else {
+        scrollPrev(slider);
+      }
 
-      const direction = btn.classList.contains('next') ? 1 : -1;
-
-      slider.scrollTo({
-        left: slider.scrollLeft + step * direction,
-        behavior: 'smooth'
-      });
-
+      requestAnimationFrame(() => syncDots(slider));
     });
-
   });
 
-  /* ─────────── النقاط ─────────── */
-  document.querySelectorAll('.slider-dots').forEach(dotsContainer => {
+  /* ===================================== */
+  /*  النقاط + التهيئة                     */
+  /* ===================================== */
+  document.querySelectorAll('.slider-dots').forEach(dotsWrap => {
 
-    const slider = document.getElementById(dotsContainer.dataset.slider);
+    const slider = document.getElementById(dotsWrap.dataset.slider);
     if (!slider) return;
 
+    const slides = getSlides(slider);
+    if (!slides.length) return;
+
     slider._hasInteracted = false;
+    dotsWrap.innerHTML = '';
 
-    function createDots() {
-      dotsContainer.innerHTML = '';
+    if (slides.length <= 1) {
+      dotsWrap.style.display = 'none';
+      return;
+    }
 
-      const step = getStep(slider);
-      if (!step) return;
+    dotsWrap.style.display = 'flex';
 
-      const count = Math.round(slider.scrollWidth / step);
+    slides.forEach((_, index) => {
+      const dot = document.createElement('button');
+      dot.type = 'button';
 
-      if (count <= 1) {
-        dotsContainer.style.display = 'none';
-        return;
-      }
+      dot.addEventListener('click', () => {
+        slider._hasInteracted = true;
 
-      dotsContainer.style.display = 'flex';
-
-      for (let i = 0; i < count; i++) {
-        const dot = document.createElement('button');
-        dot.type = 'button';
-
-        dot.addEventListener('click', () => {
-          slider._hasInteracted = true;
-
-          slider.scrollTo({
-            left: i * step,
-            behavior: 'smooth'
-          });
+        slides[index].scrollIntoView({
+          behavior: 'smooth',
+          inline: 'start',
+          block: 'nearest'
         });
 
-        dotsContainer.appendChild(dot);
-      }
+        requestAnimationFrame(() => syncDots(slider));
+      });
 
-      syncDots(slider);
-    }
+      dotsWrap.appendChild(dot);
+    });
 
-    /* ============================== */
-    /*  التمرير (سحب / عجلة)         */
-    /* ============================== */
-    let rafId = null;
+    /* فرض البداية من أول شريحة */
+    slides[0].scrollIntoView({
+      inline: 'start',
+      block: 'nearest'
+    });
 
-    function onScroll() {
+    syncDots(slider);
+
+    /* ===================================== */
+    /*  التمرير اليدوي                      */
+    /* ===================================== */
+    let ticking = false;
+
+    slider.addEventListener('scroll', () => {
       slider._hasInteracted = true;
 
-      if (rafId) return;
-
-      rafId = requestAnimationFrame(() => {
-        syncDots(slider);
-        rafId = null;
-      });
-    }
-
-    createDots();
-
-    slider.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', createDots);
-
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          syncDots(slider);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
   });
 
 });
