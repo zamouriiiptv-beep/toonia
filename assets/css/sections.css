@@ -93,6 +93,7 @@ section .section-header h2 {
   }
 }
 
+/*  خانة البحث مع لوجو مدمج داخل الحقل       */
 
 .section-search input {
   width: 100%;
@@ -102,7 +103,7 @@ section .section-header h2 {
   background-color: rgba(255,255,255,0.05);
 
   /* اللوجو */
-  background-image: url("assets/img/logo-mini.svg");
+  background-image: url("https://i.ibb.co/s8pmqwQ/logo.png");
   background-repeat: no-repeat;
   background-size: 14px 14px;
   background-position: left 14px center;
