@@ -162,3 +162,17 @@ section .section-header h2 {
     grid-template-columns: repeat(4, 1fr); /* 🖥️ 4 عناصر */
   }
 }
+
+
+/* DEBUG — اختبار قاطع */
+.section-header {
+  border: 2px solid red;
+}
+
+.section-header-top {
+  border: 2px solid blue;
+}
+
+.section-search {
+  border: 2px solid yellow;
+}
