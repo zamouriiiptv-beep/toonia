@@ -2,7 +2,7 @@
 
 /* ===================================== */
 /*  slider.js                            */
-/*  Scroll-based slider (Final Stable)   */
+/*  Scroll-based slider (Final Fixed)    */
 /* ===================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -57,9 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /*  فرض البداية من أول صورة       */
   /* ============================== */
   function forceStart(slider) {
-    // نضع السلايدر على أول عنصر فعليًا
     slider.scrollTo({ left: 0, behavior: 'auto' });
-    syncDots(slider);
   }
 
   /* ─────────── الأسهم ─────────── */
@@ -89,10 +87,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function createDots() {
       dotsWrap.innerHTML = '';
 
-      const step = getStep(slider);
-      if (!step) return;
-
-      const count = Math.round(slider.scrollWidth / step);
+      const slides = slider.querySelectorAll('.slide');
+      const count = slides.length;
 
       if (count <= 1) {
         dotsWrap.style.display = 'none';
@@ -106,6 +102,9 @@ document.addEventListener('DOMContentLoaded', () => {
         dot.type = 'button';
 
         dot.addEventListener('click', () => {
+          const step = getStep(slider);
+          if (!step) return;
+
           slider.scrollTo({
             left: i * step,
             behavior: 'smooth'
@@ -115,8 +114,8 @@ document.addEventListener('DOMContentLoaded', () => {
         dotsWrap.appendChild(dot);
       }
 
-      // ⬅️ مهم: فرض البداية بعد إنشاء النقاط
       forceStart(slider);
+      syncDots(slider);
     }
 
     slider.addEventListener('scroll', () => {
