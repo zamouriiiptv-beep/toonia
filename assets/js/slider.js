@@ -2,9 +2,9 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* ============================== */
-  /*  تحديد الشريحة حسب المركز     */
-  /* ============================== */
+  /* ===================================== */
+  /*  تحديد الشريحة الأقرب إلى المنتصف     */
+  /* ===================================== */
   function getIndexByCenter(slider) {
     const slides = slider.querySelectorAll('.slide');
     if (!slides.length) return 0;
@@ -29,9 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
     return closestIndex;
   }
 
-  /* ============================== */
-  /*  مزامنة النقاط                */
-  /* ============================== */
+  /* ===================================== */
+  /*  مزامنة النقاط                        */
+  /* ===================================== */
   function syncDots(slider) {
     const dotsContainer = document.querySelector(
       `.slider-dots[data-slider="${slider.id}"]`
@@ -50,11 +50,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  /* ============================== */
-  /*  الأسهم                       */
-  /* ============================== */
+  /* ===================================== */
+  /*  الأسهم (Prev / Next)                 */
+  /* ===================================== */
   document.querySelectorAll('.section-arrows .arrow').forEach(btn => {
     btn.addEventListener('click', () => {
+
       const slider = document.getElementById(btn.dataset.target);
       if (!slider) return;
 
@@ -63,7 +64,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
       slider._hasInteracted = true;
 
-      const currentIndex = getIndexByCenter(slider);
+      let currentIndex = getIndexByCenter(slider);
+
+      /* ---- إصلاح سهم الرجوع ---- */
+      if (btn.classList.contains('prev')) {
+        const rect = slides[currentIndex].getBoundingClientRect();
+        const sliderRect = slider.getBoundingClientRect();
+
+        // إذا لم تكن الشريحة الحالية مصطفّة فعليًا للبداية
+        if (rect.left > sliderRect.left + 1 && currentIndex > 0) {
+          currentIndex -= 1;
+        }
+      }
+
       const direction = btn.classList.contains('next') ? 1 : -1;
 
       let targetIndex = currentIndex + direction;
@@ -75,17 +88,18 @@ document.addEventListener('DOMContentLoaded', () => {
         inline: 'start'
       });
 
-      // 🔴 مهم: فرض التحديث حتى لو لم يحدث scroll
+      // فرض تحديث النقاط حتى لو لم يحدث scroll فعلي
       requestAnimationFrame(() => {
         syncDots(slider);
       });
     });
   });
 
-  /* ============================== */
-  /*  النقاط + التهيئة             */
-  /* ============================== */
+  /* ===================================== */
+  /*  النقاط + التهيئة                     */
+  /* ===================================== */
   document.querySelectorAll('.slider-dots').forEach(dotsContainer => {
+
     const slider = document.getElementById(dotsContainer.dataset.slider);
     if (!slider) return;
 
@@ -93,7 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!slides.length) return;
 
     slider._hasInteracted = false;
-
     dotsContainer.innerHTML = '';
 
     if (slides.length <= 1) {
@@ -116,7 +129,6 @@ document.addEventListener('DOMContentLoaded', () => {
           inline: 'start'
         });
 
-        // 🔴 نفس الفكرة هنا
         requestAnimationFrame(() => {
           syncDots(slider);
         });
@@ -125,11 +137,8 @@ document.addEventListener('DOMContentLoaded', () => {
       dotsContainer.appendChild(dot);
     });
 
-    /* ============================== */
-    /*  فرض البداية الصحيحة          */
-    /* ============================== */
-    const firstSlide = slides[0];
-    firstSlide.scrollIntoView({
+    /* ---- فرض البداية من أول شريحة ---- */
+    slides[0].scrollIntoView({
       block: 'nearest',
       inline: 'start'
     });
@@ -137,9 +146,9 @@ document.addEventListener('DOMContentLoaded', () => {
     slider._hasInteracted = false;
     syncDots(slider);
 
-    /* ============================== */
-    /*  التمرير اليدوي              */
-    /* ============================== */
+    /* ===================================== */
+    /*  التمرير اليدوي (Drag / Wheel)       */
+    /* ===================================== */
     let ticking = false;
 
     slider.addEventListener('scroll', () => {
