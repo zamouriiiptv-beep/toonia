@@ -2,40 +2,24 @@
 
 /* ===================================== */
 /*  slider.js                            */
-/*  Bullet-proof slider dots             */
+/*  Scroll-snap aware dots (FINAL)       */
 /* ===================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
 
   document.querySelectorAll('.slider').forEach(slider => {
 
-    const dotsWrap = slider.closest('section')?.querySelector('.slider-dots');
+    const section = slider.closest('section');
+    if (!section) return;
+
+    const dotsWrap = section.querySelector('.slider-dots');
     if (!dotsWrap) return;
 
-    const slides = slider.querySelectorAll('.slide');
+    const slides = Array.from(slider.querySelectorAll('.slide'));
     if (slides.length <= 1) return;
 
     dotsWrap.innerHTML = '';
     dotsWrap.style.display = 'flex';
-
-    /* ============================== */
-    /*  حساب الخطوة الحقيقية          */
-    /* ============================== */
-    function getStep() {
-      if (slides.length < 2) return 0;
-      return slides[1].offsetLeft - slides[0].offsetLeft;
-    }
-
-    /* ============================== */
-    /*  تطبيع scrollLeft (RTL-safe)   */
-    /* ============================== */
-    function getScroll() {
-      const dir = getComputedStyle(slider).direction;
-      if (dir !== 'rtl') return slider.scrollLeft;
-
-      const max = slider.scrollWidth - slider.clientWidth;
-      return Math.abs(slider.scrollLeft - max);
-    }
 
     /* ============================== */
     /*  إنشاء النقاط                  */
@@ -45,28 +29,45 @@ document.addEventListener('DOMContentLoaded', () => {
       dot.type = 'button';
 
       dot.addEventListener('click', () => {
-        const step = getStep();
-        if (!step) return;
-
-        slider.scrollTo({
-          left: i * step,
-          behavior: 'smooth'
+        slides[i].scrollIntoView({
+          behavior: 'smooth',
+          inline: 'start'
         });
       });
 
       dotsWrap.appendChild(dot);
     });
 
-    const dots = dotsWrap.querySelectorAll('button');
+    const dots = Array.from(dotsWrap.children);
 
     /* ============================== */
-    /*  مزامنة النقطة النشطة          */
+    /*  تحديد السلايد النشط فعليًا    */
+    /* ============================== */
+    function getActiveIndex() {
+      const sliderRect = slider.getBoundingClientRect();
+      const startEdge = sliderRect.left; // start يعمل مع RTL/LTR
+
+      let closestIndex = 0;
+      let minDistance = Infinity;
+
+      slides.forEach((slide, i) => {
+        const rect = slide.getBoundingClientRect();
+        const distance = Math.abs(rect.left - startEdge);
+
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestIndex = i;
+        }
+      });
+
+      return closestIndex;
+    }
+
+    /* ============================== */
+    /*  مزامنة النقاط                 */
     /* ============================== */
     function syncDots() {
-      const step = getStep();
-      if (!step) return;
-
-      const index = Math.round(getScroll() / step);
+      const index = getActiveIndex();
 
       dots.forEach((dot, i) => {
         dot.classList.toggle('active', i === index);
@@ -74,12 +75,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* ============================== */
-    /*  البداية من أول صورة           */
+    /*  التهيئة الأولى                */
     /* ============================== */
-    slider.scrollTo({ left: 0, behavior: 'auto' });
+    slides[0].scrollIntoView({ behavior: 'auto', inline: 'start' });
     syncDots();
 
-    slider.addEventListener('scroll', syncDots, { passive: true });
+    /* ============================== */
+    /*  الاستماع للتمرير              */
+    /* ============================== */
+    let raf = null;
+    slider.addEventListener('scroll', () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        syncDots();
+        raf = null;
+      });
+    }, { passive: true });
+
     window.addEventListener('resize', syncDots);
 
   });
