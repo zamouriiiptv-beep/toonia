@@ -2,7 +2,7 @@
 
 /* ===================================== */
 /*  slider.js                            */
-/*  منطق السلايدر العام                  */
+/*  منطق السلايدر العام (Stable)         */
 /* ===================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -17,34 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const styles = getComputedStyle(slider);
     const gap = parseFloat(styles.columnGap || styles.gap) || 0;
 
-    return slide.getBoundingClientRect().width + gap;
-  }
-
-  /* ============================== */
-  /*  حساب الإندكس حسب المنتصف      */
-  /* ============================== */
-  function getIndexByCenter(slider) {
-    const slides = slider.querySelectorAll('.slide');
-    if (!slides.length) return 0;
-
-    const sliderRect = slider.getBoundingClientRect();
-    const sliderCenter = sliderRect.left + sliderRect.width / 2;
-
-    let closestIndex = 0;
-    let minDistance = Infinity;
-
-    slides.forEach((slide, index) => {
-      const rect = slide.getBoundingClientRect();
-      const slideCenter = rect.left + rect.width / 2;
-      const distance = Math.abs(slideCenter - sliderCenter);
-
-      if (distance < minDistance) {
-        minDistance = distance;
-        closestIndex = index;
-      }
-    });
-
-    return closestIndex;
+    return slide.offsetWidth + gap;
   }
 
   /* ============================== */
@@ -60,16 +33,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!dots.length) return;
 
     const step = getStep(slider);
-    const scroll = slider.scrollLeft;
+    if (!step) return;
 
-    let index;
+    const maxIndex = dots.length - 1;
 
-    // عند بداية السلايدر فقط
-    if (!slider._hasInteracted || scroll < step / 2) {
-      index = 0;
-    } else {
-      index = getIndexByCenter(slider);
-    }
+    let index = Math.round(slider.scrollLeft / step);
+    index = Math.max(0, Math.min(index, maxIndex));
 
     dots.forEach((dot, i) => {
       dot.classList.toggle('active', i === index);
@@ -84,15 +53,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const slider = document.getElementById(btn.dataset.target);
       if (!slider) return;
 
-      slider._hasInteracted = true;
-
       const step = getStep(slider);
       if (!step) return;
 
-      const direction = btn.classList.contains('next') ? 1 : -1;
+      const dir = btn.classList.contains('next') ? 1 : -1;
 
-      slider.scrollTo({
-        left: slider.scrollLeft + step * direction,
+      slider.scrollBy({
+        left: step * dir,
         behavior: 'smooth'
       });
 
@@ -105,8 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const slider = document.getElementById(dotsContainer.dataset.slider);
     if (!slider) return;
-
-    slider._hasInteracted = false;
 
     function createDots() {
       dotsContainer.innerHTML = '';
@@ -128,8 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
         dot.type = 'button';
 
         dot.addEventListener('click', () => {
-          slider._hasInteracted = true;
-
           slider.scrollTo({
             left: i * step,
             behavior: 'smooth'
@@ -145,24 +108,13 @@ document.addEventListener('DOMContentLoaded', () => {
     /* ============================== */
     /*  التمرير (سحب / عجلة)         */
     /* ============================== */
-    let rafId = null;
+    slider.addEventListener('scroll', () => {
+      syncDots(slider);
+    }, { passive: true });
 
-    function onScroll() {
-      slider._hasInteracted = true;
-
-      if (rafId) return;
-
-      rafId = requestAnimationFrame(() => {
-        syncDots(slider);
-        rafId = null;
-      });
-    }
-
-    createDots();
-
-    slider.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', createDots);
 
+    createDots();
   });
 
 });
