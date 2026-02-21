@@ -2,7 +2,7 @@
 
 /* ===================================== */
 /*  slider.js                            */
-/*  منطق السلايدر العام (Stable)         */
+/*  RTL-safe – Stable Dot Sync           */
 /* ===================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -21,6 +21,23 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ============================== */
+  /*  تطبيع scrollLeft في RTL       */
+  /* ============================== */
+  function getNormalizedScrollLeft(slider) {
+    const dir = getComputedStyle(slider).direction;
+
+    if (dir !== 'rtl') {
+      return slider.scrollLeft;
+    }
+
+    // RTL normalization (cross-browser)
+    const maxScroll =
+      slider.scrollWidth - slider.clientWidth;
+
+    return Math.abs(slider.scrollLeft - maxScroll);
+  }
+
+  /* ============================== */
   /*  مزامنة النقاط (نهائي)         */
   /* ============================== */
   function syncDots(slider) {
@@ -35,9 +52,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const step = getStep(slider);
     if (!step) return;
 
+    const scroll = getNormalizedScrollLeft(slider);
     const maxIndex = dots.length - 1;
 
-    let index = Math.round(slider.scrollLeft / step);
+    let index = Math.round(scroll / step);
     index = Math.max(0, Math.min(index, maxIndex));
 
     dots.forEach((dot, i) => {
@@ -105,9 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
       syncDots(slider);
     }
 
-    /* ============================== */
-    /*  التمرير (سحب / عجلة)         */
-    /* ============================== */
     slider.addEventListener('scroll', () => {
       syncDots(slider);
     }, { passive: true });
