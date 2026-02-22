@@ -2,37 +2,65 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  const sliders = document.querySelectorAll('.slider');
+  /* ===================================== */
+  /*  تهيئة كل سلايدر                      */
+  /* ===================================== */
 
-  sliders.forEach(slider => {
+  document.querySelectorAll('.slider').forEach(slider => {
 
-    const track = slider.querySelector('.slides');
-    const slides = Array.from(track.children);
-    const dots = Array.from(slider.querySelectorAll('.dot'));
-    const prevBtn = slider.querySelector('.prev');
-    const nextBtn = slider.querySelector('.next');
+    const slides = Array.from(slider.querySelectorAll('.slide'));
+    if (!slides.length) return;
 
-    if (!slides.length || !dots.length) return;
+    const sliderId = slider.id;
+    const dotsWrapper = document.querySelector(
+      `.slider-dots[data-slider="${sliderId}"]`
+    );
 
-    /* ============================= */
-    /*  حساب عرض الخطوة              */
-    /* ============================= */
+    const section = slider.closest('section');
+    const prevBtn = section.querySelector('.arrow.prev');
+    const nextBtn = section.querySelector('.arrow.next');
+
+    /* ===================================== */
+    /*  حساب خطوة الحركة                     */
+    /* ===================================== */
+
     function getStep() {
-      const gap = parseInt(getComputedStyle(track).gap, 10) || 0;
-      return slides[0].offsetWidth + gap;
+      const slide = slides[0];
+      const gap = parseInt(getComputedStyle(slider).gap, 10) || 0;
+      return slide.offsetWidth + gap;
     }
 
-    /* ============================= */
-    /*  تحديد الشريحة النشطة         */
-    /* ============================= */
+    /* ===================================== */
+    /*  إنشاء النقاط تلقائيًا               */
+    /* ===================================== */
+
+    dotsWrapper.innerHTML = '';
+    slides.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'dot';
+      dot.type = 'button';
+
+      dot.addEventListener('click', () => {
+        slider.scrollTo({
+          left: i * getStep(),
+          behavior: 'smooth'
+        });
+      });
+
+      dotsWrapper.appendChild(dot);
+    });
+
+    const dots = Array.from(dotsWrapper.children);
+
+    /* ===================================== */
+    /*  تحديد الشريحة النشطة                 */
+    /* ===================================== */
+
     function getActiveIndex() {
       const step = getStep();
-      return Math.round(track.scrollLeft / step);
+      return Math.round(slider.scrollLeft / step);
     }
 
-    /* ============================= */
-    /*  تحديث النقاط                 */
-    /* ============================= */
     function updateDots() {
       const index = getActiveIndex();
 
@@ -40,40 +68,32 @@ document.addEventListener('DOMContentLoaded', () => {
       if (dots[index]) dots[index].classList.add('active');
     }
 
-    /* ============================= */
-    /*  الأسهم                       */
-    /* ============================= */
+    /* ===================================== */
+    /*  الأسهم                               */
+    /* ===================================== */
+
     nextBtn?.addEventListener('click', () => {
-      track.scrollBy({ left: getStep(), behavior: 'smooth' });
+      slider.scrollBy({ left: getStep(), behavior: 'smooth' });
     });
 
     prevBtn?.addEventListener('click', () => {
-      track.scrollBy({ left: -getStep(), behavior: 'smooth' });
+      slider.scrollBy({ left: -getStep(), behavior: 'smooth' });
     });
 
-    /* ============================= */
-    /*  النقر على النقاط             */
-    /* ============================= */
-    dots.forEach((dot, i) => {
-      dot.addEventListener('click', () => {
-        track.scrollTo({
-          left: i * getStep(),
-          behavior: 'smooth'
-        });
-      });
-    });
+    /* ===================================== */
+    /*  المزامنة مع السحب                   */
+    /* ===================================== */
 
-    /* ============================= */
-    /*  المزامنة مع التمرير          */
-    /* ============================= */
-    track.addEventListener('scroll', () => {
+    slider.addEventListener('scroll', () => {
       requestAnimationFrame(updateDots);
     });
 
-    /* ============================= */
-    /*  تهيئة أولية                  */
-    /* ============================= */
+    /* ===================================== */
+    /*  تهيئة أولية                          */
+    /* ===================================== */
+
     updateDots();
+
   });
 
 });
