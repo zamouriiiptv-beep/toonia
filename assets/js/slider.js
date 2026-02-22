@@ -3,7 +3,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
   /* ===================================== */
-  /*  تهيئة السلايدرز                      */
+  /*  تهيئة جميع السلايدرز                 */
   /* ===================================== */
 
   document.querySelectorAll('.slider').forEach(slider => {
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     );
     if (!dotsWrapper) return;
 
-    let activeIndex = 0;
+    let activeIndex = 0; // المصدر الوحيد للحقيقة
 
     /* ===================================== */
     /*  إنشاء النقاط                         */
@@ -44,24 +44,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function setActive(index) {
       activeIndex = index;
-      dots.forEach(d => d.classList.remove('active'));
+      dots.forEach(dot => dot.classList.remove('active'));
       if (dots[index]) dots[index].classList.add('active');
     }
 
     /* ===================================== */
-    /*  تحديد الشريحة الحالية                */
+    /*  تحديد الشريحة النشطة                 */
     /* ===================================== */
 
     function updateActiveFromScroll() {
-      const sliderLeft = slider.scrollLeft;
+
+      /* 🔒 تثبيت البداية */
+      if (slider.scrollLeft < 5) {
+        setActive(0);
+        return;
+      }
+
+      const scrollLeft = slider.scrollLeft;
 
       let index = 0;
-      let min = Infinity;
+      let minDistance = Infinity;
 
       slides.forEach((slide, i) => {
-        const dist = Math.abs(slide.offsetLeft - sliderLeft);
-        if (dist < min) {
-          min = dist;
+        const distance = Math.abs(slide.offsetLeft - scrollLeft);
+        if (distance < minDistance) {
+          minDistance = distance;
           index = i;
         }
       });
@@ -73,11 +80,15 @@ document.addEventListener('DOMContentLoaded', () => {
       requestAnimationFrame(updateActiveFromScroll);
     });
 
+    /* ===================================== */
+    /*  تهيئة أولية                          */
+    /* ===================================== */
+
     setActive(0);
   });
 
   /* ===================================== */
-  /*  الأسهم (ربط صريح بالـ data-target)   */
+  /*  الأسهم (data-target)                 */
   /* ===================================== */
 
   document.querySelectorAll('.arrow').forEach(btn => {
@@ -91,9 +102,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     btn.addEventListener('click', () => {
 
-      const step =
-        slides[0].offsetWidth +
-        (parseInt(getComputedStyle(slider).gap, 10) || 0);
+      const gap = parseInt(getComputedStyle(slider).gap, 10) || 0;
+      const step = slides[0].offsetWidth + gap;
 
       slider.scrollBy({
         left: btn.classList.contains('next') ? step : -step,
