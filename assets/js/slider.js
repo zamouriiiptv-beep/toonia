@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!slides.length) return;
 
     const sliderId = slider.id;
+
     const dotsWrapper = document.querySelector(
       `.slider-dots[data-slider="${sliderId}"]`
     );
@@ -17,18 +18,22 @@ document.addEventListener('DOMContentLoaded', () => {
       `.arrow[data-target="${sliderId}"]`
     );
 
-    /* ========= STATE ========= */
+    /* ============================= */
+    /*  STATE                        */
+    /* ============================= */
     let activeIndex = 0;
     let isProgrammatic = false;
     let scrollTimeout = null;
 
-    /* ========= DOTS ========= */
+    /* ============================= */
+    /*  DOTS                         */
+    /* ============================= */
     dotsWrapper.innerHTML = '';
 
     slides.forEach((_, i) => {
       const dot = document.createElement('button');
       dot.type = 'button';
-      dot.className = 'dot';
+      dot.className = 'dot'; // 🔴 مهم جدًا
 
       dot.addEventListener('click', () => {
         scrollToIndex(i);
@@ -45,7 +50,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (dots[index]) dots[index].classList.add('active');
     }
 
-    /* ========= SCROLL ========= */
+    /* ============================= */
+    /*  SCROLL TO INDEX              */
+    /* ============================= */
     function scrollToIndex(index) {
       index = Math.max(0, Math.min(slides.length - 1, index));
 
@@ -64,6 +71,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 300);
     }
 
+    /* ============================= */
+    /*  UPDATE FROM SCROLL           */
+    /* ============================= */
     function updateFromScroll() {
       if (isProgrammatic) return;
 
@@ -85,7 +95,9 @@ document.addEventListener('DOMContentLoaded', () => {
       { passive: true }
     );
 
-    /* ========= ARROWS ========= */
+    /* ============================= */
+    /*  ARROWS                       */
+    /* ============================= */
     arrows.forEach(btn => {
       btn.addEventListener('click', () => {
         scrollToIndex(
@@ -96,9 +108,12 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    /* ========= INIT ========= */
+    /* ============================= */
+    /*  INIT                         */
+    /* ============================= */
     setActive(0);
     slider.scrollLeft = 0;
+
   });
 
 });
