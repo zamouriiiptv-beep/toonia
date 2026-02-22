@@ -17,6 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const prevBtn = section.querySelector('.arrow.prev');
     const nextBtn = section.querySelector('.arrow.next');
 
+    let activeIndex = 0; // ← الحقيقة الوحيدة
+
     /* ============================= */
     /*  إنشاء النقاط                 */
     /* ============================= */
@@ -39,39 +41,44 @@ document.addEventListener('DOMContentLoaded', () => {
     const dots = Array.from(dotsWrapper.children);
 
     /* ============================= */
-    /*  تحديد الشريحة النشطة         */
+    /*  تحديث النقطة النشطة          */
     /* ============================= */
-    function updateActiveDot() {
-      const sliderLeft = slider.getBoundingClientRect().left;
-
-      let activeIndex = 0;
-      let minDistance = Infinity;
-
-      slides.forEach((slide, index) => {
-        const slideLeft = slide.getBoundingClientRect().left;
-        const distance = Math.abs(slideLeft - sliderLeft);
-
-        if (distance < minDistance) {
-          minDistance = distance;
-          activeIndex = index;
-        }
-      });
+    function updateActiveDot(index) {
+      activeIndex = index;
 
       dots.forEach(dot => dot.classList.remove('active'));
-      if (dots[activeIndex]) dots[activeIndex].classList.add('active');
+      if (dots[index]) dots[index].classList.add('active');
     }
 
     /* ============================= */
-    /*  الأسهم                       */
+    /*  تحديد الشريحة الحالية        */
+    /* ============================= */
+    function detectActiveSlide() {
+      const sliderLeft = slider.getBoundingClientRect().left;
+
+      let minDistance = Infinity;
+      let index = activeIndex;
+
+      slides.forEach((slide, i) => {
+        const distance =
+          Math.abs(slide.getBoundingClientRect().left - sliderLeft);
+
+        if (distance < minDistance) {
+          minDistance = distance;
+          index = i;
+        }
+      });
+
+      updateActiveDot(index);
+    }
+
+    /* ============================= */
+    /*  الأسهم (تعتمد على index)     */
     /* ============================= */
     function scrollByOne(direction) {
-      const current = dots.findIndex(dot =>
-        dot.classList.contains('active')
-      );
-
       const next = Math.max(
         0,
-        Math.min(slides.length - 1, current + direction)
+        Math.min(slides.length - 1, activeIndex + direction)
       );
 
       slides[next].scrollIntoView({
@@ -87,13 +94,13 @@ document.addEventListener('DOMContentLoaded', () => {
     /*  التمرير اليدوي               */
     /* ============================= */
     slider.addEventListener('scroll', () => {
-      requestAnimationFrame(updateActiveDot);
+      requestAnimationFrame(detectActiveSlide);
     });
 
     /* ============================= */
     /*  تهيئة أولية                  */
     /* ============================= */
-    updateActiveDot();
+    updateActiveDot(0);
 
   });
 
