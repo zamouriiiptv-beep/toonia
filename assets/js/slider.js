@@ -1,97 +1,78 @@
 /**
- * سكريبت التحكم في السلايدر - النسخة النهائية المستقرة
- * الميزات: يدعم RTL، يمنع قفز النقاط، أداء عالي جداً
+ * سكريبت السلايدر الاحترافي - نسخة Toonia المعدلة
+ * يحل مشكلة البداية من الصورة الأولى والوصول لآخر صورة بدقة
  */
 
 'use strict';
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // اختيار جميع عناصر السلايدر في الصفحة
     document.querySelectorAll('.slider').forEach(slider => {
         
         const slides = Array.from(slider.querySelectorAll('.slide'));
         const sliderId = slider.id;
-        
-        // العثور على حاوية النقاط المرتبطة بهذا السلايدر عبر data-slider
         const dotsWrapper = document.querySelector(`.slider-dots[data-slider="${sliderId}"]`);
         
-        // التحقق من وجود العناصر الأساسية
         if (!slides.length || !dotsWrapper) return;
 
-        // العثور على الأسهم المرتبطة بهذا السلايدر
         const arrows = document.querySelectorAll(`.arrow[data-target="${sliderId}"]`);
-        
         let activeIndex = 0;
-        let isProgrammatic = false; // متغير لمنع تضارب التمرير التلقائي مع اليدوي
+        let isProgrammatic = false; // لمنع التضارب أثناء النقر على الأزرار
 
         /* ===================================== */
-        /* 1. إنشاء نقاط التنقل (Dots)           */
+        /* 1. بناء نقاط التنقل                   */
         /* ===================================== */
         dotsWrapper.innerHTML = '';
         const dots = slides.map((_, i) => {
             const dot = document.createElement('button');
             dot.type = 'button';
             dot.className = 'dot';
-            
-            // عند النقر على النقطة
-            dot.addEventListener('click', () => {
-                scrollToIndex(i);
-            });
-            
+            dot.addEventListener('click', () => scrollToIndex(i));
             dotsWrapper.appendChild(dot);
             return dot;
         });
 
         /* ===================================== */
-        /* 2. وظيفة تحديث حالة النقطة النشطة     */
+        /* 2. تحديث النقطة النشطة                 */
         /* ===================================== */
         function setActive(index) {
             if (index < 0 || index >= dots.length) return;
             activeIndex = index;
-            
-            // إزالة كلاس active من الجميع وإضافته للعنصر المحدد
-            dots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === index);
-            });
+            dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
         }
 
         /* ===================================== */
-        /* 3. وظيفة التمرير إلى شريحة معينة      */
+        /* 3. وظيفة التمرير (عند الضغط)          */
         /* ===================================== */
         function scrollToIndex(index) {
-            isProgrammatic = true; // تفعيل وضع "التمرير البرمجي" لتعطيل المراقب مؤقتاً
+            isProgrammatic = true; 
             const targetIndex = Math.max(0, Math.min(slides.length - 1, index));
             
-            // التمرير السلس للمركز لضمان الدقة
+            // نستخدم inline: 'start' لضمان محاذاة الصورة بدقة مع حافة السلايدر
             slides[targetIndex].scrollIntoView({
                 behavior: 'smooth',
                 block: 'nearest',
-                inline: 'center'
+                inline: 'start' 
             });
 
             setActive(targetIndex);
             
-            // إعادة السماح للمراقب اليدوي بالعمل بعد انتهاء حركة التمرير
-            setTimeout(() => {
-                isProgrammatic = false;
-            }, 600); 
+            // انتظار انتهاء الأنميشن قبل السماح للمراقب بالتدخل ثانية
+            setTimeout(() => { isProgrammatic = false; }, 600);
         }
 
         /* ===================================== */
-        /* 4. مراقب الصور (Intersection Observer) */
-        /* يحل مشكلة القفز وتوافق RTL            */
+        /* 4. محرك المراقبة الذكي (Intersection) */
         /* ===================================== */
+        // هذا الجزء هو المسؤول عن حركة النقطة عند السحب باليد
         const observerOptions = {
             root: slider,
-            // نحدد منطقة ضيقة جداً في منتصف السلايدر (5% فقط)
-            // لضمان أن النقطة لا تتغير إلا إذا كانت الصورة في المنتصف تماماً
-            rootMargin: '0px -47% 0px -47%', 
-            threshold: 0 
+            // نستخدم هامش ضيق جداً في البداية لضمان رصد أول صورة وآخر صورة فور ظهورها
+            rootMargin: '0px -2px 0px -2px', 
+            threshold: 0.6 // يجب أن يظهر 60% من الصورة لتعتبر هي النشطة
         };
 
         const observer = new IntersectionObserver((entries) => {
-            // إذا كنا نقوم بالتمرير عبر النقر (الأسهم/النقاط)، نتجاهل تحديث المراقب
             if (isProgrammatic) return;
 
             entries.forEach(entry => {
@@ -102,21 +83,20 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }, observerOptions);
 
-        // تفعيل المراقب على كل صورة
+        // البدء بمراقبة كل شريحة/بوستر أنمي
         slides.forEach(slide => observer.observe(slide));
 
         /* ===================================== */
-        /* 5. إعداد أزرار الأسهم                 */
+        /* 5. التحكم بالأسهم                     */
         /* ===================================== */
         arrows.forEach(btn => {
             btn.addEventListener('click', () => {
                 const step = btn.classList.contains('next') ? 1 : -1;
-                // في RTL، المتصفحات تعكس الاتجاه برمجياً أحياناً، لكن scrollIntoView تعالج ذلك
                 scrollToIndex(activeIndex + step);
             });
         });
 
-        // تعيين الحالة الأولية
+        // تشغيل النقطة الأولى عند تحميل الصفحة
         setActive(0);
     });
 });
