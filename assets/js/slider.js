@@ -2,6 +2,10 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+  /* ===================================== */
+  /*  تهيئة جميع السلايدرز                 */
+  /* ===================================== */
+
   document.querySelectorAll('.slider').forEach(slider => {
 
     const slides = Array.from(slider.querySelectorAll('.slide'));
@@ -18,22 +22,22 @@ document.addEventListener('DOMContentLoaded', () => {
       `.arrow[data-target="${sliderId}"]`
     );
 
-    /* ============================= */
-    /*  STATE                        */
-    /* ============================= */
+    /* ===================================== */
+    /*  الحالة (مصدر الحقيقة الوحيد)        */
+    /* ===================================== */
     let activeIndex = 0;
     let isProgrammatic = false;
     let scrollTimeout = null;
 
-    /* ============================= */
-    /*  DOTS                         */
-    /* ============================= */
+    /* ===================================== */
+    /*  إنشاء نقاط السلايدر                 */
+    /* ===================================== */
     dotsWrapper.innerHTML = '';
 
     slides.forEach((_, i) => {
       const dot = document.createElement('button');
       dot.type = 'button';
-      dot.className = 'dot'; // 🔴 مهم جدًا
+      dot.className = 'dot';
 
       dot.addEventListener('click', () => {
         scrollToIndex(i);
@@ -50,9 +54,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (dots[index]) dots[index].classList.add('active');
     }
 
-    /* ============================= */
-    /*  SCROLL TO INDEX              */
-    /* ============================= */
+    /* ===================================== */
+    /*  التمرير إلى شريحة حسب الفهرس         */
+    /* ===================================== */
     function scrollToIndex(index) {
       index = Math.max(0, Math.min(slides.length - 1, index));
 
@@ -71,9 +75,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 300);
     }
 
-    /* ============================= */
-    /*  UPDATE FROM SCROLL           */
-    /* ============================= */
+    /* ===================================== */
+    /*  تحديث الشريحة النشطة عند التمرير     */
+    /* ===================================== */
     function updateFromScroll() {
       if (isProgrammatic) return;
 
@@ -95,9 +99,9 @@ document.addEventListener('DOMContentLoaded', () => {
       { passive: true }
     );
 
-    /* ============================= */
-    /*  ARROWS                       */
-    /* ============================= */
+    /* ===================================== */
+    /*  أزرار التنقل (الأسهم)               */
+    /* ===================================== */
     arrows.forEach(btn => {
       btn.addEventListener('click', () => {
         scrollToIndex(
@@ -108,9 +112,9 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    /* ============================= */
-    /*  INIT                         */
-    /* ============================= */
+    /* ===================================== */
+    /*  التهيئة الأولية                     */
+    /* ===================================== */
     setActive(0);
     slider.scrollLeft = 0;
 
