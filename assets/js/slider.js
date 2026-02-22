@@ -2,10 +2,6 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* ===================================== */
-  /*  تهيئة جميع السلايدرز                 */
-  /* ===================================== */
-
   document.querySelectorAll('.slider').forEach(slider => {
 
     const slides = Array.from(slider.querySelectorAll('.slide'));
@@ -17,20 +13,22 @@ document.addEventListener('DOMContentLoaded', () => {
     );
     if (!dotsWrapper) return;
 
-    /* ========= الحالة ========= */
-    let activeIndex = 0;                 // المصدر الوحيد للحقيقة
+    const arrows = document.querySelectorAll(
+      `.arrow[data-target="${sliderId}"]`
+    );
+
+    /* ========= STATE ========= */
+    let activeIndex = 0;
     let isProgrammatic = false;
     let scrollTimeout = null;
 
-    /* ===================================== */
-    /*  إنشاء النقاط                         */
-    /* ===================================== */
-
+    /* ========= DOTS ========= */
     dotsWrapper.innerHTML = '';
 
     slides.forEach((_, i) => {
       const dot = document.createElement('button');
       dot.type = 'button';
+      dot.className = 'dot';
 
       dot.addEventListener('click', () => {
         scrollToIndex(i);
@@ -42,17 +40,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const dots = Array.from(dotsWrapper.children);
 
     function setActive(index) {
-      if (index === activeIndex) return;
-
       activeIndex = index;
-      dots.forEach(dot => dot.classList.remove('active'));
+      dots.forEach(d => d.classList.remove('active'));
       if (dots[index]) dots[index].classList.add('active');
     }
 
-    /* ===================================== */
-    /*  التمرير إلى شريحة حسب index          */
-    /* ===================================== */
-
+    /* ========= SCROLL ========= */
     function scrollToIndex(index) {
       index = Math.max(0, Math.min(slides.length - 1, index));
 
@@ -71,20 +64,14 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 300);
     }
 
-    /* ===================================== */
-    /*  تحديد الشريحة النشطة من التمرير      */
-    /* ===================================== */
-
-    function updateActiveFromScroll() {
+    function updateFromScroll() {
       if (isProgrammatic) return;
 
       const gap = parseInt(getComputedStyle(slider).gap, 10) || 0;
       const step = slides[0].offsetWidth + gap;
 
       let index = Math.round(slider.scrollLeft / step);
-
-      if (index < 0) index = 0;
-      if (index > slides.length - 1) index = slides.length - 1;
+      index = Math.max(0, Math.min(slides.length - 1, index));
 
       setActive(index);
     }
@@ -93,52 +80,25 @@ document.addEventListener('DOMContentLoaded', () => {
       'scroll',
       () => {
         clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(updateActiveFromScroll, 60);
+        scrollTimeout = setTimeout(updateFromScroll, 60);
       },
       { passive: true }
     );
 
-    /* ===================================== */
-    /*  تهيئة أولية                          */
-    /* ===================================== */
-
-    setActive(0);
-    slider.scrollLeft = 0;
-  });
-
-  /* ===================================== */
-  /*  الأسهم (data-target)                 */
-  /* ===================================== */
-
-  document.querySelectorAll('.arrow').forEach(btn => {
-
-    const targetId = btn.dataset.target;
-    const slider = document.getElementById(targetId);
-    if (!slider) return;
-
-    const slides = Array.from(slider.querySelectorAll('.slide'));
-    if (!slides.length) return;
-
-    let activeIndex = 0;
-
-    btn.addEventListener('click', () => {
-
-      const gap = parseInt(getComputedStyle(slider).gap, 10) || 0;
-      const step = slides[0].offsetWidth + gap;
-
-      activeIndex = Math.round(slider.scrollLeft / step);
-
-      const nextIndex = btn.classList.contains('next')
-        ? activeIndex + 1
-        : activeIndex - 1;
-
-      const index = Math.max(0, Math.min(slides.length - 1, nextIndex));
-
-      slider.scrollTo({
-        left: slides[index].offsetLeft,
-        behavior: 'smooth'
+    /* ========= ARROWS ========= */
+    arrows.forEach(btn => {
+      btn.addEventListener('click', () => {
+        scrollToIndex(
+          btn.classList.contains('next')
+            ? activeIndex + 1
+            : activeIndex - 1
+        );
       });
     });
+
+    /* ========= INIT ========= */
+    setActive(0);
+    slider.scrollLeft = 0;
   });
 
 });
