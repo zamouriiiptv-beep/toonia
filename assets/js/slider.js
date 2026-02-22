@@ -2,10 +2,6 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* ===================================== */
-  /*  تهيئة كل سلايدر                      */
-  /* ===================================== */
-
   document.querySelectorAll('.slider').forEach(slider => {
 
     const slides = Array.from(slider.querySelectorAll('.slide'));
@@ -15,24 +11,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const dotsWrapper = document.querySelector(
       `.slider-dots[data-slider="${sliderId}"]`
     );
+    if (!dotsWrapper) return;
 
     const section = slider.closest('section');
     const prevBtn = section.querySelector('.arrow.prev');
     const nextBtn = section.querySelector('.arrow.next');
 
-    /* ===================================== */
-    /*  حساب خطوة الحركة                     */
-    /* ===================================== */
-
-    function getStep() {
-      const slide = slides[0];
-      const gap = parseInt(getComputedStyle(slider).gap, 10) || 0;
-      return slide.offsetWidth + gap;
-    }
-
-    /* ===================================== */
-    /*  إنشاء النقاط تلقائيًا               */
-    /* ===================================== */
+    /* ============================= */
+    /*  إنشاء النقاط                 */
+    /* ============================= */
 
     dotsWrapper.innerHTML = '';
     slides.forEach((_, i) => {
@@ -41,9 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
       dot.type = 'button';
 
       dot.addEventListener('click', () => {
-        slider.scrollTo({
-          left: i * getStep(),
-          behavior: 'smooth'
+        slides[i].scrollIntoView({
+          behavior: 'smooth',
+          inline: 'start'
         });
       });
 
@@ -52,47 +39,59 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const dots = Array.from(dotsWrapper.children);
 
-    /* ===================================== */
-    /*  تحديد الشريحة النشطة                 */
-    /* ===================================== */
+    /* ============================= */
+    /*  تفعيل النقطة حسب الرؤية      */
+    /* ============================= */
 
-    function getActiveIndex() {
-      const step = getStep();
-      return Math.round(slider.scrollLeft / step);
-    }
-
-    function updateDots() {
-      const index = getActiveIndex();
-
+    function setActiveDot(index) {
       dots.forEach(dot => dot.classList.remove('active'));
       if (dots[index]) dots[index].classList.add('active');
     }
 
-    /* ===================================== */
-    /*  الأسهم                               */
-    /* ===================================== */
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const index = slides.indexOf(entry.target);
+            setActiveDot(index);
+          }
+        });
+      },
+      {
+        root: slider,
+        threshold: 0.6
+      }
+    );
 
-    nextBtn?.addEventListener('click', () => {
-      slider.scrollBy({ left: getStep(), behavior: 'smooth' });
-    });
+    slides.forEach(slide => observer.observe(slide));
 
-    prevBtn?.addEventListener('click', () => {
-      slider.scrollBy({ left: -getStep(), behavior: 'smooth' });
-    });
+    /* ============================= */
+    /*  الأسهم                       */
+    /* ============================= */
 
-    /* ===================================== */
-    /*  المزامنة مع السحب                   */
-    /* ===================================== */
+    function scrollByOne(direction) {
+      const currentIndex = dots.findIndex(dot =>
+        dot.classList.contains('active')
+      );
+      const nextIndex = Math.max(
+        0,
+        Math.min(slides.length - 1, currentIndex + direction)
+      );
 
-    slider.addEventListener('scroll', () => {
-      requestAnimationFrame(updateDots);
-    });
+      slides[nextIndex].scrollIntoView({
+        behavior: 'smooth',
+        inline: 'start'
+      });
+    }
 
-    /* ===================================== */
-    /*  تهيئة أولية                          */
-    /* ===================================== */
+    nextBtn?.addEventListener('click', () => scrollByOne(1));
+    prevBtn?.addEventListener('click', () => scrollByOne(-1));
 
-    updateDots();
+    /* ============================= */
+    /*  تهيئة أولية                  */
+    /* ============================= */
+
+    setActiveDot(0);
 
   });
 
