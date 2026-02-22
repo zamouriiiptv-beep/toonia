@@ -1,21 +1,25 @@
+'use strict';
+
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* ============================== */
-  /*  حساب خطوة السلايدر            */
-  /* ============================== */
+  /* ===================================== */
+  /*  حساب خطوة السلايدر (عرض الشريحة)     */
+  /* ===================================== */
   function getStep(slider) {
     const slide = slider.querySelector('.slide');
     if (!slide) return 0;
 
-    const styles = getComputedStyle(slider);
-    const gap = parseFloat(styles.columnGap || styles.gap) || 0;
+    const slideRect = slide.getBoundingClientRect();
+    const styles = getComputedStyle(slide);
 
-    return slide.getBoundingClientRect().width + gap;
+    const marginRight = parseFloat(styles.marginRight) || 0;
+
+    return slideRect.width + marginRight;
   }
 
-  /* ============================== */
-  /*  مزامنة النقاط                 */
-  /* ============================== */
+  /* ===================================== */
+  /*  مزامنة النقاط مع التمرير الحقيقي     */
+  /* ===================================== */
   function syncDots(slider) {
     const dotsContainer = document.querySelector(
       `.slider-dots[data-slider="${slider.id}"]`
@@ -28,23 +32,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const step = getStep(slider);
     if (!step) return;
 
-    const indexRaw = slider._hasInteracted ? Math.round(slider.scrollLeft / step) : 0;
-    const index = Math.min(dots.length - 1, Math.max(0, indexRaw));
+    // الحساب الصحيح (منتصف الشريحة)
+    const rawIndex = Math.floor(
+      (slider.scrollLeft + step / 2) / step
+    );
+
+    const index = Math.max(0, Math.min(dots.length - 1, rawIndex));
 
     dots.forEach((dot, i) => {
       dot.classList.toggle('active', i === index);
     });
   }
 
-  /* ─────────── الأسهم ─────────── */
+  /* ===================================== */
+  /*  الأسهم (التالي / السابق)             */
+  /* ===================================== */
   document.querySelectorAll('.section-arrows .arrow').forEach(btn => {
 
     btn.addEventListener('click', () => {
 
       const slider = document.getElementById(btn.dataset.target);
       if (!slider) return;
-
-      slider._hasInteracted = true;
 
       const step = getStep(slider);
       if (!step) return;
@@ -60,21 +68,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   });
 
-  /* ─────────── النقاط ─────────── */
+  /* ===================================== */
+  /*  إنشاء النقاط + التمرير               */
+  /* ===================================== */
   document.querySelectorAll('.slider-dots').forEach(dotsContainer => {
 
     const slider = document.getElementById(dotsContainer.dataset.slider);
     if (!slider) return;
 
-    slider._hasInteracted = false;
-
     function createDots() {
       dotsContainer.innerHTML = '';
 
-      const step = getStep(slider);
-      if (!step) return;
-
-      const count = Math.round(slider.scrollWidth / step);
+      const slides = slider.querySelectorAll('.slide');
+      const count = slides.length;
 
       if (count <= 1) {
         dotsContainer.style.display = 'none';
@@ -83,13 +89,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
       dotsContainer.style.display = 'flex';
 
+      const step = getStep(slider);
+      if (!step) return;
+
       for (let i = 0; i < count; i++) {
         const dot = document.createElement('button');
         dot.type = 'button';
 
         dot.addEventListener('click', () => {
-          slider._hasInteracted = true;
-
           slider.scrollTo({
             left: i * step,
             behavior: 'smooth'
@@ -102,14 +109,12 @@ document.addEventListener('DOMContentLoaded', () => {
       syncDots(slider);
     }
 
-    /* ============================== */
-    /*  التمرير (سحب / عجلة)         */
-    /* ============================== */
+    /* ===================================== */
+    /*  التمرير (سحب / عجلة / touch)        */
+    /* ===================================== */
     let rafId = null;
 
     function onScroll() {
-      slider._hasInteracted = true;
-
       if (rafId) return;
 
       rafId = requestAnimationFrame(() => {
