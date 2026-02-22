@@ -52,36 +52,33 @@ document.addEventListener('DOMContentLoaded', () => {
     /*  تحديد الشريحة النشطة                 */
     /* ===================================== */
 
-function updateActiveFromScroll() {
+    function updateActiveFromScroll() {
 
-  const slideWidth = slides[0].offsetWidth;
-  const gap = parseInt(getComputedStyle(slider).gap, 10) || 0;
+      /* 🔒 تثبيت البداية */
+      if (slider.scrollLeft < 5) {
+        setActive(0);
+        return;
+      }
 
-  /* 🔒 تثبيت البداية الحقيقي */
-  if (slider.scrollLeft <= (slideWidth + gap) / 2) {
-    setActive(0);
-    return;
-  }
+      const scrollLeft = slider.scrollLeft;
 
-  const scrollLeft = slider.scrollLeft;
+      let index = 0;
+      let minDistance = Infinity;
 
-  let index = 0;
-  let minDistance = Infinity;
+      slides.forEach((slide, i) => {
+        const distance = Math.abs(slide.offsetLeft - scrollLeft);
+        if (distance < minDistance) {
+          minDistance = distance;
+          index = i;
+        }
+      });
 
-  slides.forEach((slide, i) => {
-    const distance = Math.abs(slide.offsetLeft - scrollLeft);
-    if (distance < minDistance) {
-      minDistance = distance;
-      index = i;
+      setActive(index);
     }
-  });
 
-  setActive(index);
-}
-
-slider.addEventListener('scroll', () => {
-  requestAnimationFrame(updateActiveFromScroll);
-});
+    slider.addEventListener('scroll', () => {
+      requestAnimationFrame(updateActiveFromScroll);
+    });
 
     /* ===================================== */
     /*  تهيئة أولية                          */
