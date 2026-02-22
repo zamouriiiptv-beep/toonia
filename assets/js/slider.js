@@ -1,130 +1,144 @@
 'use strict';
 
-const slider = document.getElementById('slider');
-const dots = Array.from(document.querySelectorAll('.dot'));
-const prevBtn = document.getElementById('prev');
-const nextBtn = document.getElementById('next');
+document.addEventListener('DOMContentLoaded', () => {
 
-let activeIndex = 0;
-let slideWidth = 0;
-let gap = 0;
-let isProgrammaticScroll = false;
-let scrollTimeout;
+  /* ===================================== */
+  /*  تهيئة جميع السلايدرز                 */
+  /* ===================================== */
 
-/* ============================= */
-/*  تحديث القياسات               */
-/* ============================= */
-function updateMetrics() {
-  const firstSlide = slider.querySelector('.slide');
-  if (!firstSlide) return;
+  document.querySelectorAll('.slider').forEach(slider => {
 
-  slideWidth = firstSlide.offsetWidth;
-  gap = parseInt(getComputedStyle(slider).gap, 10) || 0;
-}
+    const slides = Array.from(slider.querySelectorAll('.slide'));
+    if (!slides.length) return;
 
-/* ============================= */
-/*  تحديد الشريحة النشطة          */
-/* ============================= */
-function calculateActiveIndex(scrollLeft) {
-  const START_THRESHOLD = slideWidth * 0.25;
+    const sliderId = slider.id;
+    const dotsWrapper = document.querySelector(
+      `.slider-dots[data-slider="${sliderId}"]`
+    );
+    if (!dotsWrapper) return;
 
-  if (scrollLeft <= START_THRESHOLD) return 0;
+    /* ========= الحالة ========= */
+    let activeIndex = 0;                 // المصدر الوحيد للحقيقة
+    let isProgrammatic = false;
+    let scrollTimeout = null;
 
-  let closestIndex = 0;
-  let minDistance = Infinity;
+    /* ===================================== */
+    /*  إنشاء النقاط                         */
+    /* ===================================== */
 
-  Array.from(slider.children).forEach((slide, i) => {
-    const distance = Math.abs(slide.offsetLeft - scrollLeft);
-    if (distance < minDistance) {
-      minDistance = distance;
-      closestIndex = i;
+    dotsWrapper.innerHTML = '';
+
+    slides.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+
+      dot.addEventListener('click', () => {
+        scrollToIndex(i);
+      });
+
+      dotsWrapper.appendChild(dot);
+    });
+
+    const dots = Array.from(dotsWrapper.children);
+
+    function setActive(index) {
+      if (index === activeIndex) return;
+
+      activeIndex = index;
+      dots.forEach(dot => dot.classList.remove('active'));
+      if (dots[index]) dots[index].classList.add('active');
     }
-  });
 
-  return closestIndex;
-}
+    /* ===================================== */
+    /*  التمرير إلى شريحة حسب index          */
+    /* ===================================== */
 
-/* ============================= */
-/*  تحديث النقاط والأسهم          */
-/* ============================= */
-function setActive(index) {
-  if (index === activeIndex) return;
+    function scrollToIndex(index) {
+      index = Math.max(0, Math.min(slides.length - 1, index));
 
-  dots[activeIndex]?.classList.remove('active');
-  dots[index]?.classList.add('active');
+      isProgrammatic = true;
 
-  activeIndex = index;
-}
+      slider.scrollTo({
+        left: slides[index].offsetLeft,
+        behavior: 'smooth'
+      });
 
-/* ============================= */
-/*  التمرير إلى شريحة             */
-/* ============================= */
-function scrollToIndex(index) {
-  index = Math.max(0, Math.min(index, slider.children.length - 1));
-
-  const target = slider.children[index];
-  if (!target) return;
-
-  isProgrammaticScroll = true;
-
-  slider.scrollTo({
-    left: target.offsetLeft,
-    behavior: 'smooth',
-  });
-
-  setActive(index);
-
-  clearTimeout(scrollTimeout);
-  scrollTimeout = setTimeout(() => {
-    isProgrammaticScroll = false;
-  }, 300);
-}
-
-/* ============================= */
-/*  أحداث التمرير                */
-/* ============================= */
-slider.addEventListener(
-  'scroll',
-  () => {
-    if (isProgrammaticScroll) return;
-
-    clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(() => {
-      const index = calculateActiveIndex(slider.scrollLeft);
       setActive(index);
-    }, 50);
-  },
-  { passive: true }
-);
 
-/* ============================= */
-/*  الأسهم                        */
-/* ============================= */
-prevBtn.addEventListener('click', () => {
-  scrollToIndex(activeIndex - 1);
-});
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        isProgrammatic = false;
+      }, 300);
+    }
 
-nextBtn.addEventListener('click', () => {
-  scrollToIndex(activeIndex + 1);
-});
+    /* ===================================== */
+    /*  تحديد الشريحة النشطة من التمرير      */
+    /* ===================================== */
 
-/* ============================= */
-/*  النقاط                        */
-/* ============================= */
-dots.forEach((dot, i) => {
-  dot.addEventListener('click', () => {
-    scrollToIndex(i);
+    function updateActiveFromScroll() {
+      if (isProgrammatic) return;
+
+      const gap = parseInt(getComputedStyle(slider).gap, 10) || 0;
+      const step = slides[0].offsetWidth + gap;
+
+      let index = Math.round(slider.scrollLeft / step);
+
+      if (index < 0) index = 0;
+      if (index > slides.length - 1) index = slides.length - 1;
+
+      setActive(index);
+    }
+
+    slider.addEventListener(
+      'scroll',
+      () => {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(updateActiveFromScroll, 60);
+      },
+      { passive: true }
+    );
+
+    /* ===================================== */
+    /*  تهيئة أولية                          */
+    /* ===================================== */
+
+    setActive(0);
+    slider.scrollLeft = 0;
   });
-});
 
-/* ============================= */
-/*  تهيئة                          */
-/* ============================= */
-window.addEventListener('resize', () => {
-  updateMetrics();
-  scrollToIndex(activeIndex);
-});
+  /* ===================================== */
+  /*  الأسهم (data-target)                 */
+  /* ===================================== */
 
-updateMetrics();
-setActive(0);
-scrollToIndex(0);
+  document.querySelectorAll('.arrow').forEach(btn => {
+
+    const targetId = btn.dataset.target;
+    const slider = document.getElementById(targetId);
+    if (!slider) return;
+
+    const slides = Array.from(slider.querySelectorAll('.slide'));
+    if (!slides.length) return;
+
+    let activeIndex = 0;
+
+    btn.addEventListener('click', () => {
+
+      const gap = parseInt(getComputedStyle(slider).gap, 10) || 0;
+      const step = slides[0].offsetWidth + gap;
+
+      activeIndex = Math.round(slider.scrollLeft / step);
+
+      const nextIndex = btn.classList.contains('next')
+        ? activeIndex + 1
+        : activeIndex - 1;
+
+      const index = Math.max(0, Math.min(slides.length - 1, nextIndex));
+
+      slider.scrollTo({
+        left: slides[index].offsetLeft,
+        behavior: 'smooth'
+      });
+    });
+  });
+
+});
