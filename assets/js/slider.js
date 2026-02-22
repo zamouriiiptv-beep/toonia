@@ -2,26 +2,28 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+  /* ===================================== */
+  /*  تهيئة السلايدرز                      */
+  /* ===================================== */
+
   document.querySelectorAll('.slider').forEach(slider => {
 
     const slides = Array.from(slider.querySelectorAll('.slide'));
     if (!slides.length) return;
 
     const sliderId = slider.id;
+
     const dotsWrapper = document.querySelector(
       `.slider-dots[data-slider="${sliderId}"]`
     );
     if (!dotsWrapper) return;
 
-    const section = slider.closest('section');
-    const prevBtn = section.querySelector('.arrow.prev');
-    const nextBtn = section.querySelector('.arrow.next');
+    let activeIndex = 0;
 
-    let activeIndex = 0; // ← الحقيقة الوحيدة
+    /* ===================================== */
+    /*  إنشاء النقاط                         */
+    /* ===================================== */
 
-    /* ============================= */
-    /*  إنشاء النقاط                 */
-    /* ============================= */
     dotsWrapper.innerHTML = '';
 
     slides.forEach((_, i) => {
@@ -29,9 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
       dot.type = 'button';
 
       dot.addEventListener('click', () => {
-        slides[i].scrollIntoView({
-          behavior: 'smooth',
-          inline: 'start'
+        slider.scrollTo({
+          left: slides[i].offsetLeft,
+          behavior: 'smooth'
         });
       });
 
@@ -40,68 +42,64 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const dots = Array.from(dotsWrapper.children);
 
-    /* ============================= */
-    /*  تحديث النقطة النشطة          */
-    /* ============================= */
-    function updateActiveDot(index) {
+    function setActive(index) {
       activeIndex = index;
-
-      dots.forEach(dot => dot.classList.remove('active'));
+      dots.forEach(d => d.classList.remove('active'));
       if (dots[index]) dots[index].classList.add('active');
     }
 
-    /* ============================= */
-    /*  تحديد الشريحة الحالية        */
-    /* ============================= */
-    function detectActiveSlide() {
-      const sliderLeft = slider.getBoundingClientRect().left;
+    /* ===================================== */
+    /*  تحديد الشريحة الحالية                */
+    /* ===================================== */
 
-      let minDistance = Infinity;
-      let index = activeIndex;
+    function updateActiveFromScroll() {
+      const sliderLeft = slider.scrollLeft;
+
+      let index = 0;
+      let min = Infinity;
 
       slides.forEach((slide, i) => {
-        const distance =
-          Math.abs(slide.getBoundingClientRect().left - sliderLeft);
-
-        if (distance < minDistance) {
-          minDistance = distance;
+        const dist = Math.abs(slide.offsetLeft - sliderLeft);
+        if (dist < min) {
+          min = dist;
           index = i;
         }
       });
 
-      updateActiveDot(index);
+      setActive(index);
     }
 
-    /* ============================= */
-    /*  الأسهم (تعتمد على index)     */
-    /* ============================= */
-    function scrollByOne(direction) {
-      const next = Math.max(
-        0,
-        Math.min(slides.length - 1, activeIndex + direction)
-      );
-
-      slides[next].scrollIntoView({
-        behavior: 'smooth',
-        inline: 'start'
-      });
-    }
-
-    nextBtn?.addEventListener('click', () => scrollByOne(1));
-    prevBtn?.addEventListener('click', () => scrollByOne(-1));
-
-    /* ============================= */
-    /*  التمرير اليدوي               */
-    /* ============================= */
     slider.addEventListener('scroll', () => {
-      requestAnimationFrame(detectActiveSlide);
+      requestAnimationFrame(updateActiveFromScroll);
     });
 
-    /* ============================= */
-    /*  تهيئة أولية                  */
-    /* ============================= */
-    updateActiveDot(0);
+    setActive(0);
+  });
 
+  /* ===================================== */
+  /*  الأسهم (ربط صريح بالـ data-target)   */
+  /* ===================================== */
+
+  document.querySelectorAll('.arrow').forEach(btn => {
+
+    const targetId = btn.dataset.target;
+    const slider = document.getElementById(targetId);
+    if (!slider) return;
+
+    const slides = Array.from(slider.querySelectorAll('.slide'));
+    if (!slides.length) return;
+
+    btn.addEventListener('click', () => {
+
+      const step =
+        slides[0].offsetWidth +
+        (parseInt(getComputedStyle(slider).gap, 10) || 0);
+
+      slider.scrollBy({
+        left: btn.classList.contains('next') ? step : -step,
+        behavior: 'smooth'
+      });
+    });
   });
 
 });
