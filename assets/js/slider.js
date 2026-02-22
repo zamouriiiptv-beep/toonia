@@ -20,11 +20,10 @@ document.addEventListener('DOMContentLoaded', () => {
     /* ============================= */
     /*  إنشاء النقاط                 */
     /* ============================= */
-
     dotsWrapper.innerHTML = '';
+
     slides.forEach((_, i) => {
       const dot = document.createElement('button');
-      dot.className = 'dot';
       dot.type = 'button';
 
       dot.addEventListener('click', () => {
@@ -40,45 +39,42 @@ document.addEventListener('DOMContentLoaded', () => {
     const dots = Array.from(dotsWrapper.children);
 
     /* ============================= */
-    /*  تفعيل النقطة حسب الرؤية      */
+    /*  تحديد الشريحة النشطة         */
     /* ============================= */
+    function updateActiveDot() {
+      const sliderLeft = slider.getBoundingClientRect().left;
 
-    function setActiveDot(index) {
+      let activeIndex = 0;
+      let minDistance = Infinity;
+
+      slides.forEach((slide, index) => {
+        const slideLeft = slide.getBoundingClientRect().left;
+        const distance = Math.abs(slideLeft - sliderLeft);
+
+        if (distance < minDistance) {
+          minDistance = distance;
+          activeIndex = index;
+        }
+      });
+
       dots.forEach(dot => dot.classList.remove('active'));
-      if (dots[index]) dots[index].classList.add('active');
+      if (dots[activeIndex]) dots[activeIndex].classList.add('active');
     }
-
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const index = slides.indexOf(entry.target);
-            setActiveDot(index);
-          }
-        });
-      },
-      {
-        root: slider,
-        threshold: 0.6
-      }
-    );
-
-    slides.forEach(slide => observer.observe(slide));
 
     /* ============================= */
     /*  الأسهم                       */
     /* ============================= */
-
     function scrollByOne(direction) {
-      const currentIndex = dots.findIndex(dot =>
+      const current = dots.findIndex(dot =>
         dot.classList.contains('active')
       );
-      const nextIndex = Math.max(
+
+      const next = Math.max(
         0,
-        Math.min(slides.length - 1, currentIndex + direction)
+        Math.min(slides.length - 1, current + direction)
       );
 
-      slides[nextIndex].scrollIntoView({
+      slides[next].scrollIntoView({
         behavior: 'smooth',
         inline: 'start'
       });
@@ -88,10 +84,16 @@ document.addEventListener('DOMContentLoaded', () => {
     prevBtn?.addEventListener('click', () => scrollByOne(-1));
 
     /* ============================= */
+    /*  التمرير اليدوي               */
+    /* ============================= */
+    slider.addEventListener('scroll', () => {
+      requestAnimationFrame(updateActiveDot);
+    });
+
+    /* ============================= */
     /*  تهيئة أولية                  */
     /* ============================= */
-
-    setActiveDot(0);
+    updateActiveDot();
 
   });
 
