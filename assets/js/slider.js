@@ -1,10 +1,3 @@
-'use strict';
-
-/* ===================================== */
-/*  slider.js                            */
-/*  منطق السلايدر العام                  */
-/* ===================================== */
-
 document.addEventListener('DOMContentLoaded', () => {
 
   /* ============================== */
@@ -21,33 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ============================== */
-  /*  حساب الإندكس حسب المنتصف      */
-  /* ============================== */
-  function getIndexByCenter(slider) {
-    const slides = slider.querySelectorAll('.slide');
-    if (!slides.length) return 0;
-
-    const sliderRect = slider.getBoundingClientRect();
-    const sliderCenter = sliderRect.left + sliderRect.width / 2;
-
-    let closestIndex = 0;
-    let minDistance = Infinity;
-
-    slides.forEach((slide, index) => {
-      const rect = slide.getBoundingClientRect();
-      const slideCenter = rect.left + rect.width / 2;
-      const distance = Math.abs(slideCenter - sliderCenter);
-
-      if (distance < minDistance) {
-        minDistance = distance;
-        closestIndex = index;
-      }
-    });
-
-    return closestIndex;
-  }
-
-  /* ============================== */
   /*  مزامنة النقاط                 */
   /* ============================== */
   function syncDots(slider) {
@@ -59,9 +25,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const dots = dotsContainer.querySelectorAll('button');
     if (!dots.length) return;
 
-    const index = slider._hasInteracted
-      ? getIndexByCenter(slider)
-      : 0; // أول صورة دائمًا عند التحميل
+    const step = getStep(slider);
+    if (!step) return;
+
+    const indexRaw = slider._hasInteracted ? Math.round(slider.scrollLeft / step) : 0;
+    const index = Math.min(dots.length - 1, Math.max(0, indexRaw));
 
     dots.forEach((dot, i) => {
       dot.classList.toggle('active', i === index);
