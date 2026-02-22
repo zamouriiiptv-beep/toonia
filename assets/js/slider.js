@@ -2,10 +2,6 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* ===================================== */
-  /*  تهيئة جميع السلايدرز                 */
-  /* ===================================== */
-
   document.querySelectorAll('.slider').forEach(slider => {
 
     const slides = Array.from(slider.querySelectorAll('.slide'));
@@ -22,15 +18,15 @@ document.addEventListener('DOMContentLoaded', () => {
       `.arrow[data-target="${sliderId}"]`
     );
 
-    /* ===================================== */
-    /*  الحالة (مصدر الحقيقة الوحيد)        */
-    /* ===================================== */
+    /* ============================= */
+    /*  الحالة (مصدر الحقيقة)        */
+    /* ============================= */
     let activeIndex = 0;
     let isProgrammatic = false;
 
-    /* ===================================== */
-    /*  إنشاء نقاط السلايدر                 */
-    /* ===================================== */
+    /* ============================= */
+    /*  إنشاء النقاط                 */
+    /* ============================= */
     dotsWrapper.innerHTML = '';
 
     slides.forEach((_, i) => {
@@ -49,15 +45,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function setActive(index) {
       if (index === activeIndex) return;
-
       activeIndex = index;
       dots.forEach(d => d.classList.remove('active'));
       if (dots[index]) dots[index].classList.add('active');
     }
 
-    /* ===================================== */
-    /*  التمرير إلى شريحة حسب الفهرس         */
-    /* ===================================== */
+    /* ============================= */
+    /*  تمرير إلى شريحة              */
+    /* ============================= */
     function scrollToIndex(index) {
       index = Math.max(0, Math.min(slides.length - 1, index));
 
@@ -75,19 +70,30 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 300);
     }
 
-    /* ===================================== */
-    /*  تحديث الشريحة النشطة أثناء السحب     */
-    /* ===================================== */
+    /* ============================= */
+    /*  تحديد النشط أثناء السحب      */
+    /* ============================= */
     function updateFromScroll() {
       if (isProgrammatic) return;
 
-      const gap = parseInt(getComputedStyle(slider).gap, 10) || 0;
-      const step = slides[0].offsetWidth + gap;
+      const sliderRect = slider.getBoundingClientRect();
+      const sliderCenter = sliderRect.left + sliderRect.width / 2;
 
-      let index = Math.round(slider.scrollLeft / step);
-      index = Math.max(0, Math.min(slides.length - 1, index));
+      let closestIndex = 0;
+      let minDistance = Infinity;
 
-      setActive(index);
+      slides.forEach((slide, i) => {
+        const rect = slide.getBoundingClientRect();
+        const slideCenter = rect.left + rect.width / 2;
+        const distance = Math.abs(slideCenter - sliderCenter);
+
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestIndex = i;
+        }
+      });
+
+      setActive(closestIndex);
     }
 
     slider.addEventListener(
@@ -98,9 +104,9 @@ document.addEventListener('DOMContentLoaded', () => {
       { passive: true }
     );
 
-    /* ===================================== */
-    /*  أزرار التنقل (الأسهم)               */
-    /* ===================================== */
+    /* ============================= */
+    /*  الأسهم                       */
+    /* ============================= */
     arrows.forEach(btn => {
       btn.addEventListener('click', () => {
         scrollToIndex(
@@ -111,9 +117,9 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    /* ===================================== */
-    /*  التهيئة الأولية                     */
-    /* ===================================== */
+    /* ============================= */
+    /*  التهيئة الأولية              */
+    /* ============================= */
     setActive(0);
     slider.scrollLeft = 0;
 
