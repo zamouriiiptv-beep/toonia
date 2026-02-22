@@ -154,24 +154,13 @@ section .section-header h2 {
 
 
 /* █████████████████████████████████████████ */
-/* قسم جميع الأعمال (Grid Preview)          */
+/*  قسم جميع الأعمال (Grid Preview)          */
 /* █████████████████████████████████████████ */
 
 .works-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 أعمدة للموبايل */
-  gap: 15px; /* زيادة المسافة قليلاً للراحة البصرية */
-}
-
-/* بطاقة العمل الواحدة */
-.work-card {
-  position: relative;
-  transition: transform 0.3s ease;
-  cursor: pointer;
-}
-
-.work-card:hover {
-  transform: translateY(-5px); /* حركة ذكية للأعلى عند التمرير */
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
 }
 
 .work-card img {
@@ -180,75 +169,22 @@ section .section-header h2 {
   object-fit: cover;
   border-radius: 12px;
   display: block;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  transition: box-shadow 0.3s ease;
 }
 
-.work-card:hover img {
-  box-shadow: 0 8px 20px rgba(255, 212, 0, 0.2); /* توهج أصفر خفيف حول البوستر */
-}
-
-/* █████████████████████████████████████████ */
-/* إضافات جديدة (نظام التقييم والحالة)        */
-/* █████████████████████████████████████████ */
-
-/* شارة التقييم (Rating) */
-.work-rating {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  background: rgba(0, 0, 0, 0.7);
-  color: #FFD400; /* اللون الأصفر الخاص بموقعك */
-  padding: 2px 6px;
-  border-radius: 6px;
-  font-size: 11px;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  backdrop-filter: blur(4px);
-}
-
-/* شارة الحالة (مستمر / منتهي) */
-.work-status {
-  position: absolute;
-  bottom: 8px;
-  right: 8px;
-  background: #FFD400;
-  color: #000;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 10px;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
-/* زر عرض الكل المحسن */
 .view-all-btn {
-  display: inline-block;
-  margin: 25px auto 0;
-  padding: 10px 25px;
-  background-color: transparent;
-  color: #FFD400;
-  border: 1px solid #FFD400;
+  display: block;
+  margin: 16px auto 0;
+  padding: 10px 18px;
+  background-color: #222;
+  color: #fff;
   text-decoration: none;
   font-size: 14px;
-  font-weight: bold;
   text-align: center;
-  border-radius: 25px;
-  transition: all 0.3s ease;
+  border-radius: 20px;
 }
 
-.view-all-btn:hover {
-  background-color: #FFD400;
-  color: #000;
-  box-shadow: 0 4px 15px rgba(255, 212, 0, 0.3);
-}
-
-/* تحسين العرض للشاشات الكبيرة */
 @media (min-width: 768px) {
   .works-grid {
-    grid-template-columns: repeat(5, 1fr); /* 5 أعمدة للتابلت والكمبيوتر */
-    gap: 20px;
+    grid-template-columns: repeat(4, 1fr);
   }
 }
