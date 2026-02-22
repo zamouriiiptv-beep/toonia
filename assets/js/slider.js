@@ -27,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
     /* ===================================== */
     let activeIndex = 0;
     let isProgrammatic = false;
-    let scrollTimeout = null;
 
     /* ===================================== */
     /*  إنشاء نقاط السلايدر                 */
@@ -49,6 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const dots = Array.from(dotsWrapper.children);
 
     function setActive(index) {
+      if (index === activeIndex) return;
+
       activeIndex = index;
       dots.forEach(d => d.classList.remove('active'));
       if (dots[index]) dots[index].classList.add('active');
@@ -69,14 +70,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
       setActive(index);
 
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => {
+      setTimeout(() => {
         isProgrammatic = false;
       }, 300);
     }
 
     /* ===================================== */
-    /*  تحديث الشريحة النشطة عند التمرير     */
+    /*  تحديث الشريحة النشطة أثناء السحب     */
     /* ===================================== */
     function updateFromScroll() {
       if (isProgrammatic) return;
@@ -93,8 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
     slider.addEventListener(
       'scroll',
       () => {
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(updateFromScroll, 60);
+        requestAnimationFrame(updateFromScroll);
       },
       { passive: true }
     );
