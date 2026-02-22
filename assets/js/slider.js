@@ -78,26 +78,22 @@ document.addEventListener('DOMContentLoaded', () => {
     /* ===================================== */
     /*  تحديث الشريحة النشطة عند التمرير     */
     /* ===================================== */
+   
     function updateFromScroll() {
       if (isProgrammatic) return;
 
       const gap = parseInt(getComputedStyle(slider).gap, 10) || 0;
       const step = slides[0].offsetWidth + gap;
 
-      let index = Math.round(slider.scrollLeft / step);
+      // استخدام Math.abs لتحويل القيمة السالبة (في RTL) إلى موجبة
+      // واستخدام scrollLeft بناءً على اتجاه الصفحة
+      let scrollPos = Math.abs(slider.scrollLeft);
+      
+      let index = Math.round(scrollPos / step);
       index = Math.max(0, Math.min(slides.length - 1, index));
 
       setActive(index);
     }
-
-    slider.addEventListener(
-      'scroll',
-      () => {
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(updateFromScroll, 60);
-      },
-      { passive: true }
-    );
 
     /* ===================================== */
     /*  أزرار التنقل (الأسهم)               */
