@@ -216,43 +216,62 @@ section .section-header h2 {
 }
 
 /* █████████████████████████████████████████ */
-/*  Badges System – Slider & Work Cards     */
-/*  نظام البادجات (الجودة + حالة العمل)     */
+/*  Slider Images + Badges System            */
+/*  صورة السلايدر + البادجات (HD / الحالة) */
 /* █████████████████████████████████████████ */
 
-/* الرابط هو الحاوية المرجعية للصورة */
-.slide-link {
-  position: relative;      /* أساس التموضع */
-  display: inline-block;   /* يطابق حجم الصورة */
-  line-height: 0;          /* 🔴 يمنع الخط الأسود */
-  overflow: hidden;        /* 🔴 قص أي زوائد */
-  border-radius: 12px;     /* نفس Radius الصورة */
+
+/* ========================================= */
+/*  Slide & Image                             */
+/* ========================================= */
+
+.slide {
+  flex: 0 0 calc(30.77% - 9px);
+  scroll-snap-align: start;
 }
 
-/* الصورة */
+/* الرابط هو الحاوية المرجعية الحقيقية */
+.slide-link {
+  position: relative;        /* مرجع absolute */
+  display: inline-block;     /* يطابق حجم الصورة */
+  line-height: 0;            /* 🔴 يمنع أي خطوط سوداء */
+  overflow: hidden;          /* قص أي زوائد */
+  border-radius: 12px;       /* نفس Radius الصورة */
+}
+
+/* الصورة نفسها */
 .slide-link img {
-  display: block;          /* يمنع inline gaps */
+  display: block;            /* يمنع inline gap */
   width: 100%;
   height: auto;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 12px;
 }
 
-/* قاعدة عامة للبادجات */
+
+/* ========================================= */
+/*  Badges – Base                             */
+/* ========================================= */
+
 .badge {
   position: absolute;
   z-index: 2;
 
-  padding: 3px 6px;        /* ⬅️ تقليل الطول */
-  font-size: 10px;         /* ⬅️ أصغر = أكثر احتراف */
-  font-weight: 600;
+  /* حجم مرن حسب حجم الصورة */
+  font-size: clamp(9px, 1.8vw, 11px);
+  padding: 2px 5px;
   line-height: 1;
   white-space: nowrap;
 
+  font-weight: 600;
   border-radius: 6px;
 }
 
-/* ============================= */
-/*  Badge: HD                    */
-/* ============================= */
+
+/* ========================================= */
+/*  Badge: HD                                */
+/* ========================================= */
 
 .badge-hd {
   top: 6px;
@@ -262,9 +281,10 @@ section .section-header h2 {
   color: #fff;
 }
 
-/* ============================= */
-/*  Badge: Status                */
-/* ============================= */
+
+/* ========================================= */
+/*  Badge: Status                             */
+/* ========================================= */
 
 .badge-status {
   bottom: 6px;
@@ -275,7 +295,7 @@ section .section-header h2 {
 
 /* مستمر */
 .badge-ongoing {
-  background: #f5c842;   /* أصفر أهدأ */
+  background: #f5c842;   /* أصفر هادئ */
   color: #111;
 }
 
@@ -286,22 +306,14 @@ section .section-header h2 {
 }
 
 
+/* ========================================= */
+/*  Responsive polish (صور صغيرة جدًا)       */
+/* ========================================= */
 
-
-
-
-
-/* قِم بوضعه في آخر الملف لضمان عدم تجاوزه */
-.slide-link {
-  position: relative !important;
-  display: inline-block !important;
-  line-height: 0 !important;   /* يمنع الفراغ الأسود */
-  overflow: hidden !important; /* يقطع أي زوائد إن وجدت */
-  border-radius: 12px;         /* إن كنت تستخدم نفس radius */
-}
-
-.slide-link img {
-  display: block !important;   /* يمنع inline gaps */
-  width: 100%;
-  height: auto;
+@media (max-width: 480px) {
+  .badge {
+    font-size: 9px;
+    padding: 2px 4px;
+    border-radius: 4px;
+  }
 }
