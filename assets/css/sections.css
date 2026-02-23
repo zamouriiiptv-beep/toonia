@@ -284,3 +284,24 @@ section .section-header h2 {
   background: #28a745;
   color: #fff;
 }
+
+
+
+
+
+
+
+/* قِم بوضعه في آخر الملف لضمان عدم تجاوزه */
+.slide-link {
+  position: relative !important;
+  display: inline-block !important;
+  line-height: 0 !important;   /* يمنع الفراغ الأسود */
+  overflow: hidden !important; /* يقطع أي زوائد إن وجدت */
+  border-radius: 12px;         /* إن كنت تستخدم نفس radius */
+}
+
+.slide-link img {
+  display: block !important;   /* يمنع inline gaps */
+  width: 100%;
+  height: auto;
+}
