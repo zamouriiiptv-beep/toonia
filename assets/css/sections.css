@@ -306,3 +306,10 @@ section .section-header h2 {
 .card-badges {
   background: rgba(255,0,0,0.3);
 }
+/* === UNHIDE badges – FINAL FIX === */
+.card-badges,
+.card-badges * {
+  display: inline-flex !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
