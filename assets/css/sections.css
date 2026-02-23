@@ -224,11 +224,28 @@ section .section-header h2 {
 /*  نظام بادجات الحالة الثابتة              */
 /* █████████████████████████████████████████ */
 
-/* ===== القاعدة العامة ===== */
-.badge {
-  position: absolute;
-  z-index: 10;
+/* الأب */
+.slide a {
+  position: relative;
+  display: block;
+}
 
+/* حاوية البادجات */
+.badges {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  right: 6px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  pointer-events: none;
+}
+
+/* البادج العام */
+.badge {
   padding: 3px 7px;
   font-size: 11px;
   font-weight: 700;
@@ -236,30 +253,20 @@ section .section-header h2 {
 
   border-radius: 4px;
   white-space: nowrap;
-  pointer-events: none;
   color: #fff;
 }
 
-/* ===== HD ===== */
-.badge-hd {
-  top: 6px;
-  right: 6px;
-  background: #0d6efd;
-}
-
-/* ===== الحالة ===== */
-.badge-status {
-  top: 6px;
-  left: 6px;
-}
-
-/* مستمر */
+/* ===== الحالات ===== */
 .status-ongoing {
   background: #ffc107;
   color: #000;
 }
 
-/* مكتمل */
 .status-completed {
   background: #198754;
+}
+
+/* ===== الجودة ===== */
+.badge-hd {
+  background: #0d6efd;
 }
