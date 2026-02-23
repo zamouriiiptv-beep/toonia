@@ -303,3 +303,6 @@ section .section-header h2 {
   height: 100%;
   position: relative !important;
 }
+.card-badges {
+  background: rgba(255,0,0,0.3);
+}
