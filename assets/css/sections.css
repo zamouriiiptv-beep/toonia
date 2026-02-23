@@ -268,57 +268,31 @@ section .section-header h2 {
     grid-template-columns: repeat(4, 1fr);
   }
 }
-/* DEBUG temporary (شغّل فقط أثناء الفحص) */
-/* .card-badges { outline: 2px solid rgba(255,0,0,0.25); } */
 
-.slide { position: relative; /* مرجع للـ absolute */ }
+
+/* === FORCE badges visibility === */
+.slide { position: relative !important; }
 
 .slide > a {
-  display: block;
-  position: relative; /* تأكيد مرجعية البادجات داخل الرابط */
-  z-index: 1;
+  position: relative !important;
 }
 
-/* الحاوية: إجبار الظهور فوق الصورة */
 .card-badges {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  z-index: 9999; /* تأكيد فوق كل شيء */
-  pointer-events: none; /* لا تعطل النقر على الكارد */
+  position: absolute !important;
+  top: 8px !important;
+  right: 8px !important;
+  z-index: 99999 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 6px !important;
 }
 
-/* البادج نفسه يسمح بالتفاعل (لو احتجت) */
 .card-badges .badge {
-  pointer-events: auto;
-  padding: 4px 8px;
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 1;
-  border-radius: 6px;
-  color: #fff;
-  white-space: nowrap;
-  background: rgba(0,0,0,0.65);
-  backdrop-filter: blur(2px);
-  transform: translateZ(0); /* يساعد في بعض المتصفحات على رفع العنصر */
-}
-
-/* ألوان نوع / حالة */
-.badge.type.anime   { background-color: #6366f1; }
-.badge.type.cartoon { background-color: #0ea5e9; }
-.badge.type.movie   { background-color: #f97316; }
-
-.badge.status.ongoing    { background-color: #22c55e; }
-.badge.status.completed  { background-color: #6b7280; }
-
-.badge.quality { background: rgba(0,0,0,0.75); }
-
-/* تصغير على الموبايل: أقل ازدحام */
-@media (max-width: 480px) {
-  .card-badges { top: 6px; right: 6px; gap: 4px; }
-  .card-badges .badge { font-size: 10px; padding: 3px 6px; }
-  .card-badges .badge.status { display: none; } /* اخفِ الحالة على الجوال */
+  display: inline-block !important;
+  padding: 4px 8px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  color: #fff !important;
+  border-radius: 6px !important;
+  background: #000 !important;
 }
