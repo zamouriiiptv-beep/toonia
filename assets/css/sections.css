@@ -221,61 +221,69 @@ section .section-header h2 {
 /* █████████████████████████████████████████ */
 
 
-/* الحاوية الأساسية للسلايد */
+/* تنسيق الحاوية الأساسية للرابط */
 .slide-link {
     position: relative;
-    display: inline-block; /* لضمان التفاف الرابط حول الصورة تماماً */
-    line-height: 0;        /* الحل السحري لإزالة الخط الأسود */
+    display: block;      /* لملء مساحة الكارد */
+    line-height: 0;       /* يمنع وجود أي فراغ تحت الصورة (الخط الأسود) */
     text-decoration: none;
-    overflow: hidden;      /* لضمان عدم خروج البادجات عن الحواف */
-    vertical-align: middle;
+    border-radius: 12px;  /* نفس انحناء الصورة في التصميم */
+    overflow: hidden;     /* يضمن بقاء البادجات داخل الحواف المنحنية */
+    background: #1a1a1a; /* لون احتياطي خلف الصورة لإخفاء أي تداخل */
 }
 
-/* الصورة */
+/* تنسيق الصورة لملء الكارد */
 .slide-link img {
-    display: block;        /* تحويلها لكتلة يلغي فراغات الـ inline */
-    max-width: 100%;
+    display: block;
+    width: 100%;
     height: auto;
-    border: 0;
+    object-fit: cover;
+    border: none;
 }
 
-/* تنسيق البادجات الموحد */
+/* تنسيق عام للبادجات */
 .badge {
     position: absolute;
-    z-index: 2;
+    z-index: 5;
     color: #fff;
     font-weight: bold;
-    text-align: center;
-    /* استخدام clamp لجعل الخط يتناغم مع حجم الصورة صعوداً وهبوطاً */
-    font-size: clamp(8px, 2.5cqi, 12px); 
-    padding: 0.3em 0.6em;
-    border-radius: 3px;
-    pointer-events: none; /* لضمان أن الضغط يمر للصورة */
+    font-family: sans-serif; /* لضمان مظهر نظيف للخط */
+    pointer-events: none;
 }
 
-/* بادج HD - في الأعلى */
+/* بادج HD (أعلى اليسار كما في صورتك) */
 .badge-hd {
-    top: 5px;
-    left: 5px;
-    background-color: rgba(0, 0, 0, 0.7);
+    top: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 2px 6px;
+    font-size: 10px;
+    border-radius: 4px;
 }
 
-/* بادج الحالة - في الأسفل */
-.badge-status {
-    bottom: 5px;
-    right: 5px;
-    left: 5px; /* يمتد عرضياً إذا أردت، أو احذفه ليكون بجانب واحد */
-    background-color: #27ae60; /* لون الأخضر للمستمر */
+/* بادج الحالة (مستمر) - الإصلاح الجذري */
+.badge-ongoing {
+    bottom: 12px;  /* مسافة من الأسفل */
+    right: 8px;   /* مسافة من اليمين */
     
-    /* منع البادج من التمدد بشكل قبيح */
+    /* جعل الحجم يتناسب مع الصورة */
+    font-size: clamp(9px, 2.2vw, 11px); 
+    padding: 4px 10px;
+    
+    background-color: #f1c40f; /* اللون الأصفر كما في صورتك */
+    color: #000;              /* نص أسود للتباين */
+    border-radius: 6px;
+    
+    /* لمنع التمدد العرضي الكبير */
+    max-width: fit-content;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: block; 
+    
+    /* إضافة ظل خفيف لبروز البادج */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
-/* تحسين خاص بالوردبريس: لمنع أي ظلال موروثة */
-.slide-link, .slide-link:hover, .slide-link img {
-    box-shadow: none !important;
+/* إخفاء أي حدود وهمية قد تظهر من المتصفح */
+.slide-link:focus, .slide-link:active {
     outline: none !important;
+    border: none !important;
 }
