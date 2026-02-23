@@ -178,61 +178,7 @@ section .section-header h2 {
     rgba(250, 204, 21, 0.25)
   );
 }
-/* █████████████████████████████████████████ */
-/*  Badges داخل كروت السلايدر               */
-/*  (نوع العمل + حالة العمل)               */
-/* █████████████████████████████████████████ */
 
-/* الكارد يجب أن يكون مرجعية للـ absolute */
-.slide {
-  position: relative;
-}
-
-/* حاوية البادجات */
-.card-badges {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  z-index: 3;
-}
-
-/* البادج العامة */
-.badge {
-  padding: 4px 8px;
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 1;
-  border-radius: 6px;
-  color: #fff;
-  white-space: nowrap;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(2px);
-}
-
-/* ===== نوع العمل ===== */
-.badge.type.anime {
-  background-color: #6366f1; /* Indigo */
-}
-
-.badge.type.cartoon {
-  background-color: #0ea5e9; /* Blue */
-}
-
-.badge.type.movie {
-  background-color: #f97316; /* Orange */
-}
-
-/* ===== حالة العمل ===== */
-.badge.status.ongoing {
-  background-color: #22c55e; /* Green */
-}
-
-.badge.status.completed {
-  background-color: #6b7280; /* Gray */
-}
 /* █████████████████████████████████████████ */
 /*  قسم جميع الأعمال (Grid Preview)          */
 /* █████████████████████████████████████████ */
@@ -270,46 +216,35 @@ section .section-header h2 {
 }
 
 
-/* === FORCE badges visibility === */
-.slide { position: relative !important; }
 
+/* الرابط مرجعية للـ absolute */
 .slide > a {
-  position: relative !important;
+  position: relative;
+  display: block;
 }
 
-.card-badges {
-  position: absolute !important;
-  top: 8px !important;
-  right: 8px !important;
-  z-index: 99999 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 6px !important;
+/* جميع البادجات */
+.slide > a > .badge {
+  position: absolute;
+  right: 8px;
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 6px;
+  color: #fff;
+  white-space: nowrap;
+  background: rgba(0,0,0,0.65);
 }
 
-.card-badges .badge {
-  display: inline-block !important;
-  padding: 4px 8px !important;
-  font-size: 11px !important;
-  font-weight: 600 !important;
-  color: #fff !important;
-  border-radius: 6px !important;
-  background: #000 !important;
-}
-/* === FIX FINAL: anchor must wrap the image fully === */
-.slide > a {
-  display: block !important;
-  width: 100%;
-  height: 100%;
-  position: relative !important;
-}
-.card-badges {
-  background: rgba(255,0,0,0.3);
-}
-/* === UNHIDE badges – FINAL FIX === */
-.card-badges,
-.card-badges * {
-  display: inline-flex !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-}
+/* ترتيب عمودي */
+.slide > a > .badge.quality { top: 8px; }
+.slide > a > .badge.type    { top: 36px; }
+.slide > a > .badge.status  { top: 64px; }
+
+/* ألوان */
+.badge.type.anime   { background: #6366f1; }
+.badge.type.cartoon { background: #0ea5e9; }
+.badge.type.movie   { background: #f97316; }
+
+.badge.status.ongoing   { background: #22c55e; }
+.badge.status.completed { background: #6b7280; }
