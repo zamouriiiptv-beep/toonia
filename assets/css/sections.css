@@ -214,3 +214,52 @@ section .section-header h2 {
     grid-template-columns: repeat(4, 1fr);
   }
 }
+
+
+
+
+
+/* █████████████████████████████████████████ */
+/*  badges.css                               */
+/*  نظام بادجات الحالة الثابتة              */
+/* █████████████████████████████████████████ */
+
+/* ===== القاعدة العامة ===== */
+.badge {
+  position: absolute;
+  z-index: 10;
+
+  padding: 3px 7px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+
+  border-radius: 4px;
+  white-space: nowrap;
+  pointer-events: none;
+  color: #fff;
+}
+
+/* ===== HD ===== */
+.badge-hd {
+  top: 6px;
+  right: 6px;
+  background: #0d6efd;
+}
+
+/* ===== الحالة ===== */
+.badge-status {
+  top: 6px;
+  left: 6px;
+}
+
+/* مستمر */
+.status-ongoing {
+  background: #ffc107;
+  color: #000;
+}
+
+/* مكتمل */
+.status-completed {
+  background: #198754;
+}
