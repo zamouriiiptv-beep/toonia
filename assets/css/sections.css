@@ -214,37 +214,3 @@ section .section-header h2 {
     grid-template-columns: repeat(4, 1fr);
   }
 }
-
-
-
-/* الرابط مرجعية للـ absolute */
-.slide > a {
-  position: relative;
-  display: block;
-}
-
-/* جميع البادجات */
-.slide > a > .badge {
-  position: absolute;
-  right: 8px;
-  padding: 4px 8px;
-  font-size: 11px;
-  font-weight: 600;
-  border-radius: 6px;
-  color: #fff;
-  white-space: nowrap;
-  background: rgba(0,0,0,0.65);
-}
-
-/* ترتيب عمودي */
-.slide > a > .badge.quality { top: 8px; }
-.slide > a > .badge.type    { top: 36px; }
-.slide > a > .badge.status  { top: 64px; }
-
-/* ألوان */
-.badge.type.anime   { background: #6366f1; }
-.badge.type.cartoon { background: #0ea5e9; }
-.badge.type.movie   { background: #f97316; }
-
-.badge.status.ongoing   { background: #22c55e; }
-.badge.status.completed { background: #6b7280; }
