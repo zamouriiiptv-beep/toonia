@@ -221,99 +221,61 @@ section .section-header h2 {
 /* █████████████████████████████████████████ */
 
 
-/* ========================================= */
-/*  Slide & Image                             */
-/* ========================================= */
-
-.slide {
-  flex: 0 0 calc(30.77% - 9px);
-  scroll-snap-align: start;
-}
-
-/* الرابط هو الحاوية المرجعية الحقيقية */
+/* الحاوية الأساسية للسلايد */
 .slide-link {
-  position: relative;        /* مرجع absolute */
-  display: inline-block;     /* يطابق حجم الصورة */
-  line-height: 0;            /* 🔴 يمنع أي خطوط سوداء */
-  overflow: hidden;          /* قص أي زوائد */
-  border-radius: 12px;       /* نفس Radius الصورة */
+    position: relative;
+    display: inline-block; /* لضمان التفاف الرابط حول الصورة تماماً */
+    line-height: 0;        /* الحل السحري لإزالة الخط الأسود */
+    text-decoration: none;
+    overflow: hidden;      /* لضمان عدم خروج البادجات عن الحواف */
+    vertical-align: middle;
 }
 
-/* الصورة نفسها */
+/* الصورة */
 .slide-link img {
-  display: block;            /* يمنع inline gap */
-  width: 100%;
-  height: auto;
-  aspect-ratio: 2 / 3;
-  object-fit: cover;
-  border-radius: 12px;
+    display: block;        /* تحويلها لكتلة يلغي فراغات الـ inline */
+    max-width: 100%;
+    height: auto;
+    border: 0;
 }
 
-
-/* ========================================= */
-/*  Badges – Base                             */
-/* ========================================= */
-
+/* تنسيق البادجات الموحد */
 .badge {
-  position: absolute;
-  z-index: 2;
-
-  /* حجم مرن حسب حجم الصورة */
-  font-size: clamp(9px, 1.8vw, 11px);
-  padding: 2px 5px;
-  line-height: 1;
-  white-space: nowrap;
-
-  font-weight: 600;
-  border-radius: 6px;
+    position: absolute;
+    z-index: 2;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+    /* استخدام clamp لجعل الخط يتناغم مع حجم الصورة صعوداً وهبوطاً */
+    font-size: clamp(8px, 2.5cqi, 12px); 
+    padding: 0.3em 0.6em;
+    border-radius: 3px;
+    pointer-events: none; /* لضمان أن الضغط يمر للصورة */
 }
 
-
-/* ========================================= */
-/*  Badge: HD                                */
-/* ========================================= */
-
+/* بادج HD - في الأعلى */
 .badge-hd {
-  top: 6px;
-  left: 6px;
-
-  background: rgba(0, 0, 0, 0.85);
-  color: #fff;
+    top: 5px;
+    left: 5px;
+    background-color: rgba(0, 0, 0, 0.7);
 }
 
-
-/* ========================================= */
-/*  Badge: Status                             */
-/* ========================================= */
-
+/* بادج الحالة - في الأسفل */
 .badge-status {
-  bottom: 6px;
-  right: 6px;
-
-  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    bottom: 5px;
+    right: 5px;
+    left: 5px; /* يمتد عرضياً إذا أردت، أو احذفه ليكون بجانب واحد */
+    background-color: #27ae60; /* لون الأخضر للمستمر */
+    
+    /* منع البادج من التمدد بشكل قبيح */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block; 
 }
 
-/* مستمر */
-.badge-ongoing {
-  background: #f5c842;   /* أصفر هادئ */
-  color: #111;
-}
-
-/* مكتمل */
-.badge-completed {
-  background: #28a745;
-  color: #fff;
-}
-
-
-/* ========================================= */
-/*  Responsive polish (صور صغيرة جدًا)       */
-/* ========================================= */
-
-@media (max-width: 480px) {
-  .badge {
-    font-size: 9px;
-    padding: 2px 4px;
-    border-radius: 4px;
-  }
+/* تحسين خاص بالوردبريس: لمنع أي ظلال موروثة */
+.slide-link, .slide-link:hover, .slide-link img {
+    box-shadow: none !important;
+    outline: none !important;
 }
