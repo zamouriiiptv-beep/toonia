@@ -178,7 +178,61 @@ section .section-header h2 {
     rgba(250, 204, 21, 0.25)
   );
 }
+/* █████████████████████████████████████████ */
+/*  Badges داخل كروت السلايدر               */
+/*  (نوع العمل + حالة العمل)               */
+/* █████████████████████████████████████████ */
 
+/* الكارد يجب أن يكون مرجعية للـ absolute */
+.slide {
+  position: relative;
+}
+
+/* حاوية البادجات */
+.card-badges {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 3;
+}
+
+/* البادج العامة */
+.badge {
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  border-radius: 6px;
+  color: #fff;
+  white-space: nowrap;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+}
+
+/* ===== نوع العمل ===== */
+.badge.type.anime {
+  background-color: #6366f1; /* Indigo */
+}
+
+.badge.type.cartoon {
+  background-color: #0ea5e9; /* Blue */
+}
+
+.badge.type.movie {
+  background-color: #f97316; /* Orange */
+}
+
+/* ===== حالة العمل ===== */
+.badge.status.ongoing {
+  background-color: #22c55e; /* Green */
+}
+
+.badge.status.completed {
+  background-color: #6b7280; /* Gray */
+}
 /* █████████████████████████████████████████ */
 /*  قسم جميع الأعمال (Grid Preview)          */
 /* █████████████████████████████████████████ */
