@@ -151,7 +151,33 @@ section .section-header h2 {
     flex: 0 0 calc(23.53% - 9px);
   }
 }
+/* █████████████████████████████████████████ */
+/*  عناوين أقسام السلايدر                    */
+/* █████████████████████████████████████████ */
 
+.section-header .section-title {
+  position: relative;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  padding-bottom: 6px;
+}
+
+/* الخط السفلي المتدرّج */
+.section-header .section-title::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 56px;
+  height: 3px;
+  border-radius: 4px;
+  background: linear-gradient(
+    90deg,
+    #facc15,
+    rgba(250, 204, 21, 0.25)
+  );
+}
 
 /* █████████████████████████████████████████ */
 /*  قسم جميع الأعمال (Grid Preview)          */
