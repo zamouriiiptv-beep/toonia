@@ -1,191 +1,279 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>جوجوتسو كايسن – الموسم الثالث | الحلقات</title>
+    <!-- ================================== -->
+    <!--  إعدادات الصفحة الأساسية (Meta)    -->
+    <!-- ================================== -->
 
-  <meta name="description" content="مشاهدة جميع حلقات جوجوتسو كايسن الموسم الثالث مترجمة بجودة عالية.">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- تحديد ترميز الصفحة لدعم العربية -->
+    <meta charset="UTF-8" />
 
-  <style>
-    /* ====== Reset ====== */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    <!-- جعل التصميم متجاوب مع جميع الشاشات -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont;
-      background: #0f1115;
-      color: #fff;
-    }
+    <!-- عنوان الصفحة (مهم للـ SEO) -->
+    <title>Toonia - عالم الأنمي</title>
 
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
+    <!-- ================================== -->
+    <!--  خط Cairo (إجباري قبل CSS)         -->
+    <!-- ================================== -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    /* ====== Header ====== */
-    .anime-header {
-      display: flex;
-      gap: 16px;
-      padding: 16px;
-      background: linear-gradient(to bottom, #1a1d24, #0f1115);
-    }
+    <!-- ================================== -->
+<!--  ملفات CSS الخارجية                -->
+<!-- ================================== -->
 
-    .anime-poster {
-      width: 110px;
-      border-radius: 8px;
-    }
+<!-- Font Awesome Icons -->
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+/>
 
-    .anime-info h1 {
-      font-size: 20px;
-      margin-bottom: 8px;
-    }
+<!-- ================================== -->
+<!--  ملفات CSS الخاصة بالموقع           -->
+<!-- ================================== -->
 
-    .anime-meta {
-      font-size: 13px;
-      color: #bbb;
-      margin-bottom: 10px;
-    }
+<!-- الأساس العام (Variables + Reset) -->
+<link rel="stylesheet" href="assets/css/base.css">
 
-    .watch-btn {
-      display: inline-block;
-      padding: 8px 14px;
-      background: #f0c75e;
-      color: #000;
-      font-weight: 600;
-      border-radius: 20px;
-      font-size: 14px;
-    }
+<!-- تخطيط الموقع العام (Header / Footer) -->
+<link rel="stylesheet" href="assets/css/layout.css">
 
-    /* ====== Seasons ====== */
-    .seasons {
-      display: flex;
-      gap: 8px;
-      padding: 12px 16px;
-      overflow-x: auto;
-    }
+<!-- مكونات الواجهة القابلة لإعادة الاستخدام -->
+<link rel="stylesheet" href="assets/css/components.css">
 
-    .season-btn {
-      padding: 8px 14px;
-      background: #1e222b;
-      border-radius: 20px;
-      font-size: 13px;
-      white-space: nowrap;
-      cursor: pointer;
-    }
+<!-- نظام التنقّل (Sidebar / Navigation) -->
+<link rel="stylesheet" href="assets/css/navigation.css">
 
-    .season-btn.active {
-      background: #f0c75e;
-      color: #000;
-      font-weight: 600;
-    }
+<!-- تنسيقات الأقسام -->
+<link rel="stylesheet" href="assets/css/sections.css">
 
-    /* ====== Episodes Grid ====== */
-    .episodes {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 14px;
-      padding: 16px;
-    }
+<!-- نظام السلايدر القابل لإعادة الاستخدام -->
+<link rel="stylesheet" href="assets/css/slider.css">
 
-    .episode-card {
-      background: #1a1d24;
-      border-radius: 10px;
-      overflow: hidden;
-      position: relative;
-    }
+<!-- قسم الهيرو -->
+<link rel="stylesheet" href="assets/css/hero.css">
 
-    .episode-card img {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
-      display: block;
-    }
-
-    .episode-number {
-      position: absolute;
-      top: 6px;
-      left: 6px;
-      background: rgba(0,0,0,.7);
-      padding: 4px 8px;
-      font-size: 12px;
-      border-radius: 6px;
-    }
-
-    .episode-info {
-      padding: 8px;
-      font-size: 13px;
-    }
-
-    .episode-duration {
-      color: #aaa;
-      font-size: 12px;
-      margin-top: 4px;
-    }
-  </style>
 </head>
 <body>
 
-  <!-- ===== Header ===== -->
-  <section class="anime-header">
-    <img
-      src="https://i.ibb.co/4Y1dRkL/jjk.jpg"
-      alt="جوجوتسو كايسن الموسم الثالث"
-      class="anime-poster">
+<!-- ================================== -->
+<!--  الهيدر (الشريط العلوي)            -->
+<!-- ================================== -->
+<header>
 
-    <div class="anime-info">
-      <h1>جوجوتسو كايسن – الموسم الثالث</h1>
-      <div class="anime-meta">
-        تلفزيون • 24 دقيقة • 2026
-      </div>
-      <a href="#episodes" class="watch-btn">مشاهدة الحلقات</a>
+    <!-- القسم الأيمن من الهيدر -->
+    <div class="header-right">
+
+        <!-- زر القائمة -->
+        <div class="menu-icon">
+            <i class="fas fa-bars"></i>
+        </div>
+
+        <!-- الشعار + اسم الموقع -->
+<a href="/toonia/" class="logo-box">
+  <img
+    src="https://i.ibb.co/WWQtfGzs/logo.png"
+    alt="Toonia Logo"
+    width="40"
+    height="40"
+    loading="eager"
+    decoding="async">
+    
+  <div class="site-name">
+    Too<span>nia</span>
+  </div>
+</a>
+
     </div>
+
+    <!-- القسم الأيسر -->
+    <div class="header-left">
+
+        <div class="search-trigger">
+            <i class="fas fa-search"></i>
+        </div>
+
+        <a href="login" class="login-button">
+            <i class="fas fa-user"></i>
+            تسجيل الدخول
+        </a>
+
+    </div>
+
+</header>
+
+<!-- ================================== -->
+<!--  قسم الـ Hero (الواجهة الرئيسية)    -->
+<!-- ================================== -->
+
+<main class="episodes-page">
+
+  <!-- بوستر الأنمي + معلومات -->
+  <section class="anime-poster-section">
+
+    <div class="anime-poster-box">
+      <img
+        src="assets/images/anime-poster.webp"
+        alt="بوستر أنمي جوجوتسو كايسن الموسم الثالث"
+        width="220"
+        height="330"
+        loading="eager"
+        decoding="async">
+    </div>
+
+    <div class="anime-info-box">
+      <h1 class="anime-title">جوجوتسو كايسن – الموسم الثالث</h1>
+
+      <div class="anime-meta">
+        <span>TV</span>
+        <span>•</span>
+        <span>24 دقيقة</span>
+        <span>•</span>
+        <span>2026</span>
+      </div>
+
+      <p class="anime-description">
+        تدور أحداث الموسم الثالث من أنمي جوجوتسو كايسن حول لعبة الإبادة،
+        حيث تتصاعد المواجهات وتنكشف أسرار جديدة.
+      </p>
+
+    </div>
+
   </section>
 
-  <!-- ===== Seasons ===== -->
-  <nav class="seasons">
-    <div class="season-btn">الموسم الأول</div>
-    <div class="season-btn">الموسم الثاني</div>
-    <div class="season-btn active">الموسم الثالث</div>
-  </nav>
+  <!-- هنا لاحقًا: قائمة الحلقات -->
+</main>
 
-  <!-- ===== Episodes ===== -->
-  <section id="episodes" class="episodes">
+<!-- ================================== -->
+<!--  القائمة الجانبية (Sidebar)         -->
+<!-- ================================== -->
+<div id="aniSidebarContainer">
 
-    <!-- Episode 1 -->
-    <a href="episode-1.html" class="episode-card">
-      <span class="episode-number">الحلقة 1</span>
-      <img src="https://i.ibb.co/tTwd183W/new-1.webp" alt="الحلقة 1">
-      <div class="episode-info">
-        بداية لعبة الإبادة
-        <div class="episode-duration">24 دقيقة</div>
-      </div>
-    </a>
+    <!-- خلفية شفافة لإغلاق القائمة عند الضغط -->
+    <div class="ani-overlay" id="aniOverlay"></div>
 
-    <!-- Episode 2 -->
-    <a href="episode-2.html" class="episode-card">
-      <span class="episode-number">الحلقة 2</span>
-      <img src="https://i.ibb.co/tTwd183W/new-1.webp" alt="الحلقة 2">
-      <div class="episode-info">
-        المواجهة الأولى
-        <div class="episode-duration">24 دقيقة</div>
-      </div>
-    </a>
+    <!-- عنصر القائمة الجانبية -->
+    <nav class="ani-sidebar" id="aniSidebar">
 
-    <!-- Episode 3 -->
-    <a href="episode-3.html" class="episode-card">
-      <span class="episode-number">الحلقة 3</span>
-      <img src="https://i.ibb.co/tTwd183W/new-1.webp" alt="الحلقة 3">
-      <div class="episode-info">
-        توسع المجال
-        <div class="episode-duration">24 دقيقة</div>
-      </div>
-    </a>
+        <!-- زر إغلاق القائمة -->
+        <div class="ani-close-wrapper">
+            <button class="ani-close-btn" id="aniClose">
+                <i class="fas fa-arrow-right"></i>
+                إغلاق
+            </button>
+        </div>
 
-  </section>
+        <!-- إجراءات سريعة -->
+        <div class="ani-quick-actions">
+            <a href="#" class="ani-action-item">
+                <i class="fas fa-random"></i>
+                عشوائي
+            </a>
+
+            <a href="#" class="ani-action-item">
+                <i class="fas fa-users"></i>
+                شاهدوا
+            </a>
+
+            <a href="#" class="ani-action-item">
+                <i class="fas fa-language"></i>
+                الاسم
+            </a>
+        </div>
+
+        <!-- رابط المجتمع -->
+        <a href="#" class="ani-community-link">
+            <i class="fas fa-comments"></i>
+            انضم للمجتمع
+        </a>
+
+        <!-- روابط التنقل -->
+        <ul class="ani-nav-list">
+            <li><a href="#">الرئيسية</a></li>
+            <li><a href="#">أنمي مترجم</a></li>
+            <li><a href="#">أنمي مدبلج</a></li>
+            <li><a href="#">الأكثر شعبية</a></li>
+            <li><a href="#">أفلام</a></li>
+            <li><a href="#">جدول الحلقات</a></li>
+        </ul>
+
+    </nav>
+</div>
+
+
+
+<!-- فوتر الموقع: تنويه قانوني + سوشيال + حقوق النشر -->
+
+<footer class="site-footer">
+
+  <!-- تنويه قانوني -->
+  <p class="footer-disclaimer">
+    موقع Toonia لا يقوم باستضافة أي ملفات على خوادمه.
+    جميع المواد المعروضة يتم توفيرها من خلال روابط أو خدمات خارجية مستقلة،
+    ولا يتحمّل الموقع أي مسؤولية عن محتوى هذه الجهات.
+  </p>
+
+  <!-- روابط التواصل -->
+  <div class="footer-social">
+    <a href="#" aria-label="Facebook" rel="nofollow noopener"></a>
+    <a href="#" aria-label="Instagram" rel="nofollow noopener"></a>
+    <a href="#" aria-label="Telegram" rel="nofollow noopener"></a>
+  </div>
+
+  <div class="footer-bottom">
+
+    <div class="footer-brand">
+  <a href="/toonia/" class="footer-logo">
+
+    <img
+      src="https://i.ibb.co/WWQtfGzs/logo.png"
+      alt="Toonia Logo"
+      width="36"
+      height="36"
+      loading="lazy"
+      decoding="async"
+    >
+
+    <span class="footer-site-name">
+      Too<span>nia</span>
+    </span>
+
+  </a>
+</div>
+
+    <p class="footer-copy">
+      جميع الحقوق محفوظة
+    </p>
+
+    <nav class="footer-links">
+      <a href="/privacy-policy.html">سياسة الخصوصية</a>
+      <span>|</span>
+      <a href="/terms-of-use.html">شروط الاستخدام</a>
+    </nav>
+
+  </div>
+
+</footer>
+
+<!-- ================================== -->
+<!--  ملفات JavaScript                  -->
+<!-- ================================== -->
+
+<!-- التهيئة العامة (إن وُجدت) -->
+<script src="assets/js/base.js" defer></script>
+
+<!-- نظام التنقّل (القائمة + البحث) -->
+<script src="assets/js/navigation.js" defer></script>
+
+<!-- السلايدر العام (أسهم + dots) -->
+<script src="assets/js/slider.js" defer></script>
+
+<!-- سلايدر الهيرو فقط -->
+<script src="assets/js/hero.js" defer></script>
 
 </body>
 </html>
+
