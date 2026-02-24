@@ -1,114 +1,117 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <!-- ================================== -->
-    <!--  إعدادات الصفحة الأساسية (Meta)    -->
-    <!-- ================================== -->
+  <!-- ================= META ================= -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- تحديد ترميز الصفحة لدعم العربية -->
-    <meta charset="UTF-8" />
+  <title>جوجوتسو كايسن – الموسم الثالث | الحلقات</title>
+  <meta name="description" content="مشاهدة جميع حلقات جوجوتسو كايسن الموسم الثالث مترجمة بجودة عالية.">
 
-    <!-- جعل التصميم متجاوب مع جميع الشاشات -->
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- ================= FONTS ================= -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- عنوان الصفحة (مهم للـ SEO) -->
-    <title>Toonia - عالم الأنمي</title>
+  <!-- ================= ICONS ================= -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-    <!-- ================================== -->
-    <!--  خط Cairo (إجباري قبل CSS)         -->
-    <!-- ================================== -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- ================================== -->
-<!--  ملفات CSS الخارجية                -->
-<!-- ================================== -->
-
-<!-- Font Awesome Icons -->
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-/>
-
-<!-- ================================== -->
-<!--  ملفات CSS الخاصة بالموقع           -->
-<!-- ================================== -->
-
-<!-- الأساس العام (Variables + Reset) -->
-<link rel="stylesheet" href="assets/css/base.css">
-
-<!-- تخطيط الموقع العام (Header / Footer) -->
-<link rel="stylesheet" href="assets/css/layout.css">
-
-<!-- مكونات الواجهة القابلة لإعادة الاستخدام -->
-<link rel="stylesheet" href="assets/css/components.css">
-
-<!-- نظام التنقّل (Sidebar / Navigation) -->
-<link rel="stylesheet" href="assets/css/navigation.css">
-
-<!-- تنسيقات الأقسام -->
-<link rel="stylesheet" href="assets/css/sections.css">
-
-<!-- نظام السلايدر القابل لإعادة الاستخدام -->
-<link rel="stylesheet" href="assets/css/slider.css">
-
-<!-- قسم الهيرو -->
-<link rel="stylesheet" href="assets/css/hero.css">
-
+  <!-- ================= CSS ================= -->
+  <link rel="stylesheet" href="/toonia/assets/css/base.css">
+  <link rel="stylesheet" href="/toonia/assets/css/layout.css">
+  <link rel="stylesheet" href="/toonia/assets/css/components.css">
+  <link rel="stylesheet" href="/toonia/assets/css/navigation.css">
+  <link rel="stylesheet" href="/toonia/assets/css/sections.css">
 </head>
+
 <body>
 
-<!-- ================================== -->
-<!--  الهيدر (الشريط العلوي)            -->
-<!-- ================================== -->
-<header>
+<!-- ================= HEADER ================= -->
+<header class="site-header">
 
-    <!-- القسم الأيمن من الهيدر -->
-    <div class="header-right">
+  <div class="header-right">
 
-        <!-- زر القائمة -->
-        <div class="menu-icon">
-            <i class="fas fa-bars"></i>
-        </div>
+    <button class="menu-icon" id="openSidebar" aria-label="فتح القائمة">
+      <i class="fas fa-bars"></i>
+    </button>
 
-        <!-- الشعار + اسم الموقع -->
-<a href="/toonia/" class="logo-box">
-  <img
-    src="https://i.ibb.co/WWQtfGzs/logo.png"
-    alt="Toonia Logo"
-    width="40"
-    height="40"
-    loading="eager"
-    decoding="async">
-    
-  <div class="site-name">
-    Too<span>nia</span>
+    <a href="/toonia/" class="logo-box">
+      <img
+        src="https://i.ibb.co/WWQtfGzs/logo.png"
+        alt="Toonia Logo"
+        width="40"
+        height="40"
+        loading="eager"
+        decoding="async">
+      <span class="site-name">Too<span>nia</span></span>
+    </a>
+
   </div>
-</a>
 
-    </div>
+  <div class="header-left">
 
-    <!-- القسم الأيسر -->
-    <div class="header-left">
+    <button class="search-trigger" aria-label="بحث">
+      <i class="fas fa-search"></i>
+    </button>
 
-        <div class="search-trigger">
-            <i class="fas fa-search"></i>
-        </div>
+    <a href="/toonia/login" class="login-button">
+      <i class="fas fa-user"></i>
+      تسجيل الدخول
+    </a>
 
-        <a href="login" class="login-button">
-            <i class="fas fa-user"></i>
-            تسجيل الدخول
-        </a>
-
-    </div>
+  </div>
 
 </header>
 
-<!-- ================================== -->
-<!--  قسم الـ Hero (الواجهة الرئيسية)    -->
-<!-- ================================== -->
+<!-- ================= SIDEBAR ================= -->
+<div id="aniSidebarContainer">
 
+  <div class="ani-overlay" id="aniOverlay"></div>
+
+  <nav class="ani-sidebar" id="aniSidebar" aria-label="القائمة الجانبية">
+
+    <div class="ani-close-wrapper">
+      <button class="ani-close-btn" id="closeSidebar">
+        <i class="fas fa-arrow-right"></i>
+        إغلاق
+      </button>
+    </div>
+
+    <div class="ani-quick-actions">
+      <a href="#" class="ani-action-item">
+        <i class="fas fa-random"></i>
+        عشوائي
+      </a>
+      <a href="#" class="ani-action-item">
+        <i class="fas fa-users"></i>
+        شاهدوا
+      </a>
+      <a href="#" class="ani-action-item">
+        <i class="fas fa-language"></i>
+        الاسم
+      </a>
+    </div>
+
+    <a href="#" class="ani-community-link">
+      <i class="fas fa-comments"></i>
+      انضم للمجتمع
+    </a>
+
+    <ul class="ani-nav-list">
+      <li><a href="/toonia/">الرئيسية</a></li>
+      <li><a href="/toonia/anime/">أنمي مترجم</a></li>
+      <li><a href="/toonia/dubbed/">أنمي مدبلج</a></li>
+      <li><a href="/toonia/popular/">الأكثر شعبية</a></li>
+      <li><a href="/toonia/movies/">أفلام</a></li>
+      <li><a href="/toonia/schedule/">جدول الحلقات</a></li>
+    </ul>
+
+  </nav>
+</div>
+
+<!-- ================= MAIN (EPISODES PAGE) ================= -->
 <main class="episodes-page">
 
   <!-- بوستر الأنمي + معلومات -->
@@ -116,12 +119,13 @@
 
     <div class="anime-poster-box">
       <img
-        src="assets/images/anime-poster.webp"
+        src="/toonia/assets/images/anime-poster.webp"
         alt="بوستر أنمي جوجوتسو كايسن الموسم الثالث"
         width="220"
         height="330"
         loading="eager"
-        decoding="async">
+        decoding="async"
+        onerror="this.src='/toonia/assets/images/poster-fallback.webp'">
     </div>
 
     <div class="anime-info-box">
@@ -137,86 +141,24 @@
 
       <p class="anime-description">
         تدور أحداث الموسم الثالث من أنمي جوجوتسو كايسن حول لعبة الإبادة،
-        حيث تتصاعد المواجهات وتنكشف أسرار جديدة.
+        حيث تتصاعد المواجهات وتنكشف أسرار جديدة تهدد توازن عالم الجوجوتسو.
       </p>
-
     </div>
 
   </section>
 
-  <!-- هنا لاحقًا: قائمة الحلقات -->
+  <!-- لاحقًا: شبكة الحلقات -->
 </main>
 
-<!-- ================================== -->
-<!--  القائمة الجانبية (Sidebar)         -->
-<!-- ================================== -->
-<div id="aniSidebarContainer">
-
-    <!-- خلفية شفافة لإغلاق القائمة عند الضغط -->
-    <div class="ani-overlay" id="aniOverlay"></div>
-
-    <!-- عنصر القائمة الجانبية -->
-    <nav class="ani-sidebar" id="aniSidebar">
-
-        <!-- زر إغلاق القائمة -->
-        <div class="ani-close-wrapper">
-            <button class="ani-close-btn" id="aniClose">
-                <i class="fas fa-arrow-right"></i>
-                إغلاق
-            </button>
-        </div>
-
-        <!-- إجراءات سريعة -->
-        <div class="ani-quick-actions">
-            <a href="#" class="ani-action-item">
-                <i class="fas fa-random"></i>
-                عشوائي
-            </a>
-
-            <a href="#" class="ani-action-item">
-                <i class="fas fa-users"></i>
-                شاهدوا
-            </a>
-
-            <a href="#" class="ani-action-item">
-                <i class="fas fa-language"></i>
-                الاسم
-            </a>
-        </div>
-
-        <!-- رابط المجتمع -->
-        <a href="#" class="ani-community-link">
-            <i class="fas fa-comments"></i>
-            انضم للمجتمع
-        </a>
-
-        <!-- روابط التنقل -->
-        <ul class="ani-nav-list">
-            <li><a href="#">الرئيسية</a></li>
-            <li><a href="#">أنمي مترجم</a></li>
-            <li><a href="#">أنمي مدبلج</a></li>
-            <li><a href="#">الأكثر شعبية</a></li>
-            <li><a href="#">أفلام</a></li>
-            <li><a href="#">جدول الحلقات</a></li>
-        </ul>
-
-    </nav>
-</div>
-
-
-
-<!-- فوتر الموقع: تنويه قانوني + سوشيال + حقوق النشر -->
-
+<!-- ================= FOOTER ================= -->
 <footer class="site-footer">
 
-  <!-- تنويه قانوني -->
   <p class="footer-disclaimer">
     موقع Toonia لا يقوم باستضافة أي ملفات على خوادمه.
     جميع المواد المعروضة يتم توفيرها من خلال روابط أو خدمات خارجية مستقلة،
     ولا يتحمّل الموقع أي مسؤولية عن محتوى هذه الجهات.
   </p>
 
-  <!-- روابط التواصل -->
   <div class="footer-social">
     <a href="#" aria-label="Facebook" rel="nofollow noopener"></a>
     <a href="#" aria-label="Instagram" rel="nofollow noopener"></a>
@@ -226,54 +168,33 @@
   <div class="footer-bottom">
 
     <div class="footer-brand">
-  <a href="/toonia/" class="footer-logo">
+      <a href="/toonia/" class="footer-logo">
+        <img
+          src="https://i.ibb.co/WWQtfGzs/logo.png"
+          alt="Toonia Logo"
+          width="36"
+          height="36"
+          loading="lazy"
+          decoding="async">
+        <span class="footer-site-name">Too<span>nia</span></span>
+      </a>
+    </div>
 
-    <img
-      src="https://i.ibb.co/WWQtfGzs/logo.png"
-      alt="Toonia Logo"
-      width="36"
-      height="36"
-      loading="lazy"
-      decoding="async"
-    >
-
-    <span class="footer-site-name">
-      Too<span>nia</span>
-    </span>
-
-  </a>
-</div>
-
-    <p class="footer-copy">
-      جميع الحقوق محفوظة
-    </p>
+    <p class="footer-copy">جميع الحقوق محفوظة</p>
 
     <nav class="footer-links">
-      <a href="/privacy-policy.html">سياسة الخصوصية</a>
+      <a href="/toonia/privacy-policy.html">سياسة الخصوصية</a>
       <span>|</span>
-      <a href="/terms-of-use.html">شروط الاستخدام</a>
+      <a href="/toonia/terms-of-use.html">شروط الاستخدام</a>
     </nav>
 
   </div>
 
 </footer>
 
-<!-- ================================== -->
-<!--  ملفات JavaScript                  -->
-<!-- ================================== -->
-
-<!-- التهيئة العامة (إن وُجدت) -->
-<script src="assets/js/base.js" defer></script>
-
-<!-- نظام التنقّل (القائمة + البحث) -->
-<script src="assets/js/navigation.js" defer></script>
-
-<!-- السلايدر العام (أسهم + dots) -->
-<script src="assets/js/slider.js" defer></script>
-
-<!-- سلايدر الهيرو فقط -->
-<script src="assets/js/hero.js" defer></script>
+<!-- ================= JS ================= -->
+<script src="/toonia/assets/js/base.js" defer></script>
+<script src="/toonia/assets/js/navigation.js" defer></script>
 
 </body>
 </html>
-
