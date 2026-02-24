@@ -2,45 +2,190 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
+  <title>جوجوتسو كايسن – الموسم الثالث | الحلقات</title>
 
-  <title>مشاهدة الحلقة 1 من البطل الخماسي مترجمة HD</title>
-
-  <meta name="description" content="مشاهدة الحلقة 1 من أنمي البطل الخماسي مترجمة بجودة HD أونلاين بدون تحميل.">
-
+  <meta name="description" content="مشاهدة جميع حلقات جوجوتسو كايسن الموسم الثالث مترجمة بجودة عالية.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- CSS العام للموقع -->
-  <link rel="stylesheet" href="/assets/css/base.css">
-  <link rel="stylesheet" href="/assets/css/layout.css">
-  <link rel="stylesheet" href="/assets/css/components.css">
-  <link rel="stylesheet" href="/assets/css/sections.css">
-  <link rel="stylesheet" href="/assets/css/navigation.css">
-</head>
+  <style>
+    /* ====== Reset ====== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont;
+      background: #0f1115;
+      color: #fff;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ====== Header ====== */
+    .anime-header {
+      display: flex;
+      gap: 16px;
+      padding: 16px;
+      background: linear-gradient(to bottom, #1a1d24, #0f1115);
+    }
+
+    .anime-poster {
+      width: 110px;
+      border-radius: 8px;
+    }
+
+    .anime-info h1 {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .anime-meta {
+      font-size: 13px;
+      color: #bbb;
+      margin-bottom: 10px;
+    }
+
+    .watch-btn {
+      display: inline-block;
+      padding: 8px 14px;
+      background: #f0c75e;
+      color: #000;
+      font-weight: 600;
+      border-radius: 20px;
+      font-size: 14px;
+    }
+
+    /* ====== Seasons ====== */
+    .seasons {
+      display: flex;
+      gap: 8px;
+      padding: 12px 16px;
+      overflow-x: auto;
+    }
+
+    .season-btn {
+      padding: 8px 14px;
+      background: #1e222b;
+      border-radius: 20px;
+      font-size: 13px;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .season-btn.active {
+      background: #f0c75e;
+      color: #000;
+      font-weight: 600;
+    }
+
+    /* ====== Episodes Grid ====== */
+    .episodes {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 14px;
+      padding: 16px;
+    }
+
+    .episode-card {
+      background: #1a1d24;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .episode-card img {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      display: block;
+    }
+
+    .episode-number {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      background: rgba(0,0,0,.7);
+      padding: 4px 8px;
+      font-size: 12px;
+      border-radius: 6px;
+    }
+
+    .episode-info {
+      padding: 8px;
+      font-size: 13px;
+    }
+
+    .episode-duration {
+      color: #aaa;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+  </style>
+</head>
 <body>
 
-<main class="episode-page">
+  <!-- ===== Header ===== -->
+  <section class="anime-header">
+    <img
+      src="https://i.ibb.co/4Y1dRkL/jjk.jpg"
+      alt="جوجوتسو كايسن الموسم الثالث"
+      class="anime-poster">
 
-  <h1>مشاهدة الحلقة 1 من البطل الخماسي مترجمة HD</h1>
-
-  <!-- مشغل الحلقة -->
-  <div class="player-wrapper">
-    <iframe
-      src="https://archive.org/embed/01_20260224_20260224_2015"
-      allowfullscreen
-      loading="lazy"
-      referrerpolicy="no-referrer">
-    </iframe>
-  </div>
-
-  <!-- معلومات إضافية -->
-  <section class="episode-info">
-    <p>
-      أنت تشاهد الحلقة 1 من أنمي <strong>البطل الخماسي</strong> مترجمة بجودة عالية.
-    </p>
+    <div class="anime-info">
+      <h1>جوجوتسو كايسن – الموسم الثالث</h1>
+      <div class="anime-meta">
+        تلفزيون • 24 دقيقة • 2026
+      </div>
+      <a href="#episodes" class="watch-btn">مشاهدة الحلقات</a>
+    </div>
   </section>
 
-</main>
+  <!-- ===== Seasons ===== -->
+  <nav class="seasons">
+    <div class="season-btn">الموسم الأول</div>
+    <div class="season-btn">الموسم الثاني</div>
+    <div class="season-btn active">الموسم الثالث</div>
+  </nav>
+
+  <!-- ===== Episodes ===== -->
+  <section id="episodes" class="episodes">
+
+    <!-- Episode 1 -->
+    <a href="episode-1.html" class="episode-card">
+      <span class="episode-number">الحلقة 1</span>
+      <img src="https://i.ibb.co/tTwd183W/new-1.webp" alt="الحلقة 1">
+      <div class="episode-info">
+        بداية لعبة الإبادة
+        <div class="episode-duration">24 دقيقة</div>
+      </div>
+    </a>
+
+    <!-- Episode 2 -->
+    <a href="episode-2.html" class="episode-card">
+      <span class="episode-number">الحلقة 2</span>
+      <img src="https://i.ibb.co/tTwd183W/new-1.webp" alt="الحلقة 2">
+      <div class="episode-info">
+        المواجهة الأولى
+        <div class="episode-duration">24 دقيقة</div>
+      </div>
+    </a>
+
+    <!-- Episode 3 -->
+    <a href="episode-3.html" class="episode-card">
+      <span class="episode-number">الحلقة 3</span>
+      <img src="https://i.ibb.co/tTwd183W/new-1.webp" alt="الحلقة 3">
+      <div class="episode-info">
+        توسع المجال
+        <div class="episode-duration">24 دقيقة</div>
+      </div>
+    </a>
+
+  </section>
 
 </body>
 </html>
