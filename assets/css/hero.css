@@ -173,122 +173,48 @@
   }
 }
 
-/* ===================================== */
-/* Episodes Page Hero (FIXED)             */
-/* ===================================== */
+/* ============================= */
+/* Poster as Background Header   */
+/* ============================= */
 
-.anime-poster-section {
+.anime-bg-header {
   position: relative;
-  display: grid;
-  grid-template-areas: "hero";
-  width: 100%;
-  min-height: 520px;      /* ↑ مهم */
-  background-color: #111;
-  overflow: hidden;
+  padding: 32px 20px;
+  background-image: url("https://i.ibb.co/j94b96X5/1ll-RZXpjw-Vwn3-Lgma6q-N8hm-ZUbl.webp");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
-/* البوستر */
-.anime-poster-box {
-  grid-area: hero;
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-}
-
-/* الصورة تملأ القسم */
-.anime-poster-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;     /* المفتاح */
-  object-position: center top; /* أفضل للبوسترات العمودية */
-  display: block;
-}
-
-/* التعتيم */
-.anime-poster-box::after {
+/* طبقة تعتيم + بلور */
+.anime-bg-header::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0,0,0,0.25),
-    rgba(0,0,0,0.9)
-  );
-  z-index: 2;
-}
-
-/* المحتوى فوق البوستر */
-.anime-info-box {
-  grid-area: hero;
-  position: relative;
-  z-index: 3;
-  align-self: end;
-  padding: 24px;
-  max-width: 680px;
-  color: #fff;
-}
-/* ============================= */
-/* Force Full-Width Hero         */
-/* ============================= */
-
-.anime-poster-section {
-  position: relative;
-
-  width: 100vw;                  /* عرض الشاشة */
-  margin-left: calc(50% - 50vw); /* كسر الـ container */
-  margin-right: calc(50% - 50vw);
-
-  min-height: 520px;
-  overflow: hidden;
-  background: #111;
-}
-
-/* البوستر */
-.anime-poster-box {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-}
-
-.anime-poster-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  display: block;
-}
-
-/* Overlay */
-.anime-poster-box::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0,0,0,.25),
-    rgba(0,0,0,.9)
-  );
+  background: rgba(20, 20, 25, 0.75);
+  backdrop-filter: blur(8px);
 }
 
 /* المحتوى */
-.anime-info-box {
+.anime-bg-content {
   position: relative;
-  z-index: 2;
-  padding: 24px;
-  max-width: 700px;
-  color: #fff;
+  display: flex;
+  gap: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  z-index: 1;
 }
 
-/* ===================================== */
-/* HARD FULL-WIDTH FIX (FINAL)            */
-/* ===================================== */
-
-.episodes-page {
-  padding-left: 0;
-  padding-right: 0;
+/* البوستر الحقيقي */
+.anime-poster {
+  width: 180px;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 12px;
+  flex-shrink: 0;
 }
 
-.episodes-page > .hero {
-  width: 100%;
-  padding: 0;
+/* النص */
+.anime-info {
+  max-width: 600px;
 }
