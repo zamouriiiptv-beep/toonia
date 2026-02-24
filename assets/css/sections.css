@@ -217,56 +217,14 @@ section .section-header h2 {
 
 
 
-
-
-/* █████████████████████████████████████████ */
-/*  badges.css                               */
-/*  نظام بادجات الحالة الثابتة              */
-/* █████████████████████████████████████████ */
-
-/* الأب */
-.slide a {
-  position: relative;
-  display: block;
+/* مشغل الحلقات */
+.player-wrapper {
+  width: 100%;
+  aspect-ratio: 16 / 9;
 }
 
-/* حاوية البادجات */
-.badges {
-  position: absolute;
-  top: 6px;
-  left: 6px;
-  right: 6px;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  pointer-events: none;
-}
-
-/* البادج العام */
-.badge {
-  padding: 3px 7px;
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 1;
-
-  border-radius: 4px;
-  white-space: nowrap;
-  color: #fff;
-}
-
-/* ===== الحالات ===== */
-.status-ongoing {
-  background: #ffc107;
-  color: #000;
-}
-
-.status-completed {
-  background: #198754;
-}
-
-/* ===== الجودة ===== */
-.badge-hd {
-  background: #0d6efd;
+.player-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
