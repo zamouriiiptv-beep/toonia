@@ -278,3 +278,17 @@
   max-width: 700px;
   color: #fff;
 }
+
+/* ===================================== */
+/* HARD FULL-WIDTH FIX (FINAL)            */
+/* ===================================== */
+
+.episodes-page {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.episodes-page > .hero {
+  width: 100%;
+  padding: 0;
+}
