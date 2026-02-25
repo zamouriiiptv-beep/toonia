@@ -246,13 +246,22 @@
 <!-- قسم مشاهدة الحلقة -->
 <section class="watch-section">
 
-  <div class="video-placeholder">
+  <!-- حاوية المشغّل / الصورة -->
+  <div class="video-placeholder" id="playerBox">
+
+    <!-- صورة افتراضية (تختفي عند تشغيل الفيديو) -->
     <img
+      id="playerPoster"
       src="https://i.ibb.co/HTRGG2Zq/view-3d-young-child-watching-movie.jpg"
       alt="مشاهدة طفل يشاهد فيلماً ثلاثي الأبعاد">
-    <div class="play-overlay">اضغط لبدء المشاهدة</div>
+
+    <div class="play-overlay" id="playOverlay">
+      اضغط على حلقة لبدء المشاهدة
+    </div>
+
   </div>
 
+  <!-- أزرار التحكم -->
   <div class="controls">
     <button class="btn">التالية</button>
     <button class="btn btn-gray">السابقة</button>
@@ -264,18 +273,44 @@
     </div>
   </div>
 
+  <!-- قسم الحلقات -->
   <div class="episodes-section">
     <h3 class="section-title">جميع الحلقات 🔃</h3>
+
     <ul class="episodes-list">
-  <li class="episode-item"><a href="#">1. الحلقة الأولى</a></li>
-  <li class="episode-item"><a href="#">2. الحلقة الثانية</a></li>
-  <li class="episode-item"><a href="#">3. الحلقة الثالثة</a></li>
-  <li class="episode-item"><a href="#">4. الحلقة الرابعة</a></li>
-  <li class="episode-item active"><a href="#">5. الحلقة الخامسة</a></li>
-  <li class="episode-item"><a href="#">6. الحلقة السادسة</a></li>
-  <li class="episode-item"><a href="#">7. الحلقة السابعة</a></li>
-  <li class="episode-item"><a href="#">8. الحلقة الثامنة</a></li>
-</ul>
+      <li class="episode-item" data-video="VIDEO_URL_1">
+        <a href="#">1. الحلقة الأولى</a>
+      </li>
+
+      <li class="episode-item" data-video="VIDEO_URL_2">
+        <a href="#">2. الحلقة الثانية</a>
+      </li>
+
+      <li class="episode-item" data-video="VIDEO_URL_3">
+        <a href="#">3. الحلقة الثالثة</a>
+      </li>
+
+      <li class="episode-item" data-video="VIDEO_URL_4">
+        <a href="#">4. الحلقة الرابعة</a>
+      </li>
+
+      <li class="episode-item active" data-video="VIDEO_URL_5">
+        <a href="#">5. الحلقة الخامسة</a>
+      </li>
+
+      <li class="episode-item" data-video="VIDEO_URL_6">
+        <a href="#">6. الحلقة السادسة</a>
+      </li>
+
+      <li class="episode-item" data-video="VIDEO_URL_7">
+        <a href="#">7. الحلقة السابعة</a>
+      </li>
+
+      <li class="episode-item" data-video="VIDEO_URL_8">
+        <a href="#">8. الحلقة الثامنة</a>
+      </li>
+    </ul>
+
   </div>
 
 </section>
