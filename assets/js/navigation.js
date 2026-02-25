@@ -41,13 +41,39 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  /* ─────────── الحلقات (active أصفر) ─────────── */
-  const episodeItems = document.querySelectorAll('.episodes-list li');
+  /* ─────────── مشغل الحلقات + active ─────────── */
+
+  const episodeItems = document.querySelectorAll('.episode-item');
+  const playerBox    = document.getElementById('playerBox');
+  const poster       = document.getElementById('playerPoster');
+  const playOverlay  = document.getElementById('playOverlay');
 
   episodeItems.forEach(item => {
-    item.addEventListener('click', () => {
+    item.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      /* تفعيل الحلقة */
       episodeItems.forEach(el => el.classList.remove('active'));
       item.classList.add('active');
+
+      /* جلب رابط الفيديو */
+      const videoUrl = item.getAttribute('data-video');
+      if (!videoUrl || !playerBox) return;
+
+      /* حذف الصورة والنص */
+      if (poster) poster.remove();
+      if (playOverlay) playOverlay.remove();
+
+      /* إدخال المشغّل مكان الصورة */
+      playerBox.innerHTML = `
+        <iframe
+          src="${videoUrl}"
+          frameborder="0"
+          allow="autoplay; fullscreen"
+          allowfullscreen
+          style="width:100%; height:100%;">
+        </iframe>
+      `;
     });
   });
 
