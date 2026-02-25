@@ -270,71 +270,71 @@
 }
 
 
-/* WATCH BLOCK */
-.watch-block {
+/* البطاقة العامة */
+.episodes-player-card {
   margin: 20px 14px;
-}
-
-.watch-cover {
-  position: relative;
+  background: #1f1f1f;
   border-radius: 18px;
   overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,.4);
 }
 
-.watch-cover img {
+/* المعاينة */
+.player-preview {
+  position: relative;
+}
+
+.player-preview img {
   width: 100%;
   display: block;
 }
 
-.watch-cover-overlay {
+.player-overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(
-    to top,
-    rgba(0,0,0,.85),
-    rgba(0,0,0,.35)
+    to left,
+    rgba(0,0,0,.75),
+    rgba(0,0,0,.25)
   );
   display: flex;
   align-items: center;
-  justify-content: flex-start;
   padding: 20px;
   color: #fff;
 }
 
-.watch-cover-overlay h2 {
+.player-overlay h2 {
   font-size: 22px;
   line-height: 1.4;
 }
 
-/* CONTROL BAR */
-.watch-bar {
+/* شريط التحكم */
+.player-controls {
   display: flex;
   gap: 8px;
-  margin-top: 10px;
+  padding: 12px;
+  background: #2a2a2a;
 }
 
-.watch-btn {
+.player-controls button {
   flex: 1;
-  padding: 10px;
+  padding: 10px 0;
   border-radius: 10px;
-  background: #2a2a2a;
+  background: #3a3a3a;
+  border: none;
   color: #fff;
-  border: 0;
   font-size: 14px;
 }
 
-/* EPISODES BLOCK */
-.episodes-block {
-  margin: 18px 14px;
-  background: #1f1f1f;
-  border-radius: 16px;
-  overflow: hidden;
+/* قائمة الحلقات */
+.episodes-list-box {
+  padding: 10px 0;
 }
 
-.episodes-head {
+.episodes-header {
   display: flex;
   justify-content: space-between;
-  padding: 14px 16px;
+  padding: 12px 16px;
   font-weight: bold;
 }
 
@@ -346,9 +346,10 @@
 
 .episodes-list li {
   display: flex;
-  gap: 10px;
+  justify-content: space-between;
   padding: 14px 16px;
-  border-top: 1px solid rgba(255,255,255,.05);
+  border-top: 1px solid rgba(255,255,255,.06);
+  color: #ddd;
 }
 
 .episodes-list span {
