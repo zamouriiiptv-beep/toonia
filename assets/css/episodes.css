@@ -481,24 +481,40 @@ body {
   background: #2a2a2a;
   border: 0;
   border-radius: 10px;
-  padding: 12px 6px;
+  padding: 14px 6px 12px;
   color: #ddd;
   cursor: pointer;
+  transition: transform .2s ease, background .2s ease, color .2s ease;
+  position: relative;
+}
+
+/* ● الدائرة العلوية */
+.rating-icons button::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: block;
+  margin: 0 auto 6px;
+  background: #555;
   transition: transform .2s ease, background .2s ease;
 }
 
+/* 🎨 ألوان التقييم */
+.rating-icons button[data-rate="5"]::before { background: #ffc107; } /* رائع */
+.rating-icons button[data-rate="4"]::before { background: #4caf50; } /* ممتع */
+.rating-icons button[data-rate="3"]::before { background: #2196f3; } /* جيد */
+.rating-icons button[data-rate="2"]::before { background: #9e9e9e; } /* عادي */
+.rating-icons button[data-rate="1"]::before { background: #f44336; } /* سيء */
+
+/* hover */
 .rating-icons button:hover {
-  background: #ffc107;
-  color: #000;
+  background: #2f2f2f;
   transform: translateY(-2px);
 }
 
-.rating-icons svg {
-  width: 28px;
-  height: 28px;
-  fill: currentColor;
-  display: block;
-  margin: 0 auto 6px;
+.rating-icons button:hover::before {
+  transform: scale(1.3);
 }
 
 .rating-icons span {
