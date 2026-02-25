@@ -29,87 +29,106 @@
 
 <body>
 
-<!-- ================= HEADER ================= -->
-<header class="site-header">
+<!-- ================================== -->
+<!--  الهيدر (الشريط العلوي)            -->
+<!-- ================================== -->
+<header>
 
-  <div class="header-right">
+    <!-- القسم الأيمن من الهيدر -->
+    <div class="header-right">
 
-    <button class="menu-icon" id="openSidebar" aria-label="فتح القائمة">
-      <i class="fas fa-bars"></i>
-    </button>
+        <!-- زر القائمة -->
+        <div class="menu-icon">
+            <i class="fas fa-bars"></i>
+        </div>
 
-    <a href="/toonia/" class="logo-box">
-      <img
-        src="https://i.ibb.co/WWQtfGzs/logo.png"
-        alt="Toonia Logo"
-        width="40"
-        height="40"
-        loading="eager"
-        decoding="async">
-      <span class="site-name">Too<span>nia</span></span>
-    </a>
-
+        <!-- الشعار + اسم الموقع -->
+<a href="/toonia/" class="logo-box">
+  <img
+    src="https://i.ibb.co/WWQtfGzs/logo.png"
+    alt="Toonia Logo"
+    width="40"
+    height="40"
+    loading="eager"
+    decoding="async">
+    
+  <div class="site-name">
+    Too<span>nia</span>
   </div>
+</a>
 
-  <div class="header-left">
+    </div>
 
-    <button class="search-trigger" aria-label="بحث">
-      <i class="fas fa-search"></i>
-    </button>
+    <!-- القسم الأيسر -->
+    <div class="header-left">
 
-    <a href="/toonia/login" class="login-button">
-      <i class="fas fa-user"></i>
-      تسجيل الدخول
-    </a>
+        <div class="search-trigger">
+            <i class="fas fa-search"></i>
+        </div>
 
-  </div>
+        <a href="login" class="login-button">
+            <i class="fas fa-user"></i>
+            تسجيل الدخول
+        </a>
+
+    </div>
 
 </header>
 
-<!-- ================= SIDEBAR ================= -->
+<!-- ================================== -->
+<!--  القائمة الجانبية (Sidebar)         -->
+<!-- ================================== -->
 <div id="aniSidebarContainer">
 
-  <div class="ani-overlay" id="aniOverlay"></div>
+    <!-- خلفية شفافة لإغلاق القائمة عند الضغط -->
+    <div class="ani-overlay" id="aniOverlay"></div>
 
-  <nav class="ani-sidebar" id="aniSidebar" aria-label="القائمة الجانبية">
+    <!-- عنصر القائمة الجانبية -->
+    <nav class="ani-sidebar" id="aniSidebar">
 
-    <div class="ani-close-wrapper">
-      <button class="ani-close-btn" id="closeSidebar">
-        <i class="fas fa-arrow-right"></i>
-        إغلاق
-      </button>
-    </div>
+        <!-- زر إغلاق القائمة -->
+        <div class="ani-close-wrapper">
+            <button class="ani-close-btn" id="aniClose">
+                <i class="fas fa-arrow-right"></i>
+                إغلاق
+            </button>
+        </div>
 
-    <div class="ani-quick-actions">
-      <a href="#" class="ani-action-item">
-        <i class="fas fa-random"></i>
-        عشوائي
-      </a>
-      <a href="#" class="ani-action-item">
-        <i class="fas fa-users"></i>
-        شاهدوا
-      </a>
-      <a href="#" class="ani-action-item">
-        <i class="fas fa-language"></i>
-        الاسم
-      </a>
-    </div>
+        <!-- إجراءات سريعة -->
+        <div class="ani-quick-actions">
+            <a href="#" class="ani-action-item">
+                <i class="fas fa-random"></i>
+                عشوائي
+            </a>
 
-    <a href="#" class="ani-community-link">
-      <i class="fas fa-comments"></i>
-      انضم للمجتمع
-    </a>
+            <a href="#" class="ani-action-item">
+                <i class="fas fa-users"></i>
+                شاهدوا
+            </a>
 
-    <ul class="ani-nav-list">
-      <li><a href="/toonia/">الرئيسية</a></li>
-      <li><a href="/toonia/anime/">أنمي مترجم</a></li>
-      <li><a href="/toonia/dubbed/">أنمي مدبلج</a></li>
-      <li><a href="/toonia/popular/">الأكثر شعبية</a></li>
-      <li><a href="/toonia/movies/">أفلام</a></li>
-      <li><a href="/toonia/schedule/">جدول الحلقات</a></li>
-    </ul>
+            <a href="#" class="ani-action-item">
+                <i class="fas fa-language"></i>
+                الاسم
+            </a>
+        </div>
 
-  </nav>
+        <!-- رابط المجتمع -->
+        <a href="#" class="ani-community-link">
+            <i class="fas fa-comments"></i>
+            انضم للمجتمع
+        </a>
+
+        <!-- روابط التنقل -->
+        <ul class="ani-nav-list">
+            <li><a href="#">الرئيسية</a></li>
+            <li><a href="#">أنمي مترجم</a></li>
+            <li><a href="#">أنمي مدبلج</a></li>
+            <li><a href="#">الأكثر شعبية</a></li>
+            <li><a href="#">أفلام</a></li>
+            <li><a href="#">جدول الحلقات</a></li>
+        </ul>
+
+    </nav>
 </div>
 
 <!-- ================= MAIN (EPISODES PAGE) ================= -->
