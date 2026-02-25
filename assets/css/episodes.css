@@ -240,3 +240,39 @@
   height: 100%;
   border: 0;
 }
+/* ===================================== */
+/*  توسيط العنوان + التقييم + الأزرار     */
+/* ===================================== */
+
+/* ===================================== */
+/*  توسيط عناصر صفحة التفاصيل            */
+/* ===================================== */
+
+.anime-details-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;   /* توسيط أفقي */
+  text-align: center;
+}
+
+/* أزرار التفاعل */
+.anime-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+/* العنوان */
+.anime-details-title {
+  margin: 0 0 10px;
+}
+
+/* التقييم */
+.anime-rating {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
