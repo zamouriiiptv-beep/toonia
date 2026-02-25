@@ -270,72 +270,62 @@
 }
 
 
-/* البطاقة العامة */
-.episodes-player-card {
-  margin: 20px 14px;
-  background: #1f1f1f;
-  border-radius: 18px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,.4);
+/* قسم المشاهدة */
+.watch-section {
+  margin: 24px 16px;
 }
 
-/* المعاينة */
-.player-preview {
+.watch-preview {
   position: relative;
+  border-radius: 16px;
+  overflow: hidden;
 }
 
-.player-preview img {
+.watch-preview img {
   width: 100%;
   display: block;
 }
 
-.player-overlay {
+.watch-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to left,
-    rgba(0,0,0,.75),
-    rgba(0,0,0,.25)
-  );
+  background: linear-gradient(to top, rgba(0,0,0,.8), rgba(0,0,0,.3));
   display: flex;
   align-items: center;
-  padding: 20px;
+  justify-content: center;
+  text-align: center;
   color: #fff;
 }
 
-.player-overlay h2 {
-  font-size: 22px;
-  line-height: 1.4;
-}
-
-/* شريط التحكم */
-.player-controls {
+/* أدوات التحكم */
+.watch-controls {
   display: flex;
-  gap: 8px;
-  padding: 12px;
-  background: #2a2a2a;
+  gap: 10px;
+  margin-top: 12px;
 }
 
-.player-controls button {
+.watch-controls button {
   flex: 1;
-  padding: 10px 0;
+  padding: 10px;
   border-radius: 10px;
-  background: #3a3a3a;
-  border: none;
+  background: #2b2b2b;
   color: #fff;
-  font-size: 14px;
+  border: 0;
 }
 
-/* قائمة الحلقات */
-.episodes-list-box {
-  padding: 10px 0;
+/* الحلقات */
+.episodes-section {
+  margin: 20px 16px;
+  background: #1f1f1f;
+  border-radius: 14px;
+  overflow: hidden;
 }
 
 .episodes-header {
-  display: flex;
-  justify-content: space-between;
   padding: 12px 16px;
   font-weight: bold;
+  display: flex;
+  justify-content: space-between;
 }
 
 .episodes-list {
@@ -345,13 +335,8 @@
 }
 
 .episodes-list li {
-  display: flex;
-  justify-content: space-between;
   padding: 14px 16px;
-  border-top: 1px solid rgba(255,255,255,.06);
-  color: #ddd;
-}
-
-.episodes-list span {
-  opacity: .6;
+  border-top: 1px solid rgba(255,255,255,.05);
+  display: flex;
+  gap: 10px;
 }
