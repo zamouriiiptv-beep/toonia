@@ -384,23 +384,24 @@ body {
     list-style: none;
 }
 
-/* تناوب ألوان الحلقات (العادية فقط) */
-.episodes-list li:nth-child(odd) a {
-    background-color: #2f2f2f;
-}
-
-.episodes-list li:nth-child(even) a {
-    background-color: #3a3a3a;
-}
-
 /* الشكل العام للرابط */
 .episodes-list li a {
     display: block;
-    padding: 12px;
+    width: 100%;
+    padding: 14px 16px;
     color: #e0e0e0;
     text-decoration: none;
-    border-radius: 6px;
+    border-radius: 8px;
     transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* تناوب ألوان الحلقات (غير الحالية فقط) */
+.episodes-list li:nth-child(odd):not(.active) a {
+    background-color: #2f2f2f;
+}
+
+.episodes-list li:nth-child(even):not(.active) a {
+    background-color: #3a3a3a;
 }
 
 /* hover للحلقات غير الحالية فقط */
@@ -417,33 +418,35 @@ body {
     color: #000;
     font-weight: 700;
 }
+
 /* =============================== */
 /* تهيئة حاوية المشغّل             */
 /* =============================== */
 
 .video-placeholder {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 9; /* مهم جداً */
-  overflow: hidden;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9; /* مهم جداً */
+    overflow: hidden;
+    border-radius: 10px;
 }
 
 /* الصورة الافتراضية */
 .video-placeholder img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 /* iframe المشغّل */
 .video-placeholder iframe {
-  width: 100%;
-  height: 100%;
-  border: 0;
-  display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
 }
 
 /* نص التشغيل */
 .play-overlay {
-  pointer-events: none; /* لا يعترض الضغط */
+    pointer-events: none; /* لا يعترض الضغط */
 }
