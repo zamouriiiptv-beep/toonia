@@ -17,14 +17,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (openBtn && sidebar && overlay && closeBtn) {
 
-    // فتح القائمة
     openBtn.addEventListener('click', () => {
       sidebar.classList.add('active');
       overlay.style.display = 'block';
       body.style.overflow = 'hidden';
     });
 
-    // إغلاق القائمة
     const closeSidebar = () => {
       sidebar.classList.remove('active');
       overlay.style.display = 'none';
@@ -35,12 +33,22 @@ document.addEventListener('DOMContentLoaded', () => {
     overlay.addEventListener('click', closeSidebar);
   }
 
-  /* ─────────── البحث (كما هو) ─────────── */
+  /* ─────────── البحث ─────────── */
   const searchBtn = document.querySelector('.search-trigger');
   if (searchBtn) {
     searchBtn.addEventListener('click', () => {
       body.classList.toggle('search-open');
     });
   }
+
+  /* ─────────── الحلقات (active أصفر) ─────────── */
+  const episodeItems = document.querySelectorAll('.episodes-list li');
+
+  episodeItems.forEach(item => {
+    item.addEventListener('click', () => {
+      episodeItems.forEach(el => el.classList.remove('active'));
+      item.classList.add('active');
+    });
+  });
 
 });
