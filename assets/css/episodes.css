@@ -457,3 +457,51 @@ body {
 .play-overlay {
     pointer-events: none;
 }
+
+
+
+
+
+.rating-section {
+  margin-top: 24px;
+  padding: 16px;
+  background: #1e1e1e;
+  border-radius: 12px;
+}
+
+.rating-icons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.rating-icons button {
+  flex: 1;
+  background: #2a2a2a;
+  border: 0;
+  border-radius: 10px;
+  padding: 12px 6px;
+  color: #ddd;
+  cursor: pointer;
+  transition: transform .2s ease, background .2s ease;
+}
+
+.rating-icons button:hover {
+  background: #ffc107;
+  color: #000;
+  transform: translateY(-2px);
+}
+
+.rating-icons svg {
+  width: 28px;
+  height: 28px;
+  fill: currentColor;
+  display: block;
+  margin: 0 auto 6px;
+}
+
+.rating-icons span {
+  font-size: 13px;
+  display: block;
+}
