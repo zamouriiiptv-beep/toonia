@@ -343,3 +343,27 @@ section .section-header h2 {
     grid-template-columns: 1fr;
   }
 }
+/* ============================= */
+/* Interactive Rating Stars      */
+/* ============================= */
+
+.stars {
+  display: flex;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.stars i {
+  font-size: 22px;
+  color: #777;
+  transition: color 0.2s ease, transform 0.15s ease;
+}
+
+.stars i.active,
+.stars i.hovered {
+  color: #f5c518;
+}
+
+.stars i:hover {
+  transform: scale(1.15);
+}
