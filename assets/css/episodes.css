@@ -19,8 +19,9 @@
   background: rgba(20, 20, 25, 0.78); /* تعتيم أنعم */
   backdrop-filter: blur(8px);
 
-  /* الإصلاح */
+  /* الإصلاح الحقيقي */
   z-index: 0;
+  pointer-events: none; /* ⬅️ السطر الحاسم */
 }
 
 /* المحتوى */
