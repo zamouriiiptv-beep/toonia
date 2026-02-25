@@ -275,66 +275,73 @@
 /*  صورة أسفل قسم المعلومات              */
 /* ===================================== */
 
-.watch-section {
+.watch-layout {
   padding: 16px;
   direction: rtl;
 }
 
-/* ===== منطقة المشاهدة ===== */
-.watch-box {
+/* ===== HERO ===== */
+.watch-hero {
+  height: 200px;
+  border-radius: 18px;
+  background:
+    linear-gradient(to left, rgba(0,0,0,.7), rgba(0,0,0,.2)),
+    url("https://i.ibb.co/HTRGG2Zq/view-3d-young-child-watching-movie.jpg");
+  background-size: cover;
+  background-position: center;
   position: relative;
-  border-radius: 16px;
-  overflow: hidden;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
-.watch-box img {
-  width: 100%;
-  display: block;
-  filter: brightness(0.75);
-}
-
-.watch-overlay {
+.hero-overlay {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
   padding: 20px;
 }
 
-.watch-overlay h2 {
+.hero-overlay h2 {
   color: #fff;
   font-size: 20px;
   line-height: 1.5;
+  max-width: 60%;
 }
 
-/* ===== قائمة الحلقات ===== */
-.episodes-box {
-  background: rgba(255,255,255,0.05);
+/* ===== EPISODES CARD ===== */
+.episodes-card {
+  background: #3a3a3f;
   border-radius: 16px;
   overflow: hidden;
 }
 
-.episodes-header {
+.episodes-title {
+  background: #4a4a4f;
   padding: 14px 16px;
   font-weight: bold;
-  background: rgba(255,255,255,0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.episodes-list {
+.episodes {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.episodes-list li {
+.episodes li {
   padding: 14px 16px;
-  border-top: 1px solid rgba(255,255,255,0.06);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  gap: 8px;
   cursor: pointer;
-  transition: background 0.2s;
 }
 
-.episodes-list li:hover {
-  background: rgba(255,255,255,0.08);
+.episodes li:hover {
+  background: rgba(255,255,255,0.06);
+}
+
+.episodes span {
+  opacity: .7;
 }
