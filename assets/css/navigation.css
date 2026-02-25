@@ -196,3 +196,11 @@
   color: var(--accent-color);
   box-shadow: inset 4px 0 var(--accent-color);
 }
+/* تثبيت سلوك السايدبار */
+nav.ani-sidebar {
+  right: -300px !important;
+}
+
+nav.ani-sidebar.active {
+  right: 0 !important;
+}
