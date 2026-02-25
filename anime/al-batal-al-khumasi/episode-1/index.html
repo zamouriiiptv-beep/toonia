@@ -34,12 +34,10 @@
 
   <div class="header-right">
 
-    <!-- زر القائمة -->
     <button class="menu-icon" id="openSidebar" aria-label="فتح القائمة">
       <i class="fas fa-bars"></i>
     </button>
 
-    <!-- الشعار -->
     <a href="/toonia/" class="logo-box">
       <img
         src="https://i.ibb.co/WWQtfGzs/logo.png"
@@ -55,12 +53,10 @@
 
   <div class="header-left">
 
-    <!-- زر البحث -->
-    <button class="search-trigger" id="openSearch" aria-label="بحث">
+    <button class="search-trigger" aria-label="بحث">
       <i class="fas fa-search"></i>
     </button>
 
-    <!-- تسجيل الدخول -->
     <a href="/toonia/login" class="login-button">
       <i class="fas fa-user"></i>
       تسجيل الدخول
@@ -71,48 +67,39 @@
 </header>
 
 <!-- ================= SIDEBAR ================= -->
-
 <div id="aniSidebarContainer">
 
-  <!-- خلفية شفافة -->
   <div class="ani-overlay" id="aniOverlay"></div>
 
-  <!-- القائمة الجانبية -->
   <nav class="ani-sidebar" id="aniSidebar" aria-label="القائمة الجانبية">
 
-    <!-- زر الإغلاق -->
     <div class="ani-close-wrapper">
-      <button class="ani-close-btn" id="closeSidebar" aria-label="إغلاق القائمة">
+      <button class="ani-close-btn" id="closeSidebar">
         <i class="fas fa-arrow-right"></i>
         إغلاق
       </button>
     </div>
 
-    <!-- إجراءات سريعة -->
     <div class="ani-quick-actions">
       <a href="#" class="ani-action-item">
         <i class="fas fa-random"></i>
         عشوائي
       </a>
-
       <a href="#" class="ani-action-item">
         <i class="fas fa-users"></i>
         شاهدوا
       </a>
-
       <a href="#" class="ani-action-item">
         <i class="fas fa-language"></i>
         الاسم
       </a>
     </div>
 
-    <!-- رابط المجتمع -->
     <a href="#" class="ani-community-link">
       <i class="fas fa-comments"></i>
       انضم للمجتمع
     </a>
 
-    <!-- روابط التنقل -->
     <ul class="ani-nav-list">
       <li><a href="/toonia/">الرئيسية</a></li>
       <li><a href="/toonia/anime/">أنمي مترجم</a></li>
@@ -123,22 +110,6 @@
     </ul>
 
   </nav>
-</div>
-<!-- ================= SEARCH OVERLAY ================= -->
-<div class="search-overlay" id="searchOverlay" aria-hidden="true">
-
-  <div class="search-box">
-    <input
-      type="search"
-      id="searchInput"
-      placeholder="ابحث عن أنمي، حلقة، فيلم..."
-      aria-label="بحث">
-    
-    <button class="search-close" id="closeSearch" aria-label="إغلاق البحث">
-      ✕
-    </button>
-  </div>
-
 </div>
 
 <!-- ================= MAIN (EPISODES PAGE) ================= -->
