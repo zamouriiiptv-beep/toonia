@@ -383,8 +383,8 @@ section .section-header h2 {
   font-size: 18px;
 }
 
-.imdb-star {
-  color: #f5c518; /* IMDb Yellow */
+.imdb-star i {
+  color: #F5C518; /* IMDb Yellow */
   font-size: 22px;
 }
 
