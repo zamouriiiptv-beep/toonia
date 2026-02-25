@@ -217,7 +217,7 @@ section .section-header h2 {
 
 
 /* ============================= */
-/* Anime Details Section         */
+/* Anime Details with Icons      */
 /* ============================= */
 
 .anime-details-section {
@@ -234,27 +234,37 @@ section .section-header h2 {
 }
 
 .anime-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
   padding: 10px 16px;
-  border-radius: 12px;
+  border-radius: 14px;
   background: transparent;
   border: 1px solid rgba(255,255,255,0.25);
   color: #fff;
   cursor: pointer;
 }
 
-.anime-details-title {
-  font-size: 26px;
-  margin-bottom: 12px;
+.anime-actions i {
+  color: var(--accent-color);
 }
 
+/* العنوان */
+.anime-details-title {
+  font-size: 26px;
+  margin-bottom: 14px;
+}
+
+/* التقييم */
 .anime-rating {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
-.anime-rating .stars {
+.anime-rating .stars i {
   color: #f5c518;
   font-size: 18px;
 }
@@ -267,34 +277,64 @@ section .section-header h2 {
   font-weight: 700;
 }
 
-.anime-story {
-  margin-bottom: 24px;
+.rating-count {
+  opacity: 0.8;
 }
 
+/* القصة */
 .anime-story h3 {
-  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
 }
 
+.anime-story i {
+  color: var(--accent-color);
+}
+
+/* المعلومات */
 .anime-meta-list {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 24px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 24px 0;
 }
 
+.anime-meta-list div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.anime-meta-list i {
+  color: var(--accent-color);
+  min-width: 18px;
+}
+
+.anime-meta-list span {
+  opacity: 0.85;
+}
+
+/* المشاركة */
 .anime-share {
   display: flex;
-  gap: 10px;
+  gap: 12px;
 }
 
 .anime-share button {
   width: 42px;
   height: 42px;
   border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.25);
   background: transparent;
+  border: 1px solid rgba(255,255,255,0.25);
   color: #fff;
   cursor: pointer;
+}
+
+.anime-share i {
+  font-size: 18px;
 }
 
 /* موبايل */
