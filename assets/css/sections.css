@@ -367,3 +367,43 @@ section .section-header h2 {
 .stars i:hover {
   transform: scale(1.15);
 }
+
+
+
+
+/* ============================= */
+/* IMDb Style Rating             */
+/* ============================= */
+
+.imdb-rating {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 22px;
+  font-size: 18px;
+}
+
+.imdb-star {
+  color: #f5c518; /* IMDb Yellow */
+  font-size: 22px;
+}
+
+.imdb-score {
+  font-size: 26px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.imdb-total {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.imdb-label {
+  background: #f5c518;
+  color: #000;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 6px;
+  border-radius: 4px;
+}
