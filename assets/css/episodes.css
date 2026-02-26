@@ -396,16 +396,16 @@
 
 /* تناوب ألوان الحلقات (غير الحالية فقط) */
 .episodes-list li:nth-child(odd):not(.active) a {
-    background-color: #2f2f2f;
+    background-color: #34353B; /* بدل السواد */
 }
 
 .episodes-list li:nth-child(even):not(.active) a {
-    background-color: #3a3a3a;
+    background-color: #3A3B41; /* بدل السواد */
 }
 
 /* hover للحلقات غير الحالية فقط */
 .episodes-list li:not(.active) a:hover {
-    background-color: #4a4a4a;
+    background-color: #44454C; /* hover أوضح */
     color: #ffffff;
 }
 
