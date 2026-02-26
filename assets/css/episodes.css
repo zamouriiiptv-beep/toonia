@@ -456,10 +456,19 @@
 
 .rating-section {
   margin-top: 24px;
-  padding: 16px;
+  padding: 18px;
   background-color: var(--card-bg-color);
-  border-radius: 12px;
-  border: 1px solid var(--card-border-color);
+  border-radius: 14px;
+
+  /* تمييز خفيف */
+  border: 1px solid var(--soft-border);
+  box-shadow: var(--soft-shadow);
+}
+
+/* العنوان */
+.rating-section .section-title {
+  text-align: center;
+  margin-bottom: 14px;
 }
 
 /* حاوية الأزرار */
@@ -467,23 +476,25 @@
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  margin-top: 12px;
 }
 
 /* زر التقييم */
 .rating-icons button {
   flex: 1;
   background-color: var(--site-bg-color);
-  border: 1px solid var(--card-border-color);
-  border-radius: 10px;
+  border: 1px solid var(--soft-border);
+  border-radius: 12px;
+
   padding: 14px 6px 12px;
   color: #ddd;
   cursor: pointer;
   position: relative;
 
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
+
   transition:
-    transform .2s ease,
     background-color .2s ease,
+    transform .2s ease,
     color .2s ease;
 }
 
@@ -520,6 +531,18 @@
 .rating-icons span {
   font-size: 13px;
   display: block;
+  margin-top: 2px;
+}
+
+/* تحسين الموبايل */
+@media (max-width: 768px) {
+  .rating-icons {
+    gap: 8px;
+  }
+
+  .rating-icons button {
+    padding: 12px 4px 10px;
+  }
 }
 
 /* =============================== */
