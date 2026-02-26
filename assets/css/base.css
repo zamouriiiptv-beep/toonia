@@ -12,7 +12,7 @@
 :root {
 
   /* لون خلفية الموقع العامة */
-  --site-bg-color: #2C2D33;
+  --site-bg-color: #2F2E33; /* أو #121212 أو أي لون */
 
   /* لون خلفيات الأقسام والبطاقات */
   --section-bg-color: #26272d;
@@ -50,7 +50,7 @@ html {
 
 /* إعدادات جسم الصفحة */
 body {
-  background-color: #2F2E33;
+  background-color: var(--site-bg-color);
   color: #ffffff;
   font-family: inherit;
   font-weight: 400;
