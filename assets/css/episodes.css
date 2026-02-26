@@ -647,14 +647,3 @@
   background: #ffc107; /* لون الهوية */
   transform: scale(1.4);
 }
-
-
-
-
-
-/* ===== OVERRIDE نهائي لإزالة أي سواد ===== */
-.watch-section,
-.watch-section .controls,
-.watch-section .episodes-section {
-  background-color: var(--site-bg-color) !important;
-}
