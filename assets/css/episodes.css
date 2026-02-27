@@ -120,60 +120,40 @@
   opacity: 0.8;
 }
 
-/* القصة */
-.anime-story h3 {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 6px;
-}
+/* █████████████████████████████████████████ */
+/* نفس خلفية قسم التقييم (تفاصيل الأنمي)   */
+/* █████████████████████████████████████████ */
 
-.anime-story i {
-  color: var(--accent-color);
+/* القصة */
+.anime-story {
+  margin-top: 16px;
+  padding: 18px;
+  background-color: var(--card-bg-color);
+  border-radius: 14px;
+  border: 1px solid var(--soft-border);
+  box-shadow: var(--soft-shadow);
 }
 
 /* المعلومات */
 .anime-meta-list {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  margin: 24px 0;
-}
-
-.anime-meta-list div {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-}
-
-.anime-meta-list i {
-  color: var(--accent-color);
-  min-width: 18px;
-}
-
-.anime-meta-list span {
-  opacity: 0.85;
+  margin-top: 16px;
+  padding: 18px;
+  background-color: var(--card-bg-color);
+  border-radius: 14px;
+  border: 1px solid var(--soft-border);
+  box-shadow: var(--soft-shadow);
 }
 
 /* المشاركة */
 .anime-share {
-  display: flex;
-  gap: 12px;
-}
+  margin-top: 16px;
+  padding: 16px;
+  justify-content: center;
 
-.anime-share button {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: transparent;
-  border: 1px solid rgba(255,255,255,0.25);
-  color: #fff;
-  cursor: pointer;
-}
-
-.anime-share i {
-  font-size: 18px;
+  background-color: var(--card-bg-color);
+  border-radius: 14px;
+  border: 1px solid var(--soft-border);
+  box-shadow: var(--soft-shadow);
 }
 
 /* موبايل */
@@ -432,9 +412,9 @@
     border: 1px solid var(--soft-border);
     box-shadow: var(--soft-shadow);
 }
-/* █████████████████████████████████████████ */
+/* ===================================== */
 /*  سطر السابقة / التالية بنفس بطاقة التقييم */
-/* █████████████████████████████████████████ */
+/* ===================================== */
 
 .controls {
     display: flex;
