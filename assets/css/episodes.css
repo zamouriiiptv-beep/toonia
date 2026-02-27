@@ -432,14 +432,18 @@
     border: 1px solid var(--soft-border);
     box-shadow: var(--soft-shadow);
 }
+/* █████████████████████████████████████████ */
+/*  سطر السابقة / التالية بنفس بطاقة التقييم */
+/* █████████████████████████████████████████ */
 
-/* ===================================== */
-/* نفس خلفية قسم التقييم لأزرار التحكم   */
-/* ===================================== */
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 
-.watch-section .controls {
-    margin-top: 16px;
+    margin: 16px 0;
     padding: 14px 16px;
+
     background-color: var(--card-bg-color);
     border-radius: 14px;
     border: 1px solid var(--soft-border);
