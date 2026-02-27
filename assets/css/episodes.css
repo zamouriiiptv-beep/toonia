@@ -434,6 +434,19 @@
 }
 
 /* ===================================== */
+/* نفس خلفية قسم التقييم لأزرار التحكم   */
+/* ===================================== */
+
+.watch-section .controls {
+    margin-top: 16px;
+    padding: 14px 16px;
+    background-color: var(--card-bg-color);
+    border-radius: 14px;
+    border: 1px solid var(--soft-border);
+    box-shadow: var(--soft-shadow);
+}
+
+/* ===================================== */
 /* تهيئة حاوية المشغّل                   */
 /* ===================================== */
 
