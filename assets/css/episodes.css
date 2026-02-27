@@ -371,7 +371,9 @@
 /* قسم قائمة الحلقات + مشغّل الفيديو     */
 /* █████████████████████████████████████████ */
 
-/* تهيئة قائمة الحلقات */
+/* ===================================== */
+/* تهيئة قائمة الحلقات                   */
+/* ===================================== */
 .episodes-list {
     list-style: none;
     padding: 0;
@@ -396,16 +398,16 @@
 
 /* تناوب ألوان الحلقات (غير الحالية فقط) */
 .episodes-list li:nth-child(odd):not(.active) a {
-    background-color: #34353B; /* بدل السواد */
+    background-color: #34353B;
 }
 
 .episodes-list li:nth-child(even):not(.active) a {
-    background-color: #3A3B41; /* بدل السواد */
+    background-color: #3A3B41;
 }
 
 /* hover للحلقات غير الحالية فقط */
 .episodes-list li:not(.active) a:hover {
-    background-color: #44454C; /* hover أوضح */
+    background-color: #44454C;
     color: #ffffff;
 }
 
@@ -416,6 +418,19 @@
     background-color: #ffc107;
     color: #000;
     font-weight: 700;
+}
+
+/* ===================================== */
+/* ⭐ نفس خلفية قسم التقييم للحلقات      */
+/* ===================================== */
+
+.episodes-section {
+    margin-top: 16px;
+    padding: 18px;
+    background-color: var(--card-bg-color);
+    border-radius: 14px;
+    border: 1px solid var(--soft-border);
+    box-shadow: var(--soft-shadow);
 }
 
 /* ===================================== */
