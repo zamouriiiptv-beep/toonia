@@ -1,152 +1,86 @@
-<script>
 'use strict';
 
-/**
- * نظام السلايدر العام
- * يدعم:
- * - الأسهم
- * - النقاط
- * - السحب باللمس
- * - عدة سلايدرات في الصفحة
- */
+document.addEventListener('DOMContentLoaded', () => {
 
-document.querySelectorAll('.slider').forEach(slider => {
+  setTimeout(initSliders, 200);
 
-  const slides = Array.from(slider.querySelectorAll('.slide'));
-  const sliderId = slider.id;
+  function initSliders() {
+    const sliders = document.querySelectorAll('.slider');
 
-  const dotsWrapper = document.querySelector(
-    `.slider-dots[data-slider="${sliderId}"]`
-  );
+    sliders.forEach(slider => {
+      const sliderId = slider.id;
+      if (!sliderId) return;
 
-  const arrows = document.querySelectorAll(
-    `.arrow[data-target="${sliderId}"]`
-  );
+      const slides = slider.querySelectorAll('.slide');
+      const dotsContainer = document.querySelector(`.slider-dots[data-slider="${sliderId}"]`);
+      const prevBtn = document.querySelector(`.arrow.prev[data-target="${sliderId}"]`);
+      const nextBtn = document.querySelector(`.arrow.next[data-target="${sliderId}"]`);
 
-  if (!slides.length) return;
+      if (!slides.length || !dotsContainer) return;
 
-  let activeIndex = 0;
-  let isProgrammatic = false;
+      dotsContainer.innerHTML = '';
 
-  /* =============================== */
-  /* 1. إنشاء النقاط                */
-  /* =============================== */
+      slides.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.classList.add('dot');
+        dot.dataset.index = i;
+        dot.setAttribute('aria-label', `الانتقال إلى الشريحة ${i + 1}`);
+        dotsContainer.appendChild(dot);
 
-  let dots = [];
-
-  if (dotsWrapper) {
-
-    dotsWrapper.innerHTML = '';
-
-    dots = slides.map((_, index) => {
-
-      const dot = document.createElement('button');
-      dot.type = 'button';
-      dot.className = 'dot';
-
-      dot.addEventListener('click', () => {
-        scrollToIndex(index);
+        dot.addEventListener('click', e => {
+          e.preventDefault();
+          scrollToSlide(i);
+        });
       });
 
-      dotsWrapper.appendChild(dot);
+      updateActiveDot(0);
 
-      return dot;
-
-    });
-
-  }
-
-  /* =============================== */
-  /* 2. تحديث النقطة النشطة         */
-  /* =============================== */
-
-  function setActive(index) {
-
-    activeIndex = index;
-
-    if (!dots.length) return;
-
-    dots.forEach((dot, i) => {
-      dot.classList.toggle('active', i === index);
-    });
-
-  }
-
-  /* =============================== */
-  /* 3. التمرير إلى شريحة           */
-  /* =============================== */
-
-  function scrollToIndex(index) {
-
-    isProgrammatic = true;
-
-    const target = Math.max(0, Math.min(slides.length - 1, index));
-
-    slides[target].scrollIntoView({
-      behavior: 'smooth',
-      inline: 'start',
-      block: 'nearest'
-    });
-
-    setActive(target);
-
-    setTimeout(() => {
-      isProgrammatic = false;
-    }, 600);
-
-  }
-
-  /* =============================== */
-  /* 4. مراقبة السحب باللمس          */
-  /* =============================== */
-
-  const observer = new IntersectionObserver(entries => {
-
-    if (isProgrammatic) return;
-
-    entries.forEach(entry => {
-
-      if (entry.isIntersecting) {
-
-        const index = slides.indexOf(entry.target);
-
-        if (index !== -1) {
-          setActive(index);
-        }
-
+      function getSlideMetrics() {
+        const slideWidth = slides[0].offsetWidth;
+        const gap = parseInt(window.getComputedStyle(slider).gap) || 10;
+        return { slideWidth, gap };
       }
 
+      function scrollToSlide(index) {
+        const { slideWidth, gap } = getSlideMetrics();
+        const scrollPos = index * (slideWidth + gap);
+        slider.scrollTo({ left: scrollPos, behavior: 'smooth' });
+        updateActiveDot(index);
+      }
+
+      function updateActiveDot(index) {
+        const dots = dotsContainer.querySelectorAll('.dot');
+        dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+      }
+
+      let ticking = false;
+      slider.addEventListener('scroll', () => {
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            const { slideWidth, gap } = getSlideMetrics();
+            const activeIndex = Math.round(slider.scrollLeft / (slideWidth + gap));
+            if (activeIndex >= 0 && activeIndex < slides.length) updateActiveDot(activeIndex);
+            ticking = false;
+          });
+          ticking = true;
+        }
+      });
+
+      function scrollRelative(offset) {
+        const { slideWidth, gap } = getSlideMetrics();
+        const currentIndex = Math.round(slider.scrollLeft / (slideWidth + gap));
+        const newIndex = Math.min(Math.max(0, currentIndex + offset), slides.length - 1);
+        scrollToSlide(newIndex);
+      }
+
+      if (prevBtn) prevBtn.addEventListener('click', e => { e.preventDefault(); scrollRelative(-1); });
+      if (nextBtn) nextBtn.addEventListener('click', e => { e.preventDefault(); scrollRelative(1); });
+
+      window.addEventListener('resize', () => {
+        const activeDot = dotsContainer.querySelector('.dot.active');
+        if (activeDot) scrollToSlide(parseInt(activeDot.dataset.index));
+      });
     });
-
-  }, {
-    root: slider,
-    rootMargin: '0px -2px 0px -2px',
-    threshold: 0.6
-  });
-
-  slides.forEach(slide => observer.observe(slide));
-
-  /* =============================== */
-  /* 5. الأسهم                      */
-  /* =============================== */
-
-  arrows.forEach(btn => {
-
-    btn.addEventListener('click', () => {
-
-      const step = btn.classList.contains('next') ? 1 : -1;
-
-      scrollToIndex(activeIndex + step);
-
-    });
-
-  });
-
-  /* =============================== */
-  /* 6. البداية                     */
-  /* =============================== */
-
-  setActive(0);
+  }
 
 });
-</script>
