@@ -69,53 +69,84 @@
 /*  نقاط السلايدر (Pagination Dots)         */
 /* █████████████████████████████████████████ */
 
-/* حاوية النقاط */
+.slider-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 40px; /* مساحة للنقاط */
+}
+
+.slider {
+  display: flex;
+  flex-direction: row !important; /* أفقي */
+  overflow-x: auto;
+  overflow-y: hidden;            /* يمنع العمودي */
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  gap: 10px;
+  padding: 10px 0;
+  white-space: nowrap;
+  scrollbar-width: none;          /* إخفاء شريط التمرير Firefox */
+}
+
+.slider::-webkit-scrollbar {
+  display: none;                  /* إخفاء شريط التمرير Chrome/Safari */
+}
+
+.slide {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  width: 120px;
+  position: relative;
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.slide img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
 .slider-dots {
   display: flex;
   justify-content: center;
-  align-items: center;
-  gap: 10px;
-
-  margin-top: 14px;
+  gap: 12px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 0;
+  background: transparent;
   user-select: none;
-  pointer-events: auto;
 }
 
-/* النقطة */
 .slider-dots button {
   width: 8px;
   height: 8px;
-
   border-radius: 50%;
   border: none;
   padding: 0;
-
-  background-color: rgba(255, 255, 255, 0.35);
+  background-color: rgba(255,255,255,0.35);
   cursor: pointer;
-
-  transform: scale(1);
   opacity: 0.7;
-
-  transition:
-    background-color 0.25s ease,
-    transform 0.25s ease,
-    opacity 0.25s ease;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
-/* النقطة النشطة */
 .slider-dots button.active {
-  background-color: #FFD400; /* أصفر */
+  background-color: #FFD400;
   transform: scale(1.6);
   opacity: 1;
+  box-shadow: 0 0 8px rgba(255,212,0,0.5);
 }
 
-/* تحسين التفاعل */
 .slider-dots button:hover {
   opacity: 1;
+  background-color: rgba(255,255,255,0.6);
+  transform: scale(1.2);
 }
 
-/* تحسين اللمس (موبايل + كيبورد) */
-.slider-dots button:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.6);
-  outline-offset: 3px;
+.slider-dots button.active:hover {
+  transform: scale(1.7);
 }
