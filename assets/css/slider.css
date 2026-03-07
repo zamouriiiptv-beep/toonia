@@ -150,3 +150,7 @@
 .slider-dots button.active:hover {
   transform: scale(1.7);
 }
+/* المسافة محسوبة بناءً على ارتفاع النقاط */
+.slider-wrapper {
+  padding-bottom: calc(10px + 8px); /* padding + height النقاط */
+}
