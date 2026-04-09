@@ -4,666 +4,418 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cartoonia</title>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Bebas+Neue&family=Righteous&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-  :root {
-    --green: #00e676;
-    --green-dim: #00b85c;
-    --dark: #080c10;
-    --dark2: #0d1117;
-    --dark3: #141a22;
-    --text: #e8edf3;
-    --muted: #8b99a8;
-  }
+:root { --green: #1adb72; }
 
-  body {
-    background: var(--dark);
-    font-family: 'Tajawal', sans-serif;
-    color: var(--text);
-    overflow-x: hidden;
-  }
+body {
+  background: #0a0a0a;
+  font-family: 'Tajawal', sans-serif;
+  color: #fff;
+  overflow-x: hidden;
+}
 
-  /* ───── HEADER ───── */
-  header {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    background: linear-gradient(180deg, rgba(8,12,16,0.98) 0%, rgba(8,12,16,0.6) 100%);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(0,230,118,0.08);
-  }
+/* ══════ HERO — full viewport ══════ */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  min-height: 480px;
+  overflow: hidden;
+}
 
-  .header-inner {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 24px;
-    height: 64px;
-    display: flex;
-    align-items: center;
-    gap: 32px;
-  }
+/* Slides */
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+.slide.active { opacity: 1; }
 
-  /* Hamburger */
-  .hamburger {
-    display: flex; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px;
-  }
-  .hamburger span {
-    display: block; width: 22px; height: 2px;
-    background: var(--text);
-    border-radius: 2px;
-    transition: background 0.2s;
-  }
-  .hamburger:hover span { background: var(--green); }
+.slide-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center top;
+  /* slight zoom reset on active */
+  transform: scale(1.04);
+  transition: transform 7s ease;
+}
+.slide.active .slide-bg { transform: scale(1); }
 
-  /* Logo */
-  .logo {
-    font-family: 'Bebas Neue', cursive;
-    font-size: 32px;
-    letter-spacing: 2px;
-    color: var(--green);
-    text-shadow: 0 0 20px rgba(0,230,118,0.5), 0 0 40px rgba(0,230,118,0.2);
-    text-decoration: none;
-    flex-shrink: 0;
-    line-height: 1;
-  }
+/* Gradient — exactly like iQIYI: bottom heavy, slight top fade, slight left fade */
+.slide-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top,   rgba(10,10,10,1)   0%,
+                              rgba(10,10,10,0.65) 28%,
+                              rgba(10,10,10,0.1)  55%,
+                              transparent         75%),
+    linear-gradient(to bottom,rgba(10,10,10,0.55) 0%,
+                              transparent         18%),
+    linear-gradient(to right, rgba(10,10,10,0.4)  0%,
+                              transparent         50%);
+}
 
-  /* Search */
-  .search-wrap {
-    flex: 1;
-    max-width: 420px;
-    position: relative;
-  }
-  .search-wrap input {
-    width: 100%;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 24px;
-    padding: 9px 44px 9px 18px;
-    color: var(--text);
-    font-family: 'Tajawal', sans-serif;
-    font-size: 14px;
-    outline: none;
-    transition: border-color 0.2s, background 0.2s;
-    direction: rtl;
-  }
-  .search-wrap input::placeholder { color: var(--muted); }
-  .search-wrap input:focus {
-    border-color: rgba(0,230,118,0.4);
-    background: rgba(255,255,255,0.09);
-  }
-  .search-wrap svg {
-    position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
-    color: var(--muted); pointer-events: none;
-  }
+/* Text block — bottom-left (in screen coords) */
+.slide-info {
+  position: absolute;
+  bottom: 52px;
+  left: 16px;
+  z-index: 3;
+  max-width: 72%;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.7s 0.3s ease, transform 0.7s 0.3s ease;
+}
+.slide.active .slide-info { opacity: 1; transform: none; }
 
-  /* Nav links */
-  nav {
-    display: flex;
-    gap: 6px;
-    margin-right: auto;
-    margin-left: 0;
-  }
-  nav a {
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 15px;
-    font-weight: 500;
-    padding: 6px 12px;
-    border-radius: 8px;
-    transition: color 0.2s, background 0.2s;
-    white-space: nowrap;
-  }
-  nav a:hover { color: var(--text); background: rgba(255,255,255,0.06); }
-  nav a.active { color: var(--green); }
+.badge {
+  display: inline-block;
+  background: var(--green);
+  color: #000;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 3px;
+  margin-bottom: 8px;
+  letter-spacing: 0.3px;
+}
 
-  /* IPTV Button */
-  .btn-iptv {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: linear-gradient(135deg, var(--green) 0%, var(--green-dim) 100%);
-    color: #000;
-    font-family: 'Tajawal', sans-serif;
-    font-weight: 800;
-    font-size: 14px;
-    padding: 9px 18px;
-    border-radius: 10px;
-    text-decoration: none;
-    flex-shrink: 0;
-    transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
-    box-shadow: 0 4px 20px rgba(0,230,118,0.3);
-    white-space: nowrap;
-  }
-  .btn-iptv:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 28px rgba(0,230,118,0.5);
-    filter: brightness(1.08);
-  }
-  .btn-iptv svg { flex-shrink: 0; }
+.slide-title {
+  font-family: 'Bebas Neue', cursive;
+  font-size: clamp(40px, 9vw, 76px);
+  line-height: 0.95;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  text-shadow: 0 3px 20px rgba(0,0,0,0.6);
+}
 
-  /* ───── HERO SLIDER ───── */
-  .hero {
-    position: relative;
-    height: 100vh;
-    min-height: 560px;
-    max-height: 780px;
-    overflow: hidden;
-    margin-top: 64px;
-  }
+.slide-meta {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.9);
+}
+.meta-star { color: #ffd740; font-weight: 800; }
+.meta-sep  { color: rgba(255,255,255,0.3); }
 
-  /* Slides */
-  .slides {
-    position: relative;
-    width: 100%; height: 100%;
-  }
+/* Dots — bottom-right exactly like iQIYI */
+.dots {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  z-index: 10;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+.dot {
+  width: 5px; height: 5px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.35);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.3s, width 0.3s;
+}
+.dot.active { background: #fff; width: 18px; }
 
-  .slide {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    transition: opacity 0.9s cubic-bezier(0.4,0,0.2,1);
-    pointer-events: none;
-  }
-  .slide.active {
-    opacity: 1;
-    pointer-events: auto;
-  }
+/* ══════ HEADER — transparent overlay ══════ */
+header {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  z-index: 20;
+  /* NO background, purely transparent — exactly iQIYI */
+}
 
-  .slide-bg {
-    position: absolute; inset: 0;
-    background-size: cover;
-    background-position: center top;
-    transform: scale(1.06);
-    transition: transform 8s ease-out;
-  }
-  .slide.active .slide-bg { transform: scale(1); }
+/* Row 1: hamburger, logo, search, IPTV btn */
+.hrow1 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px 6px;
+}
 
-  /* gradient overlays */
-  .slide::after {
-    content: '';
-    position: absolute; inset: 0;
-    background:
-      linear-gradient(90deg, rgba(8,12,16,0.92) 0%, rgba(8,12,16,0.55) 50%, rgba(8,12,16,0.1) 100%),
-      linear-gradient(0deg, rgba(8,12,16,0.95) 0%, transparent 45%);
-  }
+.hamburger {
+  display: flex; flex-direction: column; gap: 4px;
+  background: none; border: none; cursor: pointer; padding: 3px; flex-shrink: 0;
+}
+.hamburger span { display: block; width: 19px; height: 2px; background: #fff; border-radius: 2px; }
 
-  /* slide content */
-  .slide-content {
-    position: absolute;
-    bottom: 80px;
-    right: 60px;
-    z-index: 2;
-    max-width: 560px;
-    transform: translateY(24px);
-    opacity: 0;
-    transition: transform 0.8s 0.3s cubic-bezier(0.2,0,0,1), opacity 0.8s 0.3s;
-  }
-  .slide.active .slide-content {
-    transform: translateY(0);
-    opacity: 1;
-  }
+.logo {
+  font-family: 'Bebas Neue', cursive;
+  font-size: 27px;
+  letter-spacing: 2px;
+  color: var(--green);
+  text-decoration: none;
+  flex-shrink: 0;
+  line-height: 1;
+  text-shadow: 0 0 18px rgba(26,219,114,0.45);
+}
 
-  .slide-badge {
-    display: inline-block;
-    background: var(--green);
-    color: #000;
-    font-size: 11px;
-    font-weight: 800;
-    padding: 3px 10px;
-    border-radius: 4px;
-    margin-bottom: 12px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
+.searchbox {
+  flex: 1;
+  position: relative;
+}
+.searchbox input {
+  width: 100%;
+  background: rgba(255,255,255,0.13);
+  border: none;
+  border-radius: 18px;
+  padding: 7px 34px 7px 12px;
+  color: #fff;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 13px;
+  outline: none;
+  direction: rtl;
+}
+.searchbox input::placeholder { color: rgba(255,255,255,0.5); }
+.searchbox svg {
+  position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+  color: rgba(255,255,255,0.55); pointer-events: none;
+}
 
-  .slide-title {
-    font-family: 'Bebas Neue', cursive;
-    font-size: clamp(42px, 6vw, 78px);
-    line-height: 0.95;
-    letter-spacing: 2px;
-    margin-bottom: 14px;
-    text-shadow: 0 4px 24px rgba(0,0,0,0.6);
-  }
+/* Green pill button — iQIYI "برنامج" style */
+.btn-iptv {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--green);
+  color: #000;
+  font-family: 'Tajawal', sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  padding: 6px 11px;
+  border-radius: 7px;
+  text-decoration: none;
+  flex-shrink: 0;
+  white-space: nowrap;
+  transition: filter 0.15s;
+  line-height: 1;
+}
+.btn-iptv:hover { filter: brightness(1.1); }
 
-  .slide-meta {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 13px;
-    color: var(--muted);
-    margin-bottom: 18px;
-    flex-wrap: wrap;
-  }
-  .slide-meta .rating {
-    color: #ffd740;
-    font-weight: 700;
-    font-size: 14px;
-    display: flex; align-items: center; gap: 4px;
-  }
-  .slide-meta span { display: flex; align-items: center; gap: 4px; }
-  .sep { color: rgba(255,255,255,0.2); }
-
-  .slide-desc {
-    font-size: 14px;
-    color: rgba(232,237,243,0.7);
-    line-height: 1.7;
-    max-width: 420px;
-    margin-bottom: 24px;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .slide-actions {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-  }
-
-  .btn-watch {
-    display: flex; align-items: center; gap: 8px;
-    background: var(--green);
-    color: #000;
-    font-family: 'Tajawal', sans-serif;
-    font-weight: 800;
-    font-size: 15px;
-    padding: 12px 28px;
-    border-radius: 12px;
-    text-decoration: none;
-    border: none; cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 24px rgba(0,230,118,0.4);
-  }
-  .btn-watch:hover { transform: scale(1.04); box-shadow: 0 6px 32px rgba(0,230,118,0.55); }
-
-  .btn-info {
-    display: flex; align-items: center; gap: 8px;
-    background: rgba(255,255,255,0.1);
-    color: var(--text);
-    font-family: 'Tajawal', sans-serif;
-    font-weight: 700;
-    font-size: 15px;
-    padding: 12px 22px;
-    border-radius: 12px;
-    text-decoration: none;
-    border: 1px solid rgba(255,255,255,0.15);
-    cursor: pointer;
-    transition: background 0.2s, border-color 0.2s;
-  }
-  .btn-info:hover { background: rgba(255,255,255,0.16); border-color: rgba(255,255,255,0.3); }
-
-  /* ── Slide indicators ── */
-  .indicators {
-    position: absolute;
-    bottom: 28px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 10;
-    display: flex;
-    gap: 8px;
-    align-items: center;
-  }
-  .dot {
-    width: 8px; height: 8px;
-    border-radius: 4px;
-    background: rgba(255,255,255,0.3);
-    cursor: pointer;
-    transition: background 0.3s, width 0.3s;
-    border: none;
-  }
-  .dot.active {
-    background: var(--green);
-    width: 28px;
-    box-shadow: 0 0 10px rgba(0,230,118,0.6);
-  }
-
-  /* ── Progress bar ── */
-  .progress-bar {
-    position: absolute;
-    bottom: 0; left: 0;
-    height: 2px;
-    background: var(--green);
-    width: 0%;
-    z-index: 10;
-    transition: width linear;
-    box-shadow: 0 0 8px rgba(0,230,118,0.8);
-  }
-
-  /* ── Arrow nav ── */
-  .arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
-    background: rgba(0,0,0,0.45);
-    border: 1px solid rgba(255,255,255,0.12);
-    color: var(--text);
-    width: 44px; height: 44px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    transition: background 0.2s, border-color 0.2s, transform 0.2s;
-    backdrop-filter: blur(6px);
-  }
-  .arrow:hover { background: rgba(0,230,118,0.2); border-color: var(--green); transform: translateY(-50%) scale(1.08); }
-  .arrow-prev { right: 20px; }
-  .arrow-next { left: 20px; }
-
-  /* Responsive */
-  @media (max-width: 768px) {
-    nav { display: none; }
-    .search-wrap { max-width: 200px; }
-    .slide-content { right: 20px; left: 20px; bottom: 60px; max-width: 100%; }
-    .slide-title { font-size: 40px; }
-    .arrow { display: none; }
-    .btn-iptv span { display: none; }
-    .btn-iptv { padding: 9px 12px; }
-  }
+/* Row 2: nav links */
+.hrow2 {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 2px 10px 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  direction: rtl;
+}
+.hrow2::-webkit-scrollbar { display: none; }
+.hrow2 a {
+  color: rgba(255,255,255,0.72);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 4px 9px;
+  white-space: nowrap;
+  transition: color 0.15s;
+}
+.hrow2 a:hover { color: #fff; }
+.hrow2 a.active { color: var(--green); }
 </style>
 </head>
 <body>
 
-<!-- ══════════ HEADER ══════════ -->
-<header>
-  <div class="header-inner">
-
-    <!-- Hamburger -->
-    <button class="hamburger" aria-label="القائمة">
-      <span></span><span></span><span></span>
-    </button>
-
-    <!-- Logo -->
-    <a href="#" class="logo">Cartoonia</a>
-
-    <!-- Search -->
-    <div class="search-wrap">
-      <input type="text" placeholder="ابحث عن أنمي، كرتون...">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-      </svg>
-    </div>
-
-    <!-- Nav -->
-    <nav>
-      <a href="#">عرض منوعات</a>
-      <a href="#" class="active">أنيمي</a>
-      <a href="#">فيلم</a>
-      <a href="#">دراما</a>
-      <a href="#">مطاردة اليشم</a>
-    </nav>
-
-    <!-- IPTV Button -->
-    <a href="https://primeiptvplus.com/" target="_blank" rel="noopener" class="btn-iptv">
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-        <rect x="2" y="7" width="20" height="15" rx="2"/>
-        <path d="M16 2H8l-1 5h10z"/>
-        <circle cx="12" cy="14" r="3" fill="currentColor" stroke="none"/>
-      </svg>
-      <span>اشتراكات IPTV</span>
-    </a>
-
-  </div>
-</header>
-
-<!-- ══════════ HERO SLIDER ══════════ -->
 <section class="hero">
 
-  <!-- Slide 1 -->
-  <div class="slide active" data-index="0">
-    <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1578632767115-351597cf2477?w=1600&q=80')"></div>
-    <div class="slide-content">
-      <span class="slide-badge">Original</span>
+  <!-- ── Slide 1 ── -->
+  <div class="slide active">
+    <div class="slide-bg" style="background-image:url('https://images.unsplash.com/photo-1578632767115-351597cf2477?w=1200&q=85')"></div>
+    <div class="slide-overlay"></div>
+    <div class="slide-info">
+      <div class="badge">Original</div>
       <h1 class="slide-title">How Dare You!?</h1>
       <div class="slide-meta">
-        <span class="rating">⭐ 9.8</span>
-        <span class="sep">|</span>
+        <span class="meta-star">★ 9.8</span>
+        <span class="meta-sep">|</span>
         <span>2024</span>
-        <span class="sep">|</span>
-        <span>+13</span>
-        <span class="sep">|</span>
-        <span>24 حلقة</span>
-      </div>
-      <p class="slide-desc">قصة ملحمية مثيرة عن مواجهة القدر والسعي نحو القوة في عالم مليء بالأسرار والمؤامرات. بطل شاب يرفض أن يكون ضعيفاً ويقرر مواجهة مصيره.</p>
-      <div class="slide-actions">
-        <a href="#" class="btn-watch">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
-          شاهد الآن
-        </a>
-        <a href="#" class="btn-info">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
-          التفاصيل
-        </a>
+        <span class="meta-sep">|</span>
+        <span>13+</span>
+        <span class="meta-sep">|</span>
+        <span>24 Episodes</span>
       </div>
     </div>
   </div>
 
-  <!-- Slide 2 -->
-  <div class="slide" data-index="1">
-    <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1541562232579-512a800d1aa1?w=1600&q=80')"></div>
-    <div class="slide-content">
-      <span class="slide-badge">حصري</span>
+  <!-- ── Slide 2 ── -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image:url('https://images.unsplash.com/photo-1541562232579-512a800d1aa1?w=1200&q=85')"></div>
+    <div class="slide-overlay"></div>
+    <div class="slide-info">
+      <div class="badge">حصري</div>
       <h1 class="slide-title">In Search<br>of Gods</h1>
       <div class="slide-meta">
-        <span class="rating">⭐ 9.4</span>
-        <span class="sep">|</span>
+        <span class="meta-star">★ 9.4</span>
+        <span class="meta-sep">|</span>
         <span>2024</span>
-        <span class="sep">|</span>
-        <span>+16</span>
-        <span class="sep">|</span>
+        <span class="meta-sep">|</span>
+        <span>16+</span>
+        <span class="meta-sep">|</span>
         <span>حلقة جديدة</span>
       </div>
-      <p class="slide-desc">في رحلة بحث لا نهاية لها عن الآلهة، يواجه البطل تحديات خارقة وأسراراً مدفونة منذ آلاف السنين في أعماق الكون.</p>
-      <div class="slide-actions">
-        <a href="#" class="btn-watch">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
-          شاهد الآن
-        </a>
-        <a href="#" class="btn-info">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
-          التفاصيل
-        </a>
-      </div>
     </div>
   </div>
 
-  <!-- Slide 3 -->
-  <div class="slide" data-index="2">
-    <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1534447677768-be436bb09401?w=1600&q=80')"></div>
-    <div class="slide-content">
-      <span class="slide-badge">إبداعي</span>
+  <!-- ── Slide 3 ── -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image:url('https://images.unsplash.com/photo-1534447677768-be436bb09401?w=1200&q=85')"></div>
+    <div class="slide-overlay"></div>
+    <div class="slide-info">
+      <div class="badge">إبداعي</div>
       <h1 class="slide-title">Conspiracy<br>of Love</h1>
       <div class="slide-meta">
-        <span class="rating">⭐ 9.1</span>
-        <span class="sep">|</span>
+        <span class="meta-star">★ 9.1</span>
+        <span class="meta-sep">|</span>
         <span>2024</span>
-        <span class="sep">|</span>
-        <span>+13</span>
-        <span class="sep">|</span>
+        <span class="meta-sep">|</span>
+        <span>13+</span>
+        <span class="meta-sep">|</span>
         <span>12 حلقة</span>
-      </div>
-      <p class="slide-desc">حين يتشابك الحب مع المؤامرة، تنكشف الحقائق المدفونة ويجد البطلان نفسيهما في مواجهة قدر لم يختاراه.</p>
-      <div class="slide-actions">
-        <a href="#" class="btn-watch">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
-          شاهد الآن
-        </a>
-        <a href="#" class="btn-info">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
-          التفاصيل
-        </a>
       </div>
     </div>
   </div>
 
-  <!-- Slide 4 -->
-  <div class="slide" data-index="3">
-    <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1560807707-8cc77767d783?w=1600&q=80&fit=crop&crop=top')"></div>
-    <div class="slide-content">
-      <span class="slide-badge">حر</span>
+  <!-- ── Slide 4 ── -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image:url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1200&q=85')"></div>
+    <div class="slide-overlay"></div>
+    <div class="slide-info">
+      <div class="badge">حر</div>
       <h1 class="slide-title">Be My Wife</h1>
       <div class="slide-meta">
-        <span class="rating">⭐ 8.9</span>
-        <span class="sep">|</span>
+        <span class="meta-star">★ 8.9</span>
+        <span class="meta-sep">|</span>
         <span>2024</span>
-        <span class="sep">|</span>
-        <span>+13</span>
-        <span class="sep">|</span>
+        <span class="meta-sep">|</span>
+        <span>13+</span>
+        <span class="meta-sep">|</span>
         <span>12 حلقة</span>
       </div>
-      <p class="slide-desc">قصة رومانسية ساحرة تجمع بين البطل والبطلة في ظروف غير متوقعة، حيث تتحول المواجهة إلى حب لا مفر منه.</p>
-      <div class="slide-actions">
-        <a href="#" class="btn-watch">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
-          شاهد الآن
-        </a>
-        <a href="#" class="btn-info">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
-          التفاصيل
-        </a>
-      </div>
     </div>
   </div>
 
-  <!-- Slide 5 -->
-  <div class="slide" data-index="4">
-    <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1600&q=80')"></div>
-    <div class="slide-content">
-      <span class="slide-badge">إبداعي</span>
-      <h1 class="slide-title">بعد الصحوة<br>لا يقهرني أحد</h1>
+  <!-- ── Slide 5 ── -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image:url('https://images.unsplash.com/photo-1560807707-8cc77767d783?w=1200&q=85')"></div>
+    <div class="slide-overlay"></div>
+    <div class="slide-info">
+      <div class="badge">إبداعي</div>
+      <h1 class="slide-title">بعد الصحوة<br>لا يقهرني</h1>
       <div class="slide-meta">
-        <span class="rating">⭐ 9.6</span>
-        <span class="sep">|</span>
+        <span class="meta-star">★ 9.6</span>
+        <span class="meta-sep">|</span>
         <span>2024</span>
-        <span class="sep">|</span>
-        <span>+16</span>
-        <span class="sep">|</span>
+        <span class="meta-sep">|</span>
+        <span>16+</span>
+        <span class="meta-sep">|</span>
         <span>80 حلقة</span>
       </div>
-      <p class="slide-desc">بعد أن يصحو البطل على قوى خارقة مجهولة، يجد نفسه في مواجهة عالم لم يكن مستعداً له — ولكن لا شيء بعد الآن يمكنه إيقافه.</p>
-      <div class="slide-actions">
-        <a href="#" class="btn-watch">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
-          شاهد الآن
-        </a>
-        <a href="#" class="btn-info">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
-          التفاصيل
-        </a>
-      </div>
     </div>
   </div>
 
-  <!-- Slide 6 -->
-  <div class="slide" data-index="5">
-    <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=1600&q=80')"></div>
-    <div class="slide-content">
-      <span class="slide-badge">إبداعي</span>
-      <h1 class="slide-title">أحمل حديقة<br>أدوية روحية</h1>
+  <!-- ── Slide 6 ── -->
+  <div class="slide">
+    <div class="slide-bg" style="background-image:url('https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=1200&q=85')"></div>
+    <div class="slide-overlay"></div>
+    <div class="slide-info">
+      <div class="badge">إبداعي</div>
+      <h1 class="slide-title">حديقة الأدوية<br>الروحية</h1>
       <div class="slide-meta">
-        <span class="rating">⭐ 9.3</span>
-        <span class="sep">|</span>
+        <span class="meta-star">★ 9.3</span>
+        <span class="meta-sep">|</span>
         <span>2024</span>
-        <span class="sep">|</span>
-        <span>+13</span>
-        <span class="sep">|</span>
+        <span class="meta-sep">|</span>
+        <span>13+</span>
+        <span class="meta-sep">|</span>
         <span>80 حلقة</span>
       </div>
-      <p class="slide-desc">ساحر يحمل معه حديقة سحرية مليئة بالأعشاب الروحية النادرة، يسافر عبر الممالك ليصبح الأقوى في تاريخ العالم.</p>
-      <div class="slide-actions">
-        <a href="#" class="btn-watch">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
-          شاهد الآن
-        </a>
-        <a href="#" class="btn-info">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
-          التفاصيل
-        </a>
-      </div>
     </div>
   </div>
-
-  <!-- Arrows -->
-  <button class="arrow arrow-prev" id="prev" aria-label="السابق">
-    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-  </button>
-  <button class="arrow arrow-next" id="next" aria-label="التالي">
-    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
-  </button>
 
   <!-- Dots -->
-  <div class="indicators" id="dots"></div>
+  <div class="dots" id="dots"></div>
 
-  <!-- Progress -->
-  <div class="progress-bar" id="progress"></div>
+  <!-- HEADER floats above everything -->
+  <header>
+    <div class="hrow1">
+      <button class="hamburger"><span></span><span></span><span></span></button>
+      <a href="#" class="logo">Cartoonia</a>
+      <div class="searchbox">
+        <input type="text" placeholder="(الذكاء الاصطناعي الإنجليزية)">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+      </div>
+      <a href="https://primeiptvplus.com/" target="_blank" rel="noopener" class="btn-iptv">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+          <rect x="2" y="7" width="20" height="14" rx="2"/>
+          <path d="M16 3H8L6 7h12z"/>
+          <circle cx="12" cy="14" r="2.5" fill="currentColor" stroke="none"/>
+        </svg>
+        اشتراكات IPTV
+      </a>
+    </div>
+    <nav class="hrow2">
+      <a href="#">لك</a>
+      <a href="#">مطاردة اليشم</a>
+      <a href="#">دراما</a>
+      <a href="#">فيلم</a>
+      <a href="#" class="active">أنيمي</a>
+      <a href="#">عرض منوعات</a>
+    </nav>
+  </header>
 
 </section>
 
 <script>
   const slides = document.querySelectorAll('.slide');
-  const dotsContainer = document.getElementById('dots');
-  const progressBar = document.getElementById('progress');
-  const DURATION = 6000; // ms per slide
+  const dotsEl  = document.getElementById('dots');
+  let cur = 0, timer;
 
-  let current = 0;
-  let timer, progressTimer;
-
-  // Build dots
   slides.forEach((_, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'dot' + (i === 0 ? ' active' : '');
-    btn.setAttribute('aria-label', `الشريحة ${i+1}`);
-    btn.addEventListener('click', () => goTo(i));
-    dotsContainer.appendChild(btn);
+    const b = document.createElement('button');
+    b.className = 'dot' + (i === 0 ? ' active' : '');
+    b.setAttribute('aria-label', 'slide ' + (i+1));
+    b.onclick = () => { go(i); restart(); };
+    dotsEl.appendChild(b);
   });
 
-  function getDots() { return dotsContainer.querySelectorAll('.dot'); }
+  const allDots = () => dotsEl.querySelectorAll('.dot');
 
-  function goTo(index) {
-    slides[current].classList.remove('active');
-    getDots()[current].classList.remove('active');
-    current = (index + slides.length) % slides.length;
-    slides[current].classList.add('active');
-    getDots()[current].classList.add('active');
-    resetProgress();
+  function go(n) {
+    slides[cur].classList.remove('active');
+    allDots()[cur].classList.remove('active');
+    cur = (n + slides.length) % slides.length;
+    slides[cur].classList.add('active');
+    allDots()[cur].classList.add('active');
   }
 
-  function resetProgress() {
-    clearInterval(progressTimer);
-    progressBar.style.transition = 'none';
-    progressBar.style.width = '0%';
-    setTimeout(() => {
-      progressBar.style.transition = `width ${DURATION}ms linear`;
-      progressBar.style.width = '100%';
-    }, 30);
-  }
-
-  function startAuto() {
+  function restart() {
     clearInterval(timer);
-    timer = setInterval(() => goTo(current + 1), DURATION);
-    resetProgress();
+    timer = setInterval(() => go(cur + 1), 5500);
   }
 
-  document.getElementById('prev').addEventListener('click', () => { goTo(current - 1); startAuto(); });
-  document.getElementById('next').addEventListener('click', () => { goTo(current + 1); startAuto(); });
-
-  // Pause on hover
+  // swipe
+  let tx = 0;
   const hero = document.querySelector('.hero');
-  hero.addEventListener('mouseenter', () => { clearInterval(timer); clearInterval(progressTimer); });
-  hero.addEventListener('mouseleave', startAuto);
-
-  // Touch swipe
-  let touchX = 0;
-  hero.addEventListener('touchstart', e => touchX = e.touches[0].clientX);
-  hero.addEventListener('touchend', e => {
-    const diff = touchX - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 40) { goTo(diff > 0 ? current + 1 : current - 1); startAuto(); }
+  hero.addEventListener('touchstart', e => { tx = e.touches[0].clientX; });
+  hero.addEventListener('touchend',   e => {
+    const d = tx - e.changedTouches[0].clientX;
+    if (Math.abs(d) > 38) { go(d > 0 ? cur+1 : cur-1); restart(); }
   });
 
-  startAuto();
+  restart();
 </script>
 </body>
 </html>
