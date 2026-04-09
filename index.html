@@ -122,6 +122,35 @@ body {
 .btn-prime svg {
   flex-shrink: 0;
 }
+
+/* ══ NAV ROW ══ */
+.nav {
+  background: #141414;
+  display: flex;
+  align-items: center;
+  direction: rtl;
+  padding: 0 10px;
+  height: 46px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.nav::-webkit-scrollbar { display: none; }
+
+.nav a {
+  color: rgba(255,255,255,0.62);
+  text-decoration: none;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  padding: 0 16px;
+  white-space: nowrap;
+  line-height: 46px;
+  display: block;
+}
+.nav a.active {
+  color: #00d661;
+  font-weight: 700;
+}
 </style>
 </head>
 <body>
@@ -162,6 +191,15 @@ body {
   </a>
 
 </header>
+
+<!-- NAV ROW — exactly like iQIYI image 2 -->
+<nav class="nav">
+  <a href="#" class="active">الأكثر رواجاً</a>
+  <a href="#">عرض منوعات</a>
+  <a href="#" style="font-weight:700; color:#fff;">أنيمي</a>
+  <a href="#">فيلم</a>
+  <a href="#">دراما</a>
+</nav>
 
 </body>
 </html>
