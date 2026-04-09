@@ -2,661 +2,668 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Toonia</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cartoonia</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Bebas+Neue&family=Righteous&display=swap" rel="stylesheet">
 <style>
-/* ─────────────────────────────────────────────
-   RESET & BASE
-───────────────────────────────────────────── */
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-:root {
-  --green:   #21c662;
-  --green-d: #1aad57;
-  --bg:      #0e0e0e;
-  --bg2:     #1a1a1a;
-  --text:    #ffffff;
-  --muted:   #9a9a9a;
-  --badge-r: 3px;
-  --radius:  6px;
-}
+  :root {
+    --green: #00e676;
+    --green-dim: #00b85c;
+    --dark: #080c10;
+    --dark2: #0d1117;
+    --dark3: #141a22;
+    --text: #e8edf3;
+    --muted: #8b99a8;
+  }
 
-html { font-size: 14px; }
+  body {
+    background: var(--dark);
+    font-family: 'Tajawal', sans-serif;
+    color: var(--text);
+    overflow-x: hidden;
+  }
 
-body {
-  background: #0e0e0e;
-  color: var(--text);
-  font-family: 'Cairo', sans-serif;
-  direction: rtl;
-  overflow-x: hidden;
-  min-height: 100vh;
-}
+  /* ───── HEADER ───── */
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: linear-gradient(180deg, rgba(8,12,16,0.98) 0%, rgba(8,12,16,0.6) 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,230,118,0.08);
+  }
 
-img { display:block; width:100%; object-fit:cover; }
-a   { text-decoration:none; color:inherit; }
-button { font-family:inherit; cursor:pointer; border:none; outline:none; }
+  .header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
 
-/* ─────────────────────────────────────────────
-   HEADER  (matches iQIYI exactly)
-───────────────────────────────────────────── */
-.hdr {
-  position: sticky;
-  top: 0;
-  z-index: 999;
-  background: #141414;
-  border-bottom: 1px solid rgba(255,255,255,.06);
-}
+  /* Hamburger */
+  .hamburger {
+    display: flex; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px;
+  }
+  .hamburger span {
+    display: block; width: 22px; height: 2px;
+    background: var(--text);
+    border-radius: 2px;
+    transition: background 0.2s;
+  }
+  .hamburger:hover span { background: var(--green); }
 
-/* Top bar: hamburger | logo | search | download-btn */
-.hdr-top {
-  display: flex;
-  align-items: center;
-  padding: 0 12px;
-  height: 48px;
-  gap: 10px;
-}
+  /* Logo */
+  .logo {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 32px;
+    letter-spacing: 2px;
+    color: var(--green);
+    text-shadow: 0 0 20px rgba(0,230,118,0.5), 0 0 40px rgba(0,230,118,0.2);
+    text-decoration: none;
+    flex-shrink: 0;
+    line-height: 1;
+  }
 
-.hdr-menu {
-  display: flex; flex-direction:column; gap:4px; flex-shrink:0;
-  padding:6px 4px; cursor:pointer;
-}
-.hdr-menu span {
-  display:block; width:20px; height:2px;
-  background:var(--text); border-radius:2px;
-}
+  /* Search */
+  .search-wrap {
+    flex: 1;
+    max-width: 420px;
+    position: relative;
+  }
+  .search-wrap input {
+    width: 100%;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 24px;
+    padding: 9px 44px 9px 18px;
+    color: var(--text);
+    font-family: 'Tajawal', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    direction: rtl;
+  }
+  .search-wrap input::placeholder { color: var(--muted); }
+  .search-wrap input:focus {
+    border-color: rgba(0,230,118,0.4);
+    background: rgba(255,255,255,0.09);
+  }
+  .search-wrap svg {
+    position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+    color: var(--muted); pointer-events: none;
+  }
 
-.hdr-logo {
-  color: var(--green);
-  font-size: 22px;
-  font-weight: 900;
-  letter-spacing: 1px;
-  flex-shrink: 0;
-  line-height: 1;
-}
+  /* Nav links */
+  nav {
+    display: flex;
+    gap: 6px;
+    margin-right: auto;
+    margin-left: 0;
+  }
+  nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: color 0.2s, background 0.2s;
+    white-space: nowrap;
+  }
+  nav a:hover { color: var(--text); background: rgba(255,255,255,0.06); }
+  nav a.active { color: var(--green); }
 
-.hdr-search {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  background: rgba(255,255,255,.09);
-  border: 1px solid rgba(255,255,255,.1);
-  border-radius: 4px;
-  height: 34px;
-  padding: 0 10px;
-  gap: 8px;
-  min-width: 0;
-}
-.hdr-search input {
-  background: none; border:none; outline:none;
-  color: var(--text); font-family:'Cairo',sans-serif;
-  font-size: 13px; width:100%; direction:rtl;
-}
-.hdr-search input::placeholder { color:#666; }
-.hdr-search svg { flex-shrink:0; color:var(--text); }
+  /* IPTV Button */
+  .btn-iptv {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, var(--green) 0%, var(--green-dim) 100%);
+    color: #000;
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    padding: 9px 18px;
+    border-radius: 10px;
+    text-decoration: none;
+    flex-shrink: 0;
+    transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+    box-shadow: 0 4px 20px rgba(0,230,118,0.3);
+    white-space: nowrap;
+  }
+  .btn-iptv:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 28px rgba(0,230,118,0.5);
+    filter: brightness(1.08);
+  }
+  .btn-iptv svg { flex-shrink: 0; }
 
-.hdr-dl {
-  flex-shrink: 0;
-  background: var(--green);
-  color: #fff;
-  font-size: 12px;
-  font-weight: 700;
-  padding: 6px 12px;
-  border-radius: 4px;
-  display: flex; align-items:center; gap:5px;
-  white-space: nowrap;
-}
+  /* ───── HERO SLIDER ───── */
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 560px;
+    max-height: 780px;
+    overflow: hidden;
+    margin-top: 64px;
+  }
 
-/* Nav tabs */
-.hdr-nav {
-  display: flex;
-  align-items: center;
-  padding: 0 12px;
-  gap: 0;
-  overflow-x: auto;
-  border-top: 1px solid rgba(255,255,255,.05);
-  scrollbar-width: none;
-}
-.hdr-nav::-webkit-scrollbar { display:none; }
-.hdr-nav a {
-  flex-shrink: 0;
-  padding: 10px 10px;
-  font-size: 13px;
-  font-weight: 600;
-  color: rgba(255,255,255,.6);
-  white-space: nowrap;
-  position: relative;
-  transition: color .2s;
-}
-.hdr-nav a.active { color: var(--green); }
-.hdr-nav a.active::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 50%; transform: translateX(-50%);
-  width: 20px; height: 2px;
-  background: var(--green);
-  border-radius: 1px;
-}
-.hdr-nav a:hover:not(.active) { color: rgba(255,255,255,.9); }
+  /* Slides */
+  .slides {
+    position: relative;
+    width: 100%; height: 100%;
+  }
 
-/* ─────────────────────────────────────────────
-   HERO BANNER  (matches iQIYI proportions)
-───────────────────────────────────────────── */
-.hero {
-  position: relative;
-  width: 100%;
-  /* Same aspect as iQIYI hero on mobile ~380×320px */
-  aspect-ratio: 390 / 320;
-  min-height: 280px;
-  overflow: hidden;
-  background: #0a0a0a;
-}
+  .slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.9s cubic-bezier(0.4,0,0.2,1);
+    pointer-events: none;
+  }
+  .slide.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
 
-.hero-bg {
-  position: absolute;
-  inset: 0;
-  background:
-    url('https://images.unsplash.com/photo-1618336753974-aae8e04506aa?w=900&q=90')
-    center 20% / cover no-repeat;
-}
+  .slide-bg {
+    position: absolute; inset: 0;
+    background-size: cover;
+    background-position: center top;
+    transform: scale(1.06);
+    transition: transform 8s ease-out;
+  }
+  .slide.active .slide-bg { transform: scale(1); }
 
-/* iQIYI gradient: hard black at bottom ~40%, then image shows */
-.hero-bg::after {
-  content: '';
-  position: absolute; inset: 0;
-  background:
-    linear-gradient(to top,
-      #0e0e0e 0%,
-      rgba(14,14,14,.82) 22%,
-      rgba(14,14,14,.35) 44%,
-      rgba(14,14,14,.0) 62%
-    ),
-    linear-gradient(to right,
-      rgba(14,14,14,.55) 0%,
-      transparent 55%
-    );
-}
+  /* gradient overlays */
+  .slide::after {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(90deg, rgba(8,12,16,0.92) 0%, rgba(8,12,16,0.55) 50%, rgba(8,12,16,0.1) 100%),
+      linear-gradient(0deg, rgba(8,12,16,0.95) 0%, transparent 45%);
+  }
 
-.hero-content {
-  position: absolute;
-  bottom: 0; right: 0; left: 0;
-  padding: 0 14px 14px;
-  z-index: 2;
-}
+  /* slide content */
+  .slide-content {
+    position: absolute;
+    bottom: 80px;
+    right: 60px;
+    z-index: 2;
+    max-width: 560px;
+    transform: translateY(24px);
+    opacity: 0;
+    transition: transform 0.8s 0.3s cubic-bezier(0.2,0,0,1), opacity 0.8s 0.3s;
+  }
+  .slide.active .slide-content {
+    transform: translateY(0);
+    opacity: 1;
+  }
 
-/* "MYTH of ETERNITY" style — big bold left-aligned title */
-.hero-title-en {
-  font-size: 32px;
-  font-weight: 900;
-  line-height: 1.05;
-  text-transform: uppercase;
-  color: #fff;
-  text-shadow: 0 2px 12px rgba(0,0,0,.7);
-  margin-bottom: 6px;
-  /* iQIYI uses slightly italic heavy font */
-  font-style: italic;
-}
-.hero-title-en em {
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 600;
-  display: block;
-}
+  .slide-badge {
+    display: inline-block;
+    background: var(--green);
+    color: #000;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
 
-.hero-tag {
-  display: inline-block;
-  background: var(--green);
-  color: #fff;
-  font-size: 10px;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 2px;
-  margin-bottom: 7px;
-  letter-spacing: .3px;
-}
+  .slide-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(42px, 6vw, 78px);
+    line-height: 0.95;
+    letter-spacing: 2px;
+    margin-bottom: 14px;
+    text-shadow: 0 4px 24px rgba(0,0,0,0.6);
+  }
 
-.hero-meta {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  color: rgba(255,255,255,.75);
-}
-.hero-meta .star-val {
-  color: #f5c518;
-  font-weight: 700;
-  display: flex; align-items:center; gap:3px;
-}
-.hero-meta .sep { color: rgba(255,255,255,.3); }
+  .slide-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+  .slide-meta .rating {
+    color: #ffd740;
+    font-weight: 700;
+    font-size: 14px;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .slide-meta span { display: flex; align-items: center; gap: 4px; }
+  .sep { color: rgba(255,255,255,0.2); }
 
-/* Dots */
-.hero-dots {
-  position: absolute;
-  bottom: 14px; left: 14px;
-  display: flex; gap: 5px;
-  z-index: 3;
-}
-.hero-dots span {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: rgba(255,255,255,.3);
-}
-.hero-dots span.a {
-  background: rgba(255,255,255,.85);
-  width: 18px; border-radius: 3px;
-}
+  .slide-desc {
+    font-size: 14px;
+    color: rgba(232,237,243,0.7);
+    line-height: 1.7;
+    max-width: 420px;
+    margin-bottom: 24px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
 
-/* ─────────────────────────────────────────────
-   SECTION LAYOUT
-───────────────────────────────────────────── */
-.section { margin-top: 20px; }
+  .slide-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
 
-.section-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 12px;
-  margin-bottom: 10px;
-}
-.section-title {
-  font-size: 14px;
-  font-weight: 700;
-  color: #fff;
-}
-.section-more {
-  display: flex; align-items:center; gap:3px;
-  font-size: 12px;
-  color: rgba(255,255,255,.5);
-}
-.section-more svg { color: rgba(255,255,255,.4); }
+  .btn-watch {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--green);
+    color: #000;
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 800;
+    font-size: 15px;
+    padding: 12px 28px;
+    border-radius: 12px;
+    text-decoration: none;
+    border: none; cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 24px rgba(0,230,118,0.4);
+  }
+  .btn-watch:hover { transform: scale(1.04); box-shadow: 0 6px 32px rgba(0,230,118,0.55); }
 
-/* ─────────────────────────────────────────────
-   HORIZONTAL SCROLL CARDS
-───────────────────────────────────────────── */
-.cards-row {
-  display: flex;
-  gap: 8px;
-  padding: 0 12px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-}
-.cards-row::-webkit-scrollbar { display:none; }
+  .btn-info {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.1);
+    color: var(--text);
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 12px 22px;
+    border-radius: 12px;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.15);
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .btn-info:hover { background: rgba(255,255,255,0.16); border-color: rgba(255,255,255,0.3); }
 
-/* iQIYI card: ~116px wide, aspect 5:7 */
-.card {
-  flex: 0 0 116px;
-  scroll-snap-align: start;
-  position: relative;
-  border-radius: var(--radius);
-  overflow: hidden;
-  background: #1c1c1c;
-  cursor: pointer;
-}
-.card-poster {
-  width: 100%;
-  aspect-ratio: 5/7;
-  object-fit: cover;
-  display: block;
-  transition: transform .3s ease;
-}
-.card:active .card-poster { transform: scale(1.03); }
+  /* ── Slide indicators ── */
+  .indicators {
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.3);
+    cursor: pointer;
+    transition: background 0.3s, width 0.3s;
+    border: none;
+  }
+  .dot.active {
+    background: var(--green);
+    width: 28px;
+    box-shadow: 0 0 10px rgba(0,230,118,0.6);
+  }
 
-/* gradient over bottom of poster */
-.card-shade {
-  position: absolute;
-  bottom: 0; left:0; right:0;
-  height: 55%;
-  background: linear-gradient(to top, rgba(0,0,0,.85) 0%, transparent 100%);
-  pointer-events: none;
-}
+  /* ── Progress bar ── */
+  .progress-bar {
+    position: absolute;
+    bottom: 0; left: 0;
+    height: 2px;
+    background: var(--green);
+    width: 0%;
+    z-index: 10;
+    transition: width linear;
+    box-shadow: 0 0 8px rgba(0,230,118,0.8);
+  }
 
-.card-bottom {
-  position: absolute;
-  bottom: 0; left:0; right:0;
-  padding: 6px 7px;
-}
-.card-ep {
-  font-size: 11px;
-  color: rgba(255,255,255,.75);
-  font-weight: 600;
-  text-align: right;
-}
+  /* ── Arrow nav ── */
+  .arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: rgba(0,0,0,0.45);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--text);
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    backdrop-filter: blur(6px);
+  }
+  .arrow:hover { background: rgba(0,230,118,0.2); border-color: var(--green); transform: translateY(-50%) scale(1.08); }
+  .arrow-prev { right: 20px; }
+  .arrow-next { left: 20px; }
 
-/* name BELOW card (like iQIYI) */
-.card-name {
-  margin-top: 5px;
-  font-size: 11.5px;
-  font-weight: 600;
-  color: rgba(255,255,255,.82);
-  line-height: 1.35;
-  padding: 0 1px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* iQIYI badge: top-right corner, small pill */
-.badge {
-  position: absolute;
-  top: 0; right: 0;
-  font-size: 9.5px;
-  font-weight: 700;
-  padding: 2px 7px 2px 8px;
-  border-radius: 0 var(--radius) 0 8px;
-  z-index: 3;
-  letter-spacing: .2px;
-}
-.badge-green  { background: var(--green);  color: #fff; }
-.badge-free   { background: var(--green);  color: #fff; }   /* "حر" */
-.badge-paid   { background: #ff6a00;        color: #fff; }   /* "إبداعي" */
-.badge-limit  { background: rgba(255,255,255,.18); color:#fff; border:1px solid rgba(255,255,255,.3); }
-
-/* card wrapper (poster + name below) */
-.card-wrap { flex: 0 0 116px; scroll-snap-align: start; }
-
-/* ─────────────────────────────────────────────
-   SECTION 2 — "قصص مصورة متحركة"
-   iQIYI uses SAME layout but with > arrow in title
-───────────────────────────────────────────── */
-.section-title-arrow {
-  display: flex; align-items: center; gap: 6px;
-}
-.section-title-arrow svg { color: rgba(255,255,255,.5); }
-
-/* ─────────────────────────────────────────────
-   SCROLLBAR FIX
-───────────────────────────────────────────── */
-html { scrollbar-width: thin; scrollbar-color: #333 #0e0e0e; }
-::-webkit-scrollbar      { width: 5px; }
-::-webkit-scrollbar-track { background: #0e0e0e; }
-::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
-
-/* ─────────────────────────────────────────────
-   BOTTOM NAV BAR (mobile)
-───────────────────────────────────────────── */
-.btm-nav {
-  display: none; /* shown only in narrow view */
-  position: fixed;
-  bottom: 0; left:0; right:0;
-  background: #141414;
-  border-top: 1px solid rgba(255,255,255,.07);
-  height: 52px;
-  align-items: center;
-  justify-content: space-around;
-  z-index: 900;
-}
-@media (max-width: 600px) {
-  .btm-nav { display: flex; }
-  body { padding-bottom: 52px; }
-}
-.btm-item {
-  display: flex; flex-direction: column; align-items: center; gap:3px;
-  font-size: 10px; color: rgba(255,255,255,.5); cursor:pointer;
-  padding: 6px 12px;
-}
-.btm-item svg { opacity: .55; }
-.btm-item.active { color: var(--green); }
-.btm-item.active svg { opacity:1; color: var(--green); }
-
+  /* Responsive */
+  @media (max-width: 768px) {
+    nav { display: none; }
+    .search-wrap { max-width: 200px; }
+    .slide-content { right: 20px; left: 20px; bottom: 60px; max-width: 100%; }
+    .slide-title { font-size: 40px; }
+    .arrow { display: none; }
+    .btn-iptv span { display: none; }
+    .btn-iptv { padding: 9px 12px; }
+  }
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════
-     HEADER
-═══════════════════════════════════════════ -->
-<header class="hdr">
-  <!-- Top row -->
-  <div class="hdr-top">
+<!-- ══════════ HEADER ══════════ -->
+<header>
+  <div class="header-inner">
+
     <!-- Hamburger -->
-    <div class="hdr-menu" aria-label="القائمة">
+    <button class="hamburger" aria-label="القائمة">
       <span></span><span></span><span></span>
-    </div>
+    </button>
 
     <!-- Logo -->
-    <div class="hdr-logo">TOONIA</div>
+    <a href="#" class="logo">Cartoonia</a>
 
     <!-- Search -->
-    <div class="hdr-search">
-      <input type="text" placeholder="يبحث">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    <div class="search-wrap">
+      <input type="text" placeholder="ابحث عن أنمي، كرتون...">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
       </svg>
     </div>
 
-    <!-- Download button -->
-    <button class="hdr-dl">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-        <polyline points="7 10 12 15 17 10"/>
-        <line x1="12" y1="15" x2="12" y2="3"/>
-      </svg>
-      برنامج
-    </button>
-  </div>
+    <!-- Nav -->
+    <nav>
+      <a href="#">عرض منوعات</a>
+      <a href="#" class="active">أنيمي</a>
+      <a href="#">فيلم</a>
+      <a href="#">دراما</a>
+      <a href="#">مطاردة اليشم</a>
+    </nav>
 
-  <!-- Nav tabs -->
-  <nav class="hdr-nav">
-    <a href="#">عرض منوعات</a>
-    <a href="#" class="active">أنيمي</a>
-    <a href="#">فيلم</a>
-    <a href="#">دراما</a>
-    <a href="#">مطاردة اليشم</a>
-    <a href="#">لك</a>
-  </nav>
+    <!-- IPTV Button -->
+    <a href="https://primeiptvplus.com/" target="_blank" rel="noopener" class="btn-iptv">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+        <rect x="2" y="7" width="20" height="15" rx="2"/>
+        <path d="M16 2H8l-1 5h10z"/>
+        <circle cx="12" cy="14" r="3" fill="currentColor" stroke="none"/>
+      </svg>
+      <span>اشتراكات IPTV</span>
+    </a>
+
+  </div>
 </header>
 
-
-<!-- ═══════════════════════════════════════════
-     HERO
-═══════════════════════════════════════════ -->
+<!-- ══════════ HERO SLIDER ══════════ -->
 <section class="hero">
-  <div class="hero-bg"></div>
 
-  <div class="hero-content">
-    <!-- iQIYI shows big EN title top-left style -->
-    <div class="hero-title-en">
-      <em>MYTH of</em>
-      ETERNITY
-    </div>
-
-    <span class="hero-tag">Original</span>
-
-    <div class="hero-meta">
-      <span class="star-val">
-        <!-- star icon -->
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="#f5c518">
-          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-        </svg>
-        9.5
-      </span>
-      <span class="sep">|</span>
-      <span>2022</span>
-      <span class="sep">|</span>
-      <span>13+</span>
-      <span class="sep">|</span>
-      <span>280 Episodes</span>
+  <!-- Slide 1 -->
+  <div class="slide active" data-index="0">
+    <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1578632767115-351597cf2477?w=1600&q=80')"></div>
+    <div class="slide-content">
+      <span class="slide-badge">Original</span>
+      <h1 class="slide-title">How Dare You!?</h1>
+      <div class="slide-meta">
+        <span class="rating">⭐ 9.8</span>
+        <span class="sep">|</span>
+        <span>2024</span>
+        <span class="sep">|</span>
+        <span>+13</span>
+        <span class="sep">|</span>
+        <span>24 حلقة</span>
+      </div>
+      <p class="slide-desc">قصة ملحمية مثيرة عن مواجهة القدر والسعي نحو القوة في عالم مليء بالأسرار والمؤامرات. بطل شاب يرفض أن يكون ضعيفاً ويقرر مواجهة مصيره.</p>
+      <div class="slide-actions">
+        <a href="#" class="btn-watch">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+          شاهد الآن
+        </a>
+        <a href="#" class="btn-info">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+          التفاصيل
+        </a>
+      </div>
     </div>
   </div>
 
-  <!-- dots bottom-left like iQIYI -->
-  <div class="hero-dots">
-    <span></span><span></span><span></span>
-    <span class="a"></span>
-    <span></span><span></span>
+  <!-- Slide 2 -->
+  <div class="slide" data-index="1">
+    <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1541562232579-512a800d1aa1?w=1600&q=80')"></div>
+    <div class="slide-content">
+      <span class="slide-badge">حصري</span>
+      <h1 class="slide-title">In Search<br>of Gods</h1>
+      <div class="slide-meta">
+        <span class="rating">⭐ 9.4</span>
+        <span class="sep">|</span>
+        <span>2024</span>
+        <span class="sep">|</span>
+        <span>+16</span>
+        <span class="sep">|</span>
+        <span>حلقة جديدة</span>
+      </div>
+      <p class="slide-desc">في رحلة بحث لا نهاية لها عن الآلهة، يواجه البطل تحديات خارقة وأسراراً مدفونة منذ آلاف السنين في أعماق الكون.</p>
+      <div class="slide-actions">
+        <a href="#" class="btn-watch">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+          شاهد الآن
+        </a>
+        <a href="#" class="btn-info">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+          التفاصيل
+        </a>
+      </div>
+    </div>
   </div>
+
+  <!-- Slide 3 -->
+  <div class="slide" data-index="2">
+    <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1534447677768-be436bb09401?w=1600&q=80')"></div>
+    <div class="slide-content">
+      <span class="slide-badge">إبداعي</span>
+      <h1 class="slide-title">Conspiracy<br>of Love</h1>
+      <div class="slide-meta">
+        <span class="rating">⭐ 9.1</span>
+        <span class="sep">|</span>
+        <span>2024</span>
+        <span class="sep">|</span>
+        <span>+13</span>
+        <span class="sep">|</span>
+        <span>12 حلقة</span>
+      </div>
+      <p class="slide-desc">حين يتشابك الحب مع المؤامرة، تنكشف الحقائق المدفونة ويجد البطلان نفسيهما في مواجهة قدر لم يختاراه.</p>
+      <div class="slide-actions">
+        <a href="#" class="btn-watch">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+          شاهد الآن
+        </a>
+        <a href="#" class="btn-info">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+          التفاصيل
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 4 -->
+  <div class="slide" data-index="3">
+    <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1560807707-8cc77767d783?w=1600&q=80&fit=crop&crop=top')"></div>
+    <div class="slide-content">
+      <span class="slide-badge">حر</span>
+      <h1 class="slide-title">Be My Wife</h1>
+      <div class="slide-meta">
+        <span class="rating">⭐ 8.9</span>
+        <span class="sep">|</span>
+        <span>2024</span>
+        <span class="sep">|</span>
+        <span>+13</span>
+        <span class="sep">|</span>
+        <span>12 حلقة</span>
+      </div>
+      <p class="slide-desc">قصة رومانسية ساحرة تجمع بين البطل والبطلة في ظروف غير متوقعة، حيث تتحول المواجهة إلى حب لا مفر منه.</p>
+      <div class="slide-actions">
+        <a href="#" class="btn-watch">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+          شاهد الآن
+        </a>
+        <a href="#" class="btn-info">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+          التفاصيل
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 5 -->
+  <div class="slide" data-index="4">
+    <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1600&q=80')"></div>
+    <div class="slide-content">
+      <span class="slide-badge">إبداعي</span>
+      <h1 class="slide-title">بعد الصحوة<br>لا يقهرني أحد</h1>
+      <div class="slide-meta">
+        <span class="rating">⭐ 9.6</span>
+        <span class="sep">|</span>
+        <span>2024</span>
+        <span class="sep">|</span>
+        <span>+16</span>
+        <span class="sep">|</span>
+        <span>80 حلقة</span>
+      </div>
+      <p class="slide-desc">بعد أن يصحو البطل على قوى خارقة مجهولة، يجد نفسه في مواجهة عالم لم يكن مستعداً له — ولكن لا شيء بعد الآن يمكنه إيقافه.</p>
+      <div class="slide-actions">
+        <a href="#" class="btn-watch">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+          شاهد الآن
+        </a>
+        <a href="#" class="btn-info">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+          التفاصيل
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 6 -->
+  <div class="slide" data-index="5">
+    <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=1600&q=80')"></div>
+    <div class="slide-content">
+      <span class="slide-badge">إبداعي</span>
+      <h1 class="slide-title">أحمل حديقة<br>أدوية روحية</h1>
+      <div class="slide-meta">
+        <span class="rating">⭐ 9.3</span>
+        <span class="sep">|</span>
+        <span>2024</span>
+        <span class="sep">|</span>
+        <span>+13</span>
+        <span class="sep">|</span>
+        <span>80 حلقة</span>
+      </div>
+      <p class="slide-desc">ساحر يحمل معه حديقة سحرية مليئة بالأعشاب الروحية النادرة، يسافر عبر الممالك ليصبح الأقوى في تاريخ العالم.</p>
+      <div class="slide-actions">
+        <a href="#" class="btn-watch">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+          شاهد الآن
+        </a>
+        <a href="#" class="btn-info">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+          التفاصيل
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Arrows -->
+  <button class="arrow arrow-prev" id="prev" aria-label="السابق">
+    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+  </button>
+  <button class="arrow arrow-next" id="next" aria-label="التالي">
+    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+  </button>
+
+  <!-- Dots -->
+  <div class="indicators" id="dots"></div>
+
+  <!-- Progress -->
+  <div class="progress-bar" id="progress"></div>
+
 </section>
 
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const dotsContainer = document.getElementById('dots');
+  const progressBar = document.getElementById('progress');
+  const DURATION = 6000; // ms per slide
 
-<!-- ═══════════════════════════════════════════
-     SECTION 1 — الأكثر رواجاً على Toonia
-═══════════════════════════════════════════ -->
-<section class="section">
-  <div class="section-head">
-    <span class="section-title">الأكثر رواجاً على Toonia</span>
-  </div>
+  let current = 0;
+  let timer, progressTimer;
 
-  <div class="cards-row">
+  // Build dots
+  slides.forEach((_, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'dot' + (i === 0 ? ' active' : '');
+    btn.setAttribute('aria-label', `الشريحة ${i+1}`);
+    btn.addEventListener('click', () => goTo(i));
+    dotsContainer.appendChild(btn);
+  });
 
-    <!-- Card 1 — In Search of Gods -->
-    <div class="card-wrap">
-      <div class="card">
-        <img class="card-poster" src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=260&q=85" alt="بحثاً عن الآلهة" loading="lazy">
-        <div class="card-shade"></div>
-        <span class="badge badge-limit">مجاني محدود</span>
-        <div class="card-bottom">
-          <div class="card-ep">حلقة جديدة</div>
-        </div>
-      </div>
-      <div class="card-name">【حصري】 بحثاً عن الآلهة</div>
-    </div>
+  function getDots() { return dotsContainer.querySelectorAll('.dot'); }
 
-    <!-- Card 2 — Conspiracy of Love -->
-    <div class="card-wrap">
-      <div class="card">
-        <img class="card-poster" src="https://images.unsplash.com/photo-1613376023733-0a73315d9b06?w=260&q=85" alt="مؤامرة الحب" loading="lazy">
-        <div class="card-shade"></div>
-        <span class="badge badge-free">حر</span>
-        <div class="card-bottom">
-          <div class="card-ep">12 حلقة</div>
-        </div>
-      </div>
-      <div class="card-name">مؤامرة الحب</div>
-    </div>
+  function goTo(index) {
+    slides[current].classList.remove('active');
+    getDots()[current].classList.remove('active');
+    current = (index + slides.length) % slides.length;
+    slides[current].classList.add('active');
+    getDots()[current].classList.add('active');
+    resetProgress();
+  }
 
-    <!-- Card 3 — Be My Wife -->
-    <div class="card-wrap">
-      <div class="card">
-        <img class="card-poster" src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=260&q=85" alt="كوني زوجتي" loading="lazy">
-        <div class="card-shade"></div>
-        <span class="badge badge-free">حر</span>
-        <div class="card-bottom">
-          <div class="card-ep">12 حلقة</div>
-        </div>
-      </div>
-      <div class="card-name">كوني زوجتي</div>
-    </div>
+  function resetProgress() {
+    clearInterval(progressTimer);
+    progressBar.style.transition = 'none';
+    progressBar.style.width = '0%';
+    setTimeout(() => {
+      progressBar.style.transition = `width ${DURATION}ms linear`;
+      progressBar.style.width = '100%';
+    }, 30);
+  }
 
-    <!-- Card 4 -->
-    <div class="card-wrap">
-      <div class="card">
-        <img class="card-poster" src="https://images.unsplash.com/photo-1601850494422-3cf14624b0b3?w=260&q=85" alt="" loading="lazy">
-        <div class="card-shade"></div>
-        <span class="badge badge-free">حر</span>
-        <div class="card-bottom">
-          <div class="card-ep">12 حلقة</div>
-        </div>
-      </div>
-      <div class="card-name">محددة</div>
-    </div>
+  function startAuto() {
+    clearInterval(timer);
+    timer = setInterval(() => goTo(current + 1), DURATION);
+    resetProgress();
+  }
 
-  </div>
-</section>
+  document.getElementById('prev').addEventListener('click', () => { goTo(current - 1); startAuto(); });
+  document.getElementById('next').addEventListener('click', () => { goTo(current + 1); startAuto(); });
 
+  // Pause on hover
+  const hero = document.querySelector('.hero');
+  hero.addEventListener('mouseenter', () => { clearInterval(timer); clearInterval(progressTimer); });
+  hero.addEventListener('mouseleave', startAuto);
 
-<!-- ═══════════════════════════════════════════
-     SECTION 2 — قصص مصورة متحركة
-═══════════════════════════════════════════ -->
-<section class="section">
-  <div class="section-head">
-    <div class="section-title-arrow">
-      <span class="section-title">قصص مصورة متحركة لا تفوت مشاهدتها</span>
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="9 18 15 12 9 6"/>
-      </svg>
-    </div>
-  </div>
+  // Touch swipe
+  let touchX = 0;
+  hero.addEventListener('touchstart', e => touchX = e.touches[0].clientX);
+  hero.addEventListener('touchend', e => {
+    const diff = touchX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) { goTo(diff > 0 ? current + 1 : current - 1); startAuto(); }
+  });
 
-  <div class="cards-row">
-
-    <!-- Card 1 — 觉醒后我无敌了 -->
-    <div class="card-wrap">
-      <div class="card">
-        <img class="card-poster" src="https://images.unsplash.com/photo-1542779283-429940ce8336?w=260&q=85" alt="" loading="lazy">
-        <div class="card-shade"></div>
-        <span class="badge badge-paid">إبداعي</span>
-        <div class="card-bottom">
-          <div class="card-ep">80 حلقة</div>
-        </div>
-      </div>
-      <div class="card-name">بعد الصحوة لا يُهزم</div>
-    </div>
-
-    <!-- Card 2 -->
-    <div class="card-wrap">
-      <div class="card">
-        <img class="card-poster" src="https://images.unsplash.com/photo-1559583109-3e7968136c99?w=260&q=85" alt="" loading="lazy">
-        <div class="card-shade"></div>
-        <span class="badge badge-paid">إبداعي</span>
-        <div class="card-bottom">
-          <div class="card-ep">80 حلقة</div>
-        </div>
-      </div>
-      <div class="card-name">حديقة الدواء السحرية</div>
-    </div>
-
-    <!-- Card 3 -->
-    <div class="card-wrap">
-      <div class="card">
-        <img class="card-poster" src="https://images.unsplash.com/photo-1598978483512-9c6b5d2c7db8?w=260&q=85" alt="" loading="lazy">
-        <div class="card-shade"></div>
-        <span class="badge badge-green">برنامج</span>
-        <div class="card-bottom">
-          <div class="card-ep">80 حلقة</div>
-        </div>
-      </div>
-      <div class="card-name">المحارب الخالد</div>
-    </div>
-
-    <!-- Card 4 -->
-    <div class="card-wrap">
-      <div class="card">
-        <img class="card-poster" src="https://images.unsplash.com/photo-1614850523296-d8c1af93d400?w=260&q=85" alt="" loading="lazy">
-        <div class="card-shade"></div>
-        <span class="badge badge-paid">إبداعي</span>
-        <div class="card-bottom">
-          <div class="card-ep">25 حلقة</div>
-        </div>
-      </div>
-      <div class="card-name">سيد الممالك</div>
-    </div>
-
-  </div>
-</section>
-
-
-<!-- bottom spacer -->
-<div style="height:24px;"></div>
-
-
-<!-- ═══════════════════════════════════════════
-     BOTTOM NAV (mobile)
-═══════════════════════════════════════════ -->
-<nav class="btm-nav">
-  <div class="btm-item">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
-      <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
-    </svg>
-    عرض
-  </div>
-  <div class="btm-item active">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="12" r="10"/>
-      <polygon points="10 8 16 12 10 16 10 8" fill="currentColor"/>
-    </svg>
-    أنيمي
-  </div>
-  <div class="btm-item">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
-      <circle cx="12" cy="7" r="4"/>
-    </svg>
-    لك
-  </div>
-</nav>
-
+  startAuto();
+</script>
 </body>
 </html>
