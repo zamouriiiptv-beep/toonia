@@ -2,207 +2,896 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cartoonia</title>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=375">
+<title>iQIYI Anime Page — Technical Spec & Recreation</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
 
-body {
-  background: #141414;
-  font-family: 'Tajawal', sans-serif;
-}
+/* ============================================================
+   TECHNICAL SPECIFICATION
+   ============================================================
 
-/* ══ HEADER ROW ══ */
-.header {
-  background: #1a1a1a;
-  display: flex;
-  align-items: center;
-  padding: 0 16px;
-  height: 56px;
-  gap: 14px;
-  direction: rtl;
-}
+   ── DIMENSIONS & ASPECT RATIO ──────────────────────────────
+   Device viewport  : 390 × 844 px  (Android mobile, ~19.5:9)
+   Screenshot dims  : 720 × 1560 px (rendered @2×)
+   Content width    : 100vw (no horizontal margin on outer shell)
+   Card grid gutter : 8 px
+   Card aspect ratio: ~3:4  (width ≈ 174 px, height ≈ 232 px @1×)
+   Hero banner ratio: 16:9 → crops to ~390 × 220 px
 
-/* Hamburger — 3 lines exactly like iQIYI */
-.hamburger {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 5px;
-  width: 28px;
-  height: 28px;
-  cursor: pointer;
-  background: none;
-  border: none;
-  flex-shrink: 0;
-}
-.hamburger span {
-  display: block;
-  width: 22px;
-  height: 2px;
-  background: #ffffff;
-  border-radius: 1px;
-}
+   ── COLOR PALETTE ──────────────────────────────────────────
+   Background base       : #0A0A0A  (near-black)
+   Background surface    : #111111  (cards, nav bar)
+   Background elevated   : #1A1A1A  (search bar, tab bar)
+   Background separator  : #222222  (dividers, footer CTA section)
+   Primary accent        : #00D67A  (iQIYI green — logo, CTA btn, active tab)
+   Secondary text        : #FFFFFF  (primary text, titles)
+   Tertiary text         : #999999  (inactive nav labels, meta text)
+   Badge FREE            : #00D67A  (green) + white text
+   Badge ORIGINAL        : #1565C0  (iQIYI blue) + white text
+   Badge EXCLUSIVE       : #1565C0  (iQIYI blue) + white text
+   Badge LIMITED FREE    : #CC7700  (amber) + white text
+   Overlay gradient      : linear-gradient(0deg, rgba(0,0,0,0.85) 0%, transparent 55%)
+   TOP card gradient     : linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(90,20,20,0.8) 100%)
+   Star rating color     : #FFD700  (gold)
+   Footer CTA bg         : #141414
+   CTA Button border     : #333333
+   CTA Button bg         : rgba(255,255,255,0.04)
 
-/* Logo */
-.logo {
-  font-size: 26px;
-  font-weight: 900;
-  color: #00d661;
-  font-style: italic;
-  letter-spacing: -0.5px;
-  text-decoration: none;
-  flex-shrink: 0;
-  font-family: Arial Black, sans-serif;
-  line-height: 1;
-}
+   ── TYPOGRAPHY ─────────────────────────────────────────────
+   Font stack            : "Cairo", "Noto Sans Arabic", sans-serif
+   (iQIYI uses a proprietary CJK+Arabic composite; Cairo is the
+    closest Google Font for Arabic script)
 
-/* Search box — rounded pill with icon and divider */
-.search-wrap {
-  flex: 1;
-  position: relative;
-  display: flex;
-  align-items: center;
-  background: #2e2e2e;
-  border-radius: 24px;
-  height: 40px;
-  padding: 0 14px 0 46px;
-  direction: rtl;
-}
+   Logo "iQIYI"          : Custom brand font, bold italic, ~22px, #00D67A
+   Nav tabs (active)     : 14px, weight 600, #FFFFFF, letter-spacing 0
+   Nav tabs (inactive)   : 14px, weight 400, #888888
+   Section header        : 17px, weight 700, #FFFFFF, RTL
+   Card title            : 13px, weight 600, #FFFFFF, 2-line clamp
+   Episode badge text    : 11px, weight 600, #FFFFFF
+   Episode count overlay : 12px, weight 700, #FFFFFF (bottom-left of card)
+   Badge label (حر/إبداعي): 11px, weight 700, #FFFFFF
+   Hero title            : 28px, weight 900, white + drop-shadow
+   Hero meta (year/eps)  : 12px, weight 400, #CCCCCC
+   TOP rank label        : 48px, weight 900, white, shadow
+   Footer CTA heading    : 22px, weight 700, #FFFFFF, centered
+   Footer sub-label      : 14px, weight 400, #888888, centered
+   Button labels         : 15px, weight 500, #FFFFFF
+   Copyright text        : 11px, weight 400, #666666, centered
 
-.search-wrap input {
-  flex: 1;
-  background: none;
-  border: none;
-  outline: none;
-  color: #aaaaaa;
-  font-family: 'Tajawal', sans-serif;
-  font-size: 14px;
-  direction: rtl;
-  text-align: right;
-}
-.search-wrap input::placeholder { color: #888; }
+   ── LAYOUT ARCHITECTURE (390px viewport, all Y from page top) ──
 
-/* vertical divider before icon */
-.search-divider {
-  width: 1px;
-  height: 20px;
-  background: #555;
-  margin: 0 10px;
-  flex-shrink: 0;
-}
+   [STATUS BAR]          h=28px  bg=#000000
+   [HEADER/NAV]
+     Logo area           x=16, y=28, w=80, h=44
+     Search bar          x=104, y=36, w=196, h=32  border-radius=16px
+     CTA "برنامج" btn    x=308, y=36, w=72, h=32   border-radius=6px bg=#00D67A
+   [CATEGORY TABS]       y=72, h=44  overflow-x scroll, gap=16px, px=16px
+     Active tab          underline 2px #00D67A  or bold white
+   [FILTER CHIPS]        y=116, h=36 (screen 4 only)
+     Chip border-radius=18px, border=1px solid #333
+   [HERO BANNER]         y=152, h=220  full-bleed image + gradient overlay
+   [SECTION ROWS]        y=372+
+     Section label       x=16, y=auto, h=30
+     Horizontal scroll   h=card_height+title_height ≈ 278px
+       Card              w=174, h=232, border-radius=8px, overflow=hidden
+       Inter-card gap    8px
+       First card offset x=16px
+   [FOOTER CTA]          bg=#141414, padding=32px 24px
+   [PLATFORM BUTTONS]    border-radius=8px, h=48px
+   [SOCIAL ICONS]        gap=24px, icon-size=28px
+   [COPYRIGHT]           padding=16px 24px, font-size=11px
 
-/* search icon */
-.search-icon {
-  flex-shrink: 0;
-  color: #aaa;
-  display: flex;
-  align-items: center;
-}
+   ── VISUAL EFFECTS ─────────────────────────────────────────
+   Card border-radius      : 8px
+   Card shadow             : 0 4px 12px rgba(0,0,0,0.5)
+   Card image overlay      : linear-gradient(0deg,rgba(0,0,0,0.80) 0%,transparent 50%)
+   Badge border-radius     : 4px (top-right corner of card)
+   Badge padding           : 2px 6px
+   Header shadow           : 0 2px 8px rgba(0,0,0,0.6)
+   Search bar border       : 1px solid #2a2a2a, bg=#1a1a1a
+   Tab active underline    : 2px solid #00D67A
+   CTA green btn shadow    : 0 0 12px rgba(0,214,122,0.3)
+   Floating DL badge       : position=fixed bottom-right, border-radius=12px 0 0 12px
+                             bg=#00D67A, shadow=0 2px 12px rgba(0,0,0,0.4)
+   TOP card bg tint        : linear-gradient bottom→ dark-red overlay
+   Star icon               : ★ filled gold
+   Section separator       : none (spacing only, ~16px gap between sections)
+   Scroll indicators       : no visible scrollbar (hidden)
+   Bottom nav bar          : ≡ ○ › icons, bg=#000000, h=56px
 
-/* Prime IPTV button — exact green rectangle like برنامج */
-.btn-prime {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  background: #00d661;
-  color: #000;
-  font-family: 'Tajawal', sans-serif;
-  font-weight: 800;
-  font-size: 15px;
-  padding: 0 14px;
-  height: 40px;
-  border-radius: 8px;
-  text-decoration: none;
-  flex-shrink: 0;
-  white-space: nowrap;
-  direction: rtl;
-}
-.btn-prime svg {
-  flex-shrink: 0;
-}
+   ── AI IMAGE GENERATION PROMPTS ────────────────────────────
 
-/* ══ NAV ROW ══ */
-.nav {
-  background: #141414;
-  display: flex;
-  align-items: center;
-  direction: rtl;
-  padding: 0 10px;
-  height: 46px;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-.nav::-webkit-scrollbar { display: none; }
+   [Hero Banner — "Be My Wife"]
+   "Chinese manhua/donghua style anime couple, male character with long dark hair
+   in blue and white traditional cultivation robes, female character in orange-red
+   qipao dress, both floating against pastel pink sakura blossom background with
+   soft bokeh clouds, bright cheerful romantic fantasy mood, vibrant color palette,
+   high detail illustration, studio quality 2D animation art, 16:9 aspect ratio,
+   cinematic lighting from above"
 
-.nav a {
-  color: rgba(255,255,255,0.62);
-  text-decoration: none;
-  font-family: 'Tajawal', sans-serif;
-  font-size: 17px;
-  font-weight: 400;
-  padding: 0 16px;
-  white-space: nowrap;
-  line-height: 46px;
-  display: block;
-}
-.nav a.active {
-  color: #00d661;
-  font-weight: 700;
-}
+   [Card — "Lingwu Continent" TOP 1]
+   "Donghua Chinese anime warrior standing on ancient continent surrounded by
+   swirling blue ice and lightning energy, dramatic action pose, dark fantasy
+   background with glowing runes, extreme dynamic lighting, wuxia cultivation style,
+   portrait format vertical poster art"
 
+   [Card — "The Lone Sword Overlord" TOP 2]
+   "Two Chinese donghua anime characters facing each other dramatically, one in
+   dark armor wielding a sword engulfed in orange fire, mountainous ancient Chinese
+   landscape at dusk with red-orange sky, intense battle mood, wuxia poster art style"
+
+   [Card — "Myth of Eternity"]
+   "Handsome male donghua anime character with long dark hair adorned with white
+   flower, cherry blossom petals swirling in background, deep violet and magenta
+   color palette, melancholic mysterious expression, cultivation fantasy genre,
+   vertical poster format, high detail 2D anime illustration"
+
+   [Card — "The Legend of Sky Lord"]
+   "Tall regal donghua anime male protagonist in gold and black celestial armor,
+   lightning energy crown, deep space and celestial palace background, cool blue and
+   gold color scheme, iQIYI exclusive badge corner, vertical poster"
+
+   ============================================================ */
+
+  :root {
+    --bg-base: #0A0A0A;
+    --bg-surface: #111111;
+    --bg-elevated: #1A1A1A;
+    --bg-sep: #222222;
+    --green: #00D67A;
+    --blue-badge: #1565C0;
+    --amber-badge: #CC7700;
+    --text-primary: #FFFFFF;
+    --text-secondary: #AAAAAA;
+    --text-muted: #666666;
+    --card-radius: 8px;
+    --font: 'Cairo', 'Noto Sans Arabic', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg-base);
+    color: var(--text-primary);
+    max-width: 390px;
+    margin: 0 auto;
+    direction: rtl;
+    font-size: 14px;
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
+  .header {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg-base);
+    padding: 10px 12px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+  }
+  .header-row {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 0px;
+  }
+  .logo {
+    font-size: 22px; font-weight: 900; font-style: italic;
+    color: var(--green); letter-spacing: -0.5px;
+    flex-shrink: 0; margin-left: 4px;
+  }
+  .hamburger { font-size: 20px; color: var(--text-secondary); flex-shrink:0; }
+  .search-bar {
+    flex: 1;
+    background: var(--bg-elevated);
+    border: 1px solid #2a2a2a;
+    border-radius: 16px;
+    padding: 7px 14px;
+    display: flex; align-items: center; gap: 8px;
+    color: #666;
+    font-family: var(--font);
+    font-size: 13px;
+  }
+  .search-bar span { flex:1; }
+  .cta-btn {
+    background: var(--green);
+    color: #000; font-weight: 700; font-size: 13px;
+    border-radius: 6px;
+    padding: 7px 12px;
+    display: flex; align-items: center; gap: 4px;
+    flex-shrink: 0;
+    box-shadow: 0 0 12px rgba(0,214,122,0.3);
+    white-space: nowrap;
+  }
+  .cta-btn::before { content: "⬇"; font-size: 12px; }
+
+  /* CATEGORY TABS */
+  .tabs {
+    display: flex; gap: 0;
+    overflow-x: auto; scrollbar-width: none;
+    padding: 0 4px;
+    border-bottom: 1px solid #1c1c1c;
+    margin-top: 4px;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    padding: 12px 12px 10px;
+    font-size: 14px; font-weight: 400;
+    color: var(--text-secondary);
+    white-space: nowrap; flex-shrink: 0;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s;
+  }
+  .tab.active {
+    color: var(--text-primary); font-weight: 700;
+    border-bottom-color: var(--green);
+  }
+
+  /* FILTER CHIPS */
+  .chips {
+    display: flex; gap: 8px; padding: 10px 16px;
+    overflow-x: auto; scrollbar-width: none;
+  }
+  .chips::-webkit-scrollbar { display: none; }
+  .chip {
+    padding: 6px 16px; border-radius: 18px;
+    border: 1px solid #333; background: rgba(255,255,255,0.04);
+    font-size: 13px; color: var(--text-primary);
+    white-space: nowrap; flex-shrink: 0; cursor: pointer;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .chip.active { border-color: #555; background: rgba(255,255,255,0.08); }
+
+  /* HERO BANNER */
+  .hero {
+    position: relative; overflow: hidden;
+    width: 100%; aspect-ratio: 16/9;
+    background: linear-gradient(135deg, #1a0a2e 0%, #0d1b2a 50%, #1a0d0d 100%);
+  }
+  .hero-img { width:100%; height:100%; object-fit:cover; display:block; }
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(0deg, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);
+  }
+  .hero-badges {
+    position: absolute; top: 12px; right: 12px;
+    display: flex; gap: 4px;
+  }
+  .hero-content {
+    position: absolute; bottom: 12px; right: 16px; left: 16px;
+  }
+  .hero-title {
+    font-size: 32px; font-weight: 900; line-height: 1.1;
+    color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+    margin-bottom: 6px;
+    font-style: italic;
+  }
+  .hero-meta {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; color: #ccc;
+  }
+  .hero-meta .star { color: #FFD700; }
+  .hero-dots {
+    position: absolute; bottom: 8px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; gap: 4px;
+  }
+  .dot { width:6px; height:6px; border-radius:50%; background:#666; }
+  .dot.active { background:#fff; width:16px; border-radius:3px; }
+
+  /* SECTION */
+  .section { margin-top: 20px; }
+  .section-header {
+    padding: 0 16px 10px;
+    font-size: 17px; font-weight: 700; color: var(--text-primary);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .section-header a { font-size: 13px; color: var(--text-secondary); font-weight: 400; }
+
+  /* HORIZONTAL SCROLL ROW */
+  .row {
+    display: flex; gap: 8px;
+    overflow-x: auto; scrollbar-width: none;
+    padding: 0 16px 4px;
+  }
+  .row::-webkit-scrollbar { display: none; }
+
+  /* CARD */
+  .card { flex-shrink: 0; width: 174px; cursor: pointer; }
+  .card-thumb {
+    width: 174px; height: 232px;
+    border-radius: var(--card-radius);
+    overflow: hidden; position: relative;
+    background: #1e1e1e;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  }
+  .card-thumb img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  .card-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(0deg, rgba(0,0,0,0.82) 0%, transparent 52%);
+  }
+  .badge {
+    position: absolute; top: 0; right: 0;
+    padding: 3px 7px; border-radius: 0 8px 0 6px;
+    font-size: 11px; font-weight: 700; color: #fff;
+  }
+  .badge-free { background: var(--green); color: #000; }
+  .badge-original { background: var(--blue-badge); }
+  .badge-exclusive {
+    background: var(--blue-badge);
+    font-size: 10px; padding: 3px 5px;
+  }
+  .badge-limited { background: var(--amber-badge); }
+  .ep-count {
+    position: absolute; bottom: 8px; right: 10px;
+    font-size: 12px; font-weight: 700; color: #fff;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.9);
+  }
+  .ep-update {
+    position: absolute; bottom: 8px; right: 0; left: 0;
+    padding: 0 8px;
+    font-size: 11px; font-weight: 600; color: #fff;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.9);
+  }
+  .card-title {
+    margin-top: 7px; padding: 0 2px;
+    font-size: 13px; font-weight: 600; color: var(--text-primary);
+    line-height: 1.35;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* TOP RANK CARD VARIANT */
+  .card-top .card-thumb {
+    background: linear-gradient(180deg, #1a1a2e 0%, #4a1010 100%);
+  }
+  .rank-label {
+    position: absolute; bottom: 32px; right: 10px;
+    font-size: 44px; font-weight: 900; color: #fff;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.9);
+    line-height: 1;
+  }
+  .rank-sub {
+    position: absolute; bottom: 10px; right: 10px;
+    font-size: 11px; color: #ccc;
+    font-weight: 500;
+  }
+
+  /* SECTION DIVIDER */
+  .divider { height: 8px; background: #0f0f0f; margin-top: 24px; }
+
+  /* FOOTER CTA */
+  .footer-cta {
+    background: #141414;
+    padding: 32px 24px 24px;
+    text-align: center;
+    border-top: 1px solid #1c1c1c;
+  }
+  .footer-cta h3 {
+    font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 6px;
+  }
+  .footer-cta-sub {
+    font-size: 14px; color: #888; margin-bottom: 20px;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .footer-cta-sub .logo-sm { color: var(--green); font-weight: 800; font-style: italic; }
+  .footer-cta-sub::before { content: "🔍"; font-size: 14px; }
+  .platform-btns { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+  .platform-btn {
+    width: 100%; height: 48px; border-radius: 8px;
+    border: 1px solid #333; background: rgba(255,255,255,0.04);
+    color: #fff; font-size: 15px; font-weight: 500;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    cursor: pointer; font-family: var(--font);
+  }
+  .platform-row { display: flex; gap: 10px; }
+  .platform-row .platform-btn { flex: 1; }
+  .lang-select {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 16px; border-radius: 8px;
+    border: 1px solid #333; background: rgba(255,255,255,0.04);
+    color: #fff; font-size: 14px; margin: 16px 0;
+    cursor: pointer; font-family: var(--font);
+  }
+  .socials { display: flex; justify-content: center; gap: 24px; margin-bottom: 16px; }
+  .social-icon {
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    font-size: 22px; color: #fff; text-decoration: none;
+  }
+  .copyright { font-size: 11px; color: #555; line-height: 1.6; }
+  .copyright a { color: #888; }
+
+  /* FLOATING BUTTON */
+  .float-btn {
+    position: fixed; bottom: 72px; left: 0;
+    background: var(--green); color: #000;
+    padding: 8px 14px; border-radius: 12px 0 0 12px;
+    font-size: 12px; font-weight: 700;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+    display: flex; align-items: center; gap: 4px;
+    cursor: pointer;
+  }
+  .float-btn::before { content: "⬇"; }
+
+  /* BOTTOM NAV */
+  .bottom-nav {
+    position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 390px; height: 56px; background: #000;
+    display: flex; align-items: center; justify-content: space-around;
+    border-top: 1px solid #1a1a1a;
+    z-index: 200;
+  }
+  .nav-icon { font-size: 24px; color: #777; cursor: pointer; }
+
+  /* STAR */
+  .star { color: #FFD700; }
+
+  /* SHIMMER placeholder */
+  .shimmer {
+    background: linear-gradient(90deg, #1a1a1a 25%, #242424 50%, #1a1a1a 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+    border-radius: var(--card-radius);
+  }
+  @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+  /* Faked card backgrounds using CSS gradients for demonstration */
+  .bg-warrior { background: linear-gradient(160deg,#0d1b3e 0%,#1a3a6e 40%,#0a0f1e 100%); }
+  .bg-sword    { background: linear-gradient(160deg,#2a0a0a 0%,#8b2020 40%,#1a0505 100%); }
+  .bg-alchemy  { background: linear-gradient(160deg,#0a1a1a 0%,#1a3d3d 50%,#0f0f0f 100%); }
+  .bg-lord     { background: linear-gradient(160deg,#1a0a2e 0%,#3d1a6e 50%,#0a0514 100%); }
+  .bg-wife     { background: linear-gradient(160deg,#ffd6e0 0%,#ffb3c6 30%,#c9e4ff 70%,#b0d4ff 100%); }
+  .bg-pink     { background: linear-gradient(160deg,#3d1a2e 0%,#8b3060 50%,#1a0a14 100%); }
+  .bg-green    { background: linear-gradient(160deg,#0a2e1a 0%,#1a6e3d 50%,#0a1a0f 100%); }
+  .bg-dark     { background: linear-gradient(160deg,#0a0a1e 0%,#1a1a3d 50%,#0a0a14 100%); }
+  .bg-kids1    { background: linear-gradient(160deg,#0a2e0a 0%,#1a6e1a 50%,#0a1a0a 100%); }
+  .bg-kids2    { background: linear-gradient(160deg,#1a2e0a 0%,#4e6e1a 50%,#0a1a05 100%); }
+  .bg-romance  { background: linear-gradient(160deg,#2e0a1a 0%,#6e1a3d 50%,#1a0a14 100%); }
+
+  /* Card text overlays for faked cards */
+  .card-fake-title {
+    position: absolute; bottom: 30px; right: 0; left: 0; padding: 8px 10px 0;
+    font-size: 16px; font-weight: 900; color: rgba(255,255,255,0.9);
+    text-shadow: 0 2px 8px rgba(0,0,0,0.8); line-height: 1.2;
+  }
+
+  pb { padding-bottom: 80px; display: block; }
 </style>
 </head>
 <body>
 
-<header class="header">
-
-  <!-- Hamburger -->
-  <button class="hamburger">
-    <span></span>
-    <span></span>
-    <span></span>
-  </button>
-
-  <!-- Logo -->
-  <a href="#" class="logo">cartoonia</a>
-
-  <!-- Search -->
-  <div class="search-wrap">
-    <input type="text" placeholder="(الذكاء الاصطناعي الإنجليزية)...">
-    <div class="search-divider"></div>
-    <span class="search-icon">
-      <svg width="18" height="18" fill="none" stroke="#aaaaaa" stroke-width="2.2" viewBox="0 0 24 24">
-        <circle cx="11" cy="11" r="8"/>
-        <path d="m21 21-4.35-4.35"/>
-      </svg>
-    </span>
+<!-- HEADER -->
+<div class="header">
+  <div class="header-row">
+    <span class="hamburger">☰</span>
+    <span class="logo">iQIYI</span>
+    <div class="search-bar">
+      <span>أشرق علي</span>
+      <span>🔍</span>
+    </div>
+    <div class="cta-btn">برنامج</div>
   </div>
 
-  <!-- Prime IPTV Button -->
-  <a href="https://primeiptvplus.com/" target="_blank" rel="noopener" class="btn-prime">
-    <!-- download into box icon — same as iQIYI برنامج -->
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="3" y="3" width="18" height="18" rx="3"/>
-      <line x1="12" y1="8" x2="12" y2="15"/>
-      <polyline points="8.5,12 12,15.5 15.5,12"/>
-    </svg>
-    prime iptv
-  </a>
+  <!-- CATEGORY TABS -->
+  <div class="tabs">
+    <div class="tab">عرض منوعات</div>
+    <div class="tab active">أنيمي</div>
+    <div class="tab">فيلم</div>
+    <div class="tab">دراما</div>
+    <div class="tab">مطاردة اليشم</div>
+    <div class="tab">لك</div>
+  </div>
+</div>
 
-</header>
+<!-- FILTER CHIPS (Screen 4) -->
+<div class="chips">
+  <div class="chip active">🖥 جميع الفيديوهات</div>
+  <div class="chip">اليابان</div>
+  <div class="chip">البر الرئيسي الصيني</div>
+  <div class="chip">كوريا</div>
+</div>
 
-<!-- NAV ROW — exactly like iQIYI -->
-<nav class="nav">
-  <a href="#">الأكثر رواجاً</a>
-  <a href="#">عرض منوعات</a>
-  <a href="#" class="active">أنيمي</a>
-  <a href="#">فيلم</a>
-  <a href="#">دراما</a>
-  <a href="#">مطاردة اليشم</a>
-  <a href="#">لك</a>
-</nav>
+<!-- HERO BANNER -->
+<div class="hero">
+  <div class="bg-wife" style="width:100%;height:100%;"></div>
+  <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:flex-start;padding:20px;">
+    <div style="color:#1a3a6e;font-size:42px;font-weight:900;font-style:italic;line-height:1;text-shadow:0 2px 12px rgba(255,255,255,0.3);">
+      Be<br>My<br><span style="font-size:48px;">Wife</span>
+    </div>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-badges">
+    <span class="badge badge-free" style="position:relative;top:auto;right:auto;">حر</span>
+    <span class="badge badge-original" style="position:relative;top:auto;right:auto;">إبداعي</span>
+  </div>
+  <div class="hero-content">
+    <div class="hero-meta">
+      <span class="star">★</span>
+      <span>9.3</span>
+      <span style="color:#444">|</span>
+      <span>2020</span>
+      <span style="color:#444">|</span>
+      <span>13+</span>
+      <span style="color:#444">|</span>
+      <span>12 حلقة</span>
+    </div>
+  </div>
+  <div class="hero-dots">
+    <div class="dot active"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+  </div>
+</div>
+
+<!-- MOST POPULAR SECTION -->
+<div class="section">
+  <div class="section-header">الأكثر رواجاً على iQIYI <a>›</a></div>
+  <div class="row">
+
+    <!-- TOP 1 -->
+    <div class="card card-top">
+      <div class="card-thumb bg-warrior">
+        <div class="card-overlay"></div>
+        <div class="badge badge-original">إبداعي</div>
+        <div style="position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;">
+          <div style="text-align:center;">
+            <div style="font-size:13px;font-weight:900;color:rgba(255,255,255,0.9);padding:0 8px;text-shadow:0 1px 6px #000;line-height:1.3;">LINGWU<br>CONTINENT</div>
+          </div>
+        </div>
+        <div class="rank-label">TOP 1</div>
+        <div class="rank-sub">تم التحديث إلى 168</div>
+      </div>
+      <div class="card-title">قارة لينغوو</div>
+    </div>
+
+    <!-- TOP 2 -->
+    <div class="card card-top">
+      <div class="card-thumb bg-sword">
+        <div class="card-overlay"></div>
+        <div class="badge badge-original">إبداعي</div>
+        <div style="position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;">
+          <div style="font-size:11px;font-weight:900;color:rgba(255,255,255,0.9);padding:0 8px;text-align:center;text-shadow:0 1px 6px #000;line-height:1.4;">THE LONE<br>SWORD OVERLORD</div>
+        </div>
+        <div class="rank-label">TOP 2</div>
+        <div class="ep-update">165 حلقة</div>
+      </div>
+      <div class="card-title">سيد السيف الوحيد</div>
+    </div>
+
+    <!-- TOP 3 -->
+    <div class="card card-top">
+      <div class="card-thumb bg-alchemy">
+        <div class="card-overlay"></div>
+        <div class="badge badge-original">إبداعي</div>
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;">
+          <div style="font-size:13px;font-weight:900;color:rgba(255,255,255,0.95);text-shadow:0 1px 6px #000;text-align:center;">Supreme<br>Alchemy</div>
+        </div>
+        <div class="rank-label">TOP 3</div>
+        <div class="rank-sub">تم التحديث إلى 170</div>
+      </div>
+      <div class="card-title">الخيمياء العليا</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- KIDS SECTION -->
+<div class="section">
+  <div class="section-header">للأطفال</div>
+  <div class="row">
+
+    <div class="card">
+      <div class="card-thumb bg-kids1">
+        <div class="card-overlay"></div>
+        <div class="badge badge-original">إبداعي</div>
+        <div class="ep-count">20 حلقة</div>
+        <div class="card-fake-title" style="font-size:11px;">無敌鹿战队</div>
+      </div>
+      <div class="card-title">فرقة الغزلان الموسم الثالث الجزء الثاني</div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb bg-kids2">
+        <div class="card-overlay"></div>
+        <div class="badge badge-free" style="color:#000;">حر</div>
+        <div class="ep-count">40 حلقة</div>
+        <div class="card-fake-title" style="font-size:12px;">喷气小英雄</div>
+      </div>
+      <div class="card-title">喷气小英雄</div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb bg-kids1">
+        <div class="card-overlay"></div>
+        <div class="badge badge-original">إبداعي</div>
+        <div class="ep-count">20 حلقة</div>
+      </div>
+      <div class="card-title">فرقة الغزلان الموسم الثالث الجزء الأول</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SHOUJO SECTION -->
+<div class="section">
+  <div class="section-header">أنمي شوجو</div>
+  <div class="row">
+
+    <div class="card">
+      <div class="card-thumb bg-dark">
+        <div class="card-overlay"></div>
+        <div class="badge badge-free" style="color:#000;">حر</div>
+        <div class="ep-count">80 حلقة</div>
+        <div class="card-fake-title" style="font-size:13px;color:rgba(255,100,150,0.9);">Be</div>
+      </div>
+      <div class="card-title">بحثاً عن الآلهة [حصري]</div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb bg-romance">
+        <div class="card-overlay"></div>
+        <div class="badge badge-original">إبداعي</div>
+        <div class="ep-count">80 حلقة</div>
+        <div class="card-fake-title" style="font-size:12px;color:rgba(255,200,220,0.9);">Conspiracy<br>of Love</div>
+      </div>
+      <div class="card-title">مؤامرة الحب</div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb bg-wife" style="background:linear-gradient(160deg,#ffd6e0 0%,#ffb3c6 30%,#c9e4ff 70%,#b0d4ff 100%);">
+        <div class="card-overlay"></div>
+        <div class="badge badge-free" style="color:#000;">حر</div>
+        <div class="ep-count">12 حلقة</div>
+      </div>
+      <div class="card-title">كوني زوجتي</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CHINESE ANIME SECTION -->
+<div class="section">
+  <div class="section-header">أنمي صيني</div>
+  <div class="row">
+
+    <div class="card">
+      <div class="card-thumb bg-romance">
+        <div class="card-overlay"></div>
+        <div class="badge badge-free" style="color:#000;">حر</div>
+        <div class="ep-count">26 حلقة</div>
+        <div class="card-fake-title" style="font-size:11px;">帝族霸道</div>
+      </div>
+      <div class="card-title">الزوجة المهيمنة</div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb bg-dark">
+        <div class="card-overlay"></div>
+        <div class="badge badge-free" style="color:#000;">حر</div>
+        <div class="ep-count">14 حلقة</div>
+      </div>
+      <div class="card-title">طاغيتي الشيطاني وطفلي الحلو</div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb bg-warrior">
+        <div class="card-overlay"></div>
+        <div class="badge badge-free" style="color:#000;">حر</div>
+        <div class="ep-count">40 حلقة</div>
+        <div class="card-fake-title" style="font-size:11px;">星式神决</div>
+      </div>
+      <div class="card-title">سوترا الأثيرية</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- INSPIRING ANIME -->
+<div class="section">
+  <div class="section-header">أنمي ملهم</div>
+  <div class="row">
+
+    <div class="card">
+      <div class="card-thumb bg-wife" style="background:linear-gradient(160deg,#1a2a4e 0%,#2a4a8e 50%,#0a1020 100%);">
+        <div class="card-overlay"></div>
+        <div class="badge badge-free" style="color:#000;">حر</div>
+        <div class="ep-count">40 حلقة</div>
+        <div class="card-fake-title" style="font-size:11px;color:#aaf;">万界奇缘</div>
+      </div>
+      <div class="card-title">الإمبراطور الوحش الأسطوري</div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb bg-sword">
+        <div class="card-overlay"></div>
+        <div class="badge badge-free" style="color:#000;">حر</div>
+        <div class="ep-count">12 حلقة</div>
+        <div class="card-fake-title" style="font-size:11px;">龙族</div>
+      </div>
+      <div class="card-title">سلالة السيف (أنمي)</div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb" style="background:linear-gradient(160deg,#1a0a2e 0%,#3d1a6e 50%,#0a0514 100%);">
+        <div class="card-overlay"></div>
+        <div class="badge badge-free" style="color:#000;">حر</div>
+        <div class="ep-count">12 حلقة</div>
+        <div class="card-fake-title" style="font-size:13px;color:rgba(255,200,100,0.9);">THE TOTEM<br>WARRIOR</div>
+      </div>
+      <div class="card-title">محارب الطوطم (الموسم الثاني)</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SHOUNEN SECTION -->
+<div class="section">
+  <div class="section-header">شونين أنيميشن</div>
+  <div class="row">
+
+    <div class="card">
+      <div class="card-thumb bg-dark">
+        <div class="card-overlay"></div>
+        <div class="badge badge-free" style="color:#000;">حر</div>
+        <div class="ep-count">12 حلقة</div>
+        <div class="card-fake-title" style="font-size:11px;">三王宰</div>
+      </div>
+      <div class="card-title">السيد الأعظم</div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb" style="background:linear-gradient(160deg,#1a0a0a 0%,#3d1a1a 40%,#1a1a0a 100%);">
+        <div class="card-overlay"></div>
+        <div class="ep-update">تحديث إلى الإصدار 12</div>
+        <div class="card-fake-title" style="font-size:11px;bottom:45px;right:0;left:0;position:absolute;padding:0 8px;color:rgba(255,255,255,0.7);font-size:10px;">BEYOND THE<br>OCEAN VOL.2</div>
+      </div>
+      <div class="card-title">ما وراء المحيط 2</div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb bg-pink">
+        <div class="card-overlay"></div>
+        <div class="badge badge-original">إبداعي</div>
+        <div class="ep-count">280 حلقة</div>
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-55%);white-space:nowrap;text-align:center;">
+          <div style="font-size:14px;font-weight:900;color:#fff;text-shadow:0 2px 8px #000;line-height:1.2;">MYTH of<br>ETERNITY</div>
+        </div>
+      </div>
+      <div class="card-title">أسطورة الخلود</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ADVENTURE SECTION -->
+<div class="section">
+  <div class="section-header">رسوم متحركة مغامرات</div>
+  <div class="row">
+
+    <div class="card">
+      <div class="card-thumb bg-dark">
+        <div class="card-overlay"></div>
+        <div class="ep-update">تحديث إلى الإصدار 13</div>
+      </div>
+      <div class="card-title">أفضل ما في الأمر هو الحصول على أفضل...</div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb bg-warrior">
+        <div class="card-overlay"></div>
+        <div class="badge badge-free" style="color:#000;">حر</div>
+        <div class="ep-count">32 حلقة</div>
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;text-align:center;">
+          <div style="font-size:11px;font-weight:900;color:#fff;text-shadow:0 2px 8px #000;line-height:1.3;">LORD OF<br>INFINITE<br>REALMS</div>
+        </div>
+      </div>
+      <div class="card-title">سيد العوالم اللانهائية</div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb" style="background:linear-gradient(160deg,#0a1a0a 0%,#1a3d2e 50%,#0a1a14 100%);">
+        <div class="card-overlay"></div>
+        <div class="badge badge-free" style="color:#000;">حر</div>
+        <div class="ep-count">48 حلقة</div>
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;text-align:center;">
+          <div style="font-size:10px;font-weight:900;color:#fff;text-shadow:0 2px 8px #000;line-height:1.3;">THE<br>UNINHABIT<br>WONDERLA...</div>
+        </div>
+      </div>
+      <div class="card-title">أرض العجائب غير المأهولة</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SHOUNEN 2 (Sky Lord) -->
+<div class="section">
+  <div class="section-header">أنمي شونين</div>
+  <div class="row">
+
+    <div class="card">
+      <div class="card-thumb bg-lord">
+        <div class="card-overlay"></div>
+        <div class="badge badge-exclusive" style="font-size:9px;padding:3px 4px;">حصرياً على iQIYI</div>
+        <div class="rank-sub" style="bottom:10px;">تم التحديث إلى 253</div>
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-55%);white-space:nowrap;text-align:center;">
+          <div style="font-size:11px;font-weight:900;color:#ffd700;text-shadow:0 2px 8px #000;line-height:1.3;">The Legend<br>of Sky Lord</div>
+        </div>
+      </div>
+      <div class="card-title">أسطورة سيد السماء</div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb bg-sword">
+        <div class="card-overlay"></div>
+        <div class="badge badge-free" style="color:#000;">حر</div>
+        <div class="ep-count">78 حلقة</div>
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;text-align:center;">
+          <div style="font-size:11px;font-weight:900;color:#fff;text-shadow:0 2px 8px #000;line-height:1.3;">THE<br>FABULOUS<br>SWORD GOD</div>
+        </div>
+      </div>
+      <div class="card-title">إله السيف الرائع</div>
+    </div>
+
+    <div class="card">
+      <div class="card-thumb bg-green">
+        <div class="card-overlay"></div>
+        <div class="badge badge-free" style="color:#000;">حر</div>
+        <div class="ep-count">56 حلقة</div>
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;text-align:center;">
+          <div style="font-size:11px;font-weight:900;color:#fff;text-shadow:0 2px 8px #000;line-height:1.3;">The World<br>Fantasy</div>
+        </div>
+      </div>
+      <div class="card-title">عالم الخيال</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- FOOTER CTA -->
+<div class="footer-cta">
+  <h3>احصل على أفضل تجربة على التطبيق</h3>
+  <div class="footer-cta-sub">
+    ابحث في متجر التطبيقات <span class="logo-sm">iQIYI</span>
+  </div>
+  <div class="platform-btns">
+    <button class="platform-btn">📱 هاتف</button>
+    <div class="platform-row">
+      <button class="platform-btn">📺 تلفزيون</button>
+      <button class="platform-btn">🖥 الويب</button>
+    </div>
+  </div>
+  <div class="lang-select">🌐 إنجليزي ▾</div>
+  <div class="socials">
+    <a class="social-icon" href="#">f</a>
+    <a class="social-icon" href="#">📷</a>
+    <a class="social-icon" href="#">✕</a>
+  </div>
+  <div class="copyright">
+    © 2026 لشركة iQIYI جميع الحقوق محفوظة<br>
+    نستخدم ملفات تعريف الارتباط لتحسين تجربتك على هذا الموقع.<br>
+    <a href="#">سياسةموقعنا</a>، فإنك توافق على استخدامنا لملفات تعريف الارتباط.
+    <a href="#">اعرف المزيد</a>
+    <a href="#">خصوصية iQIYI</a>
+  </div>
+</div>
+
+<!-- FLOATING BUTTON -->
+<div class="float-btn">برنامج</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <span class="nav-icon">☰</span>
+  <span class="nav-icon">○</span>
+  <span class="nav-icon">›</span>
+</div>
+
+<pb></pb>
 
 </body>
 </html>
