@@ -1,235 +1,911 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cartoonia — كارتونيا</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #0A0A0A;
-            --surface: #111111;
-            --green: #00D67A;
-            --white: #FFFFFF;
-            --grey: #AAAAAA;
-            --pad: 12px;
-            --font: 'Cairo', sans-serif;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Cartoonia — كارتونيا</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
 
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: var(--font);
-            background: var(--bg);
-            color: var(--white);
-            max-width: 390px;
-            margin: 0 auto;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
+<style>
+/* ══════════════════════════════════════════
+   EXTRACTED HEX VALUES FROM iQIYI SCREENSHOTS
+   ══════════════════════════════════════════
+   Background base     : #0A0A0A
+   Background nav      : rgba(10,10,10,0.95)
+   Card surface        : #111111
+   Elevated input      : #1A1A1A
+   Green accent        : #00D67A  (badges, CTA, logo underline)
+   Green CTA btn       : #00C870  (slightly darker for button)
+   Blue badge          : #1565C0
+   Text primary        : #FFFFFF
+   Text secondary      : #AAAAAA
+   Text muted          : #666666
+   Star gold           : #FFD700
+   Hero overlay left   : rgba(0,0,0,0.92) → transparent (LTR fade)
+   Card overlay bottom : rgba(0,0,0,0.85) → transparent 55%
+   Separator           : #1C1C1C
+   Tab active line     : #00D67A
+*/
 
-        /* ══════════════════ HEADER (CLEAN & WIDE SEARCH) ══════════════════ */
-        .hdr {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            max-width: 390px;
-            z-index: 100;
-            background: linear-gradient(180deg, rgba(10,10,10,0.98) 0%, rgba(10,10,10,0.8) 100%);
-            padding: 10px var(--pad) 5px;
-            backdrop-filter: blur(10px);
-        }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        .hdr-row {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            height: 45px;
-        }
+  :root {
+    --bg:        #0A0A0A;
+    --surface:   #111111;
+    --elevated:  #1A1A1A;
+    --sep:       #1C1C1C;
+    --green:     #00D67A;
+    --green-btn: #00C870;
+    --blue:      #1565C0;
+    --white:     #FFFFFF;
+    --grey:      #AAAAAA;
+    --muted:     #666666;
+    --gold:      #FFD700;
+    --gap:       8px;
+    --pad:       16px;
+    --r:         8px;           /* card border-radius */
+    --font:      'Cairo', 'Tajawal', sans-serif;
+  }
 
-        /* اللوجو العربي فوق الانجليزي لتوفير المساحة */
-        .hdr-logo {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            line-height: 1;
-            flex-shrink: 0;
-        }
-        .hdr-logo span { font-size: 16px; font-weight: 900; color: var(--green); }
-        .hdr-logo em { font-style: normal; color: var(--white); font-size: 9px; font-weight: 400; opacity: 0.8; }
+  html { scroll-behavior: smooth; }
 
-        /* شريط بحث طويل مثل iQIYI */
-        .hdr-search {
-            flex: 1;
-            height: 34px;
-            background: #1A1A1A;
-            border: 1px solid #252525;
-            border-radius: 17px;
-            display: flex;
-            align-items: center;
-            padding: 0 12px;
-            gap: 8px;
-        }
-        .hdr-search input {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 11px;
-            width: 100%;
-            outline: none;
-            font-family: var(--font);
-        }
-        .hdr-search svg { width: 14px; height: 14px; opacity: 0.5; }
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--white);
+    direction: rtl;
+    max-width: 390px;
+    margin: 0 auto;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
 
-        .tabs {
-            display: flex;
-            overflow-x: auto;
-            scrollbar-width: none;
-            margin-top: 8px;
-            gap: 15px;
-            padding-bottom: 5px;
-        }
-        .tabs::-webkit-scrollbar { display: none; }
-        .tab { font-size: 13px; color: #777; white-space: nowrap; flex-shrink: 0; padding-bottom: 4px; border-bottom: 2px solid transparent; }
-        .tab.on { color: var(--white); font-weight: 700; border-bottom-color: var(--green); }
+  /* ════════════════════════════════════════
+     HEADER
+     - sticky, backdrop-blur, transparent
+     - order: ☰ | Logo | Search | CTA
+  ════════════════════════════════════════ */
+  .hdr {
+    position: fixed;
+    top: 0; left: 50%; transform: translateX(-50%);
+    width: 100%; max-width: 390px;
+    z-index: 100;
+    background: linear-gradient(
+      180deg,
+      rgba(10,10,10,0.97) 0%,
+      rgba(10,10,10,0.85) 70%,
+      rgba(10,10,10,0)    100%
+    );
+    padding: 14px var(--pad) 0;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
 
-        /* ══════════════════ HERO SECTION ══════════════════ */
-        .hero {
-            position: relative;
-            width: 100%;
-            height: 240px;
-            margin-top: 100px;
-            overflow: hidden;
-            background: #000;
-        }
-        .hero-img {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover;
-            mask-image: linear-gradient(to left, black 25%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to left, black 25%, transparent 100%);
-        }
-        .hero-overlay {
-            position: absolute;
-            bottom: 0; right: 0; left: 0;
-            padding: 20px var(--pad);
-            background: linear-gradient(to top, rgba(10,10,10,1) 10%, transparent 100%);
-            z-index: 2;
-        }
-        .hero-title { font-size: 22px; font-weight: 900; margin-bottom: 5px; }
-        .hero-meta { font-size: 11px; color: var(--green); display: flex; gap: 8px; }
+  .hdr-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 40px;
+  }
 
-        /* ══════════════════ TRENDING ROW (PORTRAIT) ══════════════════ */
-        .sec { margin-top: 20px; }
-        .sec-hdr { padding: 0 var(--pad) 10px; display: flex; justify-content: space-between; align-items: center; }
-        .sec-hdr h2 { font-size: 16px; font-weight: 700; }
+  /* hamburger */
+  .hdr-menu {
+    width: 20px; flex-shrink: 0;
+    display: flex; flex-direction: column;
+    gap: 4px; cursor: pointer; padding: 2px 0;
+  }
+  .hdr-menu span {
+    display: block; height: 2px; width: 100%;
+    background: var(--white);
+    border-radius: 2px;
+    transition: opacity .2s;
+  }
 
-        .row {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding: 0 var(--pad);
-            scrollbar-width: none;
-        }
-        .row::-webkit-scrollbar { display: none; }
+  /* logo */
+  .hdr-logo {
+    flex-shrink: 0;
+    font-size: 20px; font-weight: 900;
+    font-family: 'Cairo', sans-serif;
+    color: var(--green);
+    letter-spacing: -.3px;
+    line-height: 1;
+    user-select: none;
+  }
+  .hdr-logo em {
+    font-style: normal;
+    color: var(--white);
+    font-size: 13px;
+    font-weight: 600;
+    vertical-align: middle;
+    margin-right: 2px;
+  }
 
-        /* الأبعاد الصارمة للبوستر الطولي */
-        .card { flex: 0 0 110px; cursor: pointer; }
-        .card-img {
-            width: 100%;
-            aspect-ratio: 2 / 3; /* طول مثالي للبوستر */
-            border-radius: 6px;
-            overflow: hidden;
-            position: relative;
-            background: var(--surface);
-        }
-        .card-img img { width: 100%; height: 100%; object-fit: cover; }
-        
-        .card-img::after {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, transparent 50%);
-        }
+  /* search */
+  .hdr-search {
+    flex: 1;
+    height: 34px;
+    background: var(--elevated);
+    border: 1px solid #252525;
+    border-radius: 14px;
+    display: flex; align-items: center;
+    padding: 0 12px; gap: 6px;
+    cursor: pointer;
+    transition: border-color .2s;
+  }
+  .hdr-search:hover { border-color: #3a3a3a; }
+  .hdr-search svg { width: 14px; height: 14px; opacity: .45; flex-shrink: 0; }
+  .hdr-search span {
+    font-size: 12px; color: #555;
+    font-family: var(--font);
+  }
 
-        .badge {
-            position: absolute; top: 0; right: 0; z-index: 2;
-            background: var(--green); color: #000;
-            font-size: 10px; font-weight: 900; padding: 2px 8px;
-            border-bottom-left-radius: 6px;
-        }
-        .ep { position: absolute; bottom: 6px; left: 8px; z-index: 2; font-size: 10px; color: #fff; text-shadow: 0 1px 3px #000; }
+  /* CTA button */
+  .hdr-cta {
+    flex-shrink: 0;
+    height: 34px;
+    padding: 0 11px;
+    background: var(--green-btn);
+    color: #000;
+    font-size: 12px; font-weight: 700;
+    border-radius: 6px;
+    display: flex; align-items: center; gap: 4px;
+    cursor: pointer;
+    box-shadow: 0 0 14px rgba(0,214,122,.28);
+    transition: transform .15s, box-shadow .15s;
+    white-space: nowrap;
+    user-select: none;
+  }
+  .hdr-cta:active { transform: scale(.96); }
+  .hdr-cta svg { width: 12px; height: 12px; }
 
-        .card-title {
-            margin-top: 6px; font-size: 12px; font-weight: 600;
-            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-            overflow: hidden; color: #ccc; line-height: 1.3;
-        }
-    </style>
+  /* ── TABS ── */
+  .tabs {
+    display: flex;
+    overflow-x: auto; scrollbar-width: none;
+    padding: 0 2px;
+    margin-top: 4px;
+    border-bottom: 1px solid var(--sep);
+    gap: 0;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    padding: 9px 10px 7px;
+    font-size: 13px; font-weight: 400;
+    color: #777;
+    white-space: nowrap; flex-shrink: 0;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color .15s, border-color .15s;
+    user-select: none;
+  }
+  .tab.on {
+    color: var(--white); font-weight: 700;
+    border-bottom-color: var(--green);
+  }
+  .tab:hover:not(.on) { color: #aaa; }
+
+
+  /* ════════════════════════════════════════
+     HERO SLIDER
+     Height: ~220px (16:9 of 390px viewport)
+     Auto-play: 4s interval, crossfade
+     Left-side gradient fade (RTL = right-side visually)
+  ════════════════════════════════════════ */
+  .hero {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    background: #050510;
+    /* push below fixed header */
+    margin-top: 96px;
+  }
+
+  /* slides container */
+  .hero-track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .hero-slide {
+    position: absolute; inset: 0;
+    opacity: 0;
+    transition: opacity .7s ease;
+    will-change: opacity;
+  }
+  .hero-slide.active { opacity: 1; z-index: 2; }
+  .hero-slide.prev   { opacity: 0; z-index: 1; }
+
+  .hero-slide img {
+    position: absolute;
+    top: 0; right: 0;          /* image anchors to right (RTL) */
+    width: 70%; height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  /* Left-side gradient: black → transparent (RTL: this is the text side) */
+  .hero-slide::before {
+    content: '';
+    position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(
+      270deg,                    /* in RTL, 270deg = left of screen */
+      rgba(10,10,10,0)    0%,
+      rgba(10,10,10,0.55) 35%,
+      rgba(10,10,10,0.88) 60%,
+      rgba(10,10,10,0.97) 80%,
+      rgba(10,10,10,1)    100%
+    );
+  }
+
+  /* Bottom fade */
+  .hero-slide::after {
+    content: '';
+    position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(
+      0deg,
+      rgba(10,10,10,1)    0%,
+      rgba(10,10,10,0.4)  20%,
+      transparent         50%
+    );
+  }
+
+  /* Hero content */
+  .hero-content {
+    position: absolute;
+    bottom: 20px; right: var(--pad); left: var(--pad);
+    z-index: 3;
+  }
+
+  .hero-title {
+    font-size: 22px; font-weight: 900;
+    line-height: 1.15;
+    color: var(--white);
+    text-shadow: 0 2px 12px rgba(0,0,0,.9);
+    margin-bottom: 8px;
+    max-width: 65%;
+  }
+
+  .hero-badges {
+    display: flex; gap: 5px; margin-bottom: 8px; flex-wrap: wrap;
+  }
+  .hero-badge {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 4px;
+    font-size: 11px; font-weight: 700;
+    line-height: 1.3;
+  }
+  .hero-badge-free { background: var(--green); color: #000; }
+  .hero-badge-orig { background: var(--blue);  color: #fff; }
+
+  .hero-meta {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; color: #ccc;
+  }
+  .hero-meta .star { color: var(--gold); font-size: 13px; }
+  .hero-meta .rating { color: var(--white); font-weight: 700; }
+  .hero-meta .div { color: #444; }
+
+  /* Dots */
+  .hero-dots {
+    position: absolute;
+    bottom: 14px; left: var(--pad);
+    z-index: 3;
+    display: flex; gap: 4px; align-items: center;
+  }
+  .dot {
+    height: 3px; border-radius: 2px;
+    background: rgba(255,255,255,.3);
+    transition: width .3s, background .3s;
+    width: 14px;
+    cursor: pointer;
+  }
+  .dot.active {
+    background: var(--white);
+    width: 22px;
+  }
+
+  /* ════════════════════════════════════════
+     SECTION
+  ════════════════════════════════════════ */
+  .sec { margin-top: 22px; }
+
+  .sec-hdr {
+    padding: 0 var(--pad) 9px;
+    display: flex; align-items: center;
+    justify-content: space-between;
+  }
+  .sec-hdr h2 {
+    font-size: 16px; font-weight: 700; color: var(--white);
+    display: flex; align-items: center; gap: 5px;
+  }
+  .sec-hdr a {
+    font-size: 12px; color: var(--grey);
+    display: flex; align-items: center; gap: 2px;
+    cursor: pointer; text-decoration: none;
+  }
+  .sec-hdr a:hover { color: var(--white); }
+
+  /* ════════════════════════════════════════
+     TRENDING ROW — manual horizontal scroll
+     Card width: (390 - 32px padding - 16px gaps) / 3 = 114px
+     Card height: 114 × (4/3) = 152px  → aspect-ratio: 3/4
+  ════════════════════════════════════════ */
+  .row {
+    display: flex;
+    gap: var(--gap);
+    overflow-x: auto; scrollbar-width: none;
+    padding: 0 var(--pad) 6px;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+  }
+  .row::-webkit-scrollbar { display: none; }
+
+  /* ── CARD ── */
+  .card {
+    flex: 0 0 calc((100% - 32px - 16px) / 3);
+    /* fallback for browsers that don't support % in flex-basis well: */
+    min-width: 110px;
+    max-width: 120px;
+    scroll-snap-align: start;
+    cursor: pointer;
+  }
+
+  .card-img {
+    width: 100%;
+    aspect-ratio: 3 / 4;        /* ← STRICT PORTRAIT */
+    border-radius: var(--r);
+    overflow: hidden;
+    position: relative;
+    background: var(--surface);
+    box-shadow: 0 4px 14px rgba(0,0,0,.6);
+  }
+
+  .card-img img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    transition: transform .3s ease;
+  }
+  .card:hover .card-img img { transform: scale(1.04); }
+
+  /* Bottom gradient overlay */
+  .card-img::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(
+      0deg,
+      rgba(0,0,0,.88) 0%,
+      rgba(0,0,0,.45) 30%,
+      rgba(0,0,0,.00) 55%
+    );
+    pointer-events: none;
+  }
+
+  /* Badge — corner tag, top-left in RTL = top-right visually */
+  .badge {
+    position: absolute;
+    top: 0; left: 0;
+    z-index: 2;
+    font-size: 10px; font-weight: 700;
+    line-height: 1;
+    padding: 3px 6px;
+    border-radius: 0 0 var(--r) 0;
+  }
+  .badge-free   { background: var(--green); color: #000; }
+  .badge-orig   { background: var(--blue);  color: #fff; }
+  .badge-limit  { background: #CC7700;      color: #fff; }
+
+  /* Episode / update text inside card bottom */
+  .ep {
+    position: absolute;
+    bottom: 6px; right: 7px;
+    z-index: 2;
+    font-size: 11px; font-weight: 700;
+    color: var(--white);
+    text-shadow: 0 1px 3px rgba(0,0,0,.95);
+    line-height: 1;
+  }
+  .ep-upd {
+    position: absolute;
+    bottom: 6px; right: 0; left: 0;
+    padding: 0 7px;
+    z-index: 2;
+    font-size: 10px; font-weight: 600;
+    color: #ddd;
+    text-shadow: 0 1px 3px rgba(0,0,0,.95);
+  }
+
+  /* Card title below image */
+  .card-title {
+    margin-top: 6px;
+    font-size: 12px; font-weight: 600;
+    color: var(--white);
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ════════════════════════════════════════
+     DEMO CARD BACKGROUNDS (CSS gradients)
+     Replace with real <img> src
+  ════════════════════════════════════════ */
+  .bg1 { background: linear-gradient(160deg,#1a0814 0%,#5a1a3a 50%,#2a0818 100%); }
+  .bg2 { background: linear-gradient(160deg,#0a0a1a 0%,#1a1a4a 50%,#08081a 100%); }
+  .bg3 { background: linear-gradient(160deg,#0a1810 0%,#1a4a28 50%,#081008 100%); }
+  .bg4 { background: linear-gradient(160deg,#1a1000 0%,#5a3800 50%,#1a0c00 100%); }
+  .bg5 { background: linear-gradient(160deg,#100818 0%,#3a1a58 50%,#0c0814 100%); }
+  .bg6 { background: linear-gradient(160deg,#001818 0%,#003848 50%,#001018 100%); }
+
+  /* Hero slide backgrounds */
+  .hs1 { background: linear-gradient(135deg,#0a050a 0%,#1a0835 30%,#3a1060 60%,#0a0510 100%); }
+  .hs2 { background: linear-gradient(135deg,#050a05 0%,#082a1a 30%,#0f4a30 60%,#050a08 100%); }
+  .hs3 { background: linear-gradient(135deg,#0a0505 0%,#280a0a 30%,#4a1515 60%,#100505 100%); }
+  .hs4 { background: linear-gradient(135deg,#050508 0%,#0a0a28 30%,#181860 60%,#050508 100%); }
+  .hs5 { background: linear-gradient(135deg,#080510 0%,#180828 30%,#380a50 60%,#080510 100%); }
+  .hs6 { background: linear-gradient(135deg,#050a08 0%,#081828 30%,#103040 60%,#050810 100%); }
+
+  /* ── spacer at bottom ── */
+  .spacer { height: 40px; }
+
+  /* ── Subtle noise texture overlay ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999;
+    opacity: .4;
+  }
+</style>
 </head>
 <body>
 
+<!-- ════════════════════════════════
+     HEADER
+════════════════════════════════ -->
 <header class="hdr">
-    <div class="hdr-row">
-        <div class="hdr-logo">
-            <span>Cartoonia</span>
-            <em>كارتونيا</em>
-        </div>
-        <div class="hdr-search">
-            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4"/></svg>
-            <input type="text" placeholder="ابحث عن أنيمي...">
-        </div>
+  <div class="hdr-row">
+
+    <!-- hamburger -->
+    <div class="hdr-menu" aria-label="القائمة">
+      <span></span><span></span><span></span>
     </div>
-    <nav class="tabs">
-        <div class="tab on">أنيمي</div>
-        <div class="tab">مغامرات</div>
-        <div class="tab">أطفال</div>
-        <div class="tab">أفلام</div>
-        <div class="tab">الأكثر رواجاً</div>
-    </nav>
+
+    <!-- logo -->
+    <div class="hdr-logo">
+      Cartoonia<em>كارتونيا</em>
+    </div>
+
+    <!-- search -->
+    <div class="hdr-search" role="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+        <circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4"/>
+      </svg>
+      <span>ابحث عن أنيمي...</span>
+    </div>
+
+    <!-- CTA -->
+    <div class="hdr-cta">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 16l-6-6h4V4h4v6h4l-6 6zm-7 4h14v-2H5v2z"/>
+      </svg>
+      تطبيق
+    </div>
+
+  </div>
+
+  <!-- tabs -->
+  <nav class="tabs" role="navigation">
+    <div class="tab on">أنيمي</div>
+    <div class="tab">دراما</div>
+    <div class="tab">فيلم</div>
+    <div class="tab">مغامرات</div>
+    <div class="tab">أطفال</div>
+    <div class="tab">الأكثر رواجاً</div>
+    <div class="tab">لك</div>
+  </nav>
 </header>
 
-<section class="hero">
-    <img src="https://image.tmdb.org/t/p/original/69Uqt79BYEqMxp6wp4Tia9un9H7.jpg" class="hero-img">
-    <div class="hero-overlay">
-        <div class="hero-title">عالم الخيال</div>
-        <div class="hero-meta"><span>★ 8.7</span> <span>2024</span> <span>مجاني</span></div>
+
+<!-- ════════════════════════════════
+     HERO SLIDER
+════════════════════════════════ -->
+<section class="hero" id="hero" aria-label="المميز">
+
+  <!-- SLIDE 1 -->
+  <div class="hero-slide active hs1" data-idx="0">
+    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:flex-end;overflow:hidden;">
+      <div style="width:65%;height:100%;background:linear-gradient(200deg,#3a1060 0%,#6a20a0 40%,#1a0830 100%);display:flex;align-items:flex-end;justify-content:center;padding-bottom:10px;">
+        <!-- placeholder silhouette -->
+        <div style="width:80%;height:85%;background:linear-gradient(180deg,rgba(255,255,255,.08) 0%,transparent 100%);border-radius:8px 8px 0 0;"></div>
+      </div>
     </div>
+    <div class="hero-content">
+      <div class="hero-badges">
+        <span class="hero-badge hero-badge-free">حر</span>
+      </div>
+      <div class="hero-title">عالم الخيال</div>
+      <div class="hero-meta">
+        <span class="star">★</span>
+        <span class="rating">8.7</span>
+        <span class="div">|</span>
+        <span>2015</span>
+        <span class="div">|</span>
+        <span>13+</span>
+        <span class="div">|</span>
+        <span>56 حلقة</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2 -->
+  <div class="hero-slide hs2" data-idx="1">
+    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:flex-end;overflow:hidden;">
+      <div style="width:65%;height:100%;background:linear-gradient(200deg,#0f4a30 0%,#1a7a50 40%,#082018 100%);display:flex;align-items:flex-end;justify-content:center;padding-bottom:10px;">
+        <div style="width:75%;height:88%;background:linear-gradient(180deg,rgba(255,255,255,.07) 0%,transparent 100%);border-radius:8px 8px 0 0;"></div>
+      </div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badges">
+        <span class="hero-badge hero-badge-free">حر</span>
+      </div>
+      <div class="hero-title">أسطورة سيد السماء</div>
+      <div class="hero-meta">
+        <span class="star">★</span>
+        <span class="rating">9.1</span>
+        <span class="div">|</span>
+        <span>2019</span>
+        <span class="div">|</span>
+        <span>13+</span>
+        <span class="div">|</span>
+        <span>253 حلقة</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3 -->
+  <div class="hero-slide hs3" data-idx="2">
+    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:flex-end;overflow:hidden;">
+      <div style="width:65%;height:100%;background:linear-gradient(200deg,#4a1515 0%,#8a2020 40%,#200808 100%);display:flex;align-items:flex-end;justify-content:center;padding-bottom:10px;">
+        <div style="width:78%;height:90%;background:linear-gradient(180deg,rgba(255,255,255,.07) 0%,transparent 100%);border-radius:8px 8px 0 0;"></div>
+      </div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badges">
+        <span class="hero-badge hero-badge-free">حر</span>
+      </div>
+      <div class="hero-title">سيد السيف الوحيد</div>
+      <div class="hero-meta">
+        <span class="star">★</span>
+        <span class="rating">8.9</span>
+        <span class="div">|</span>
+        <span>2020</span>
+        <span class="div">|</span>
+        <span>16+</span>
+        <span class="div">|</span>
+        <span>165 حلقة</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4 -->
+  <div class="hero-slide hs4" data-idx="3">
+    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:flex-end;overflow:hidden;">
+      <div style="width:65%;height:100%;background:linear-gradient(200deg,#181860 0%,#2828a0 40%,#0c0c30 100%);display:flex;align-items:flex-end;justify-content:center;padding-bottom:10px;">
+        <div style="width:76%;height:86%;background:linear-gradient(180deg,rgba(255,255,255,.07) 0%,transparent 100%);border-radius:8px 8px 0 0;"></div>
+      </div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badges">
+        <span class="hero-badge hero-badge-free">حر</span>
+      </div>
+      <div class="hero-title">الخيمياء العليا</div>
+      <div class="hero-meta">
+        <span class="star">★</span>
+        <span class="rating">9.0</span>
+        <span class="div">|</span>
+        <span>2021</span>
+        <span class="div">|</span>
+        <span>13+</span>
+        <span class="div">|</span>
+        <span>170 حلقة</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5 -->
+  <div class="hero-slide hs5" data-idx="4">
+    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:flex-end;overflow:hidden;">
+      <div style="width:65%;height:100%;background:linear-gradient(200deg,#380a50 0%,#5a1080 40%,#180528 100%);display:flex;align-items:flex-end;justify-content:center;padding-bottom:10px;">
+        <div style="width:80%;height:88%;background:linear-gradient(180deg,rgba(255,255,255,.07) 0%,transparent 100%);border-radius:8px 8px 0 0;"></div>
+      </div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badges">
+        <span class="hero-badge hero-badge-free">حر</span>
+      </div>
+      <div class="hero-title">أسطورة الخلود</div>
+      <div class="hero-meta">
+        <span class="star">★</span>
+        <span class="rating">8.8</span>
+        <span class="div">|</span>
+        <span>2020</span>
+        <span class="div">|</span>
+        <span>13+</span>
+        <span class="div">|</span>
+        <span>280 حلقة</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6 -->
+  <div class="hero-slide hs6" data-idx="5">
+    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:flex-end;overflow:hidden;">
+      <div style="width:65%;height:100%;background:linear-gradient(200deg,#103040 0%,#1a5060 40%,#081828 100%);display:flex;align-items:flex-end;justify-content:center;padding-bottom:10px;">
+        <div style="width:72%;height:84%;background:linear-gradient(180deg,rgba(255,255,255,.07) 0%,transparent 100%);border-radius:8px 8px 0 0;"></div>
+      </div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badges">
+        <span class="hero-badge hero-badge-free">حر</span>
+      </div>
+      <div class="hero-title">قارة لينغوو</div>
+      <div class="hero-meta">
+        <span class="star">★</span>
+        <span class="rating">9.2</span>
+        <span class="div">|</span>
+        <span>2021</span>
+        <span class="div">|</span>
+        <span>16+</span>
+        <span class="div">|</span>
+        <span>168 حلقة</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- dots navigation -->
+  <div class="hero-dots" id="heroDots">
+    <div class="dot active" data-go="0"></div>
+    <div class="dot" data-go="1"></div>
+    <div class="dot" data-go="2"></div>
+    <div class="dot" data-go="3"></div>
+    <div class="dot" data-go="4"></div>
+    <div class="dot" data-go="5"></div>
+  </div>
+
 </section>
 
+
+<!-- ════════════════════════════════
+     TRENDING SLIDER (Manual)
+     6 cards, horizontal scroll
+     STRICT portrait 3:4 cards
+════════════════════════════════ -->
 <section class="sec">
-    <div class="sec-hdr"><h2>الأكثر رواجاً</h2></div>
-    <div class="row">
-        <div class="card">
-            <div class="card-img">
-                <div class="badge">حر</div>
-                <img src="https://via.placeholder.com/200x300/111/00D67A?text=Poster+1">
-                <div class="ep">12 حلقة</div>
-            </div>
-            <div class="card-title">اسم الأنمي هنا</div>
+  <div class="sec-hdr">
+    <h2>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--green)">
+        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+      </svg>
+      الأكثر رواجاً
+    </h2>
+    <a>عرض الكل ›</a>
+  </div>
+
+  <div class="row" id="trendRow">
+
+    <div class="card">
+      <div class="card-img bg2">
+        <div class="badge badge-free">حر</div>
+        <div class="ep-upd">تم التحديث إلى 5</div>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:1;">
+          <div style="font-size:11px;font-weight:900;color:rgba(255,200,100,.9);text-align:center;text-shadow:0 1px 6px #000;line-height:1.4;direction:ltr;">In Search<br>of Gods</div>
         </div>
-        <div class="card">
-            <div class="card-img">
-                <div class="badge">حر</div>
-                <img src="https://via.placeholder.com/200x300/222/00D67A?text=Poster+2">
-                <div class="ep">مكتمل</div>
-            </div>
-            <div class="card-title">مغامرة جديدة</div>
-        </div>
-        <div class="card">
-            <div class="card-img">
-                <div class="badge">حر</div>
-                <img src="https://via.placeholder.com/200x300/111/00D67A?text=Poster+3">
-                <div class="ep">حلقة 5</div>
-            </div>
-            <div class="card-title">أسطورة كارتونيا</div>
-        </div>
-        <div class="card">
-            <div class="card-img">
-                <div class="badge">حر</div>
-                <img src="https://via.placeholder.com/200x300/222/00D67A?text=Poster+4">
-            </div>
-            <div class="card-title">بطل السيف</div>
-        </div>
+      </div>
+      <div class="card-title">بحثاً عن الآلهة [حصري]</div>
     </div>
+
+    <div class="card">
+      <div class="card-img" style="background:linear-gradient(160deg,#1a0a14 0%,#4a1530 60%,#0a0510 100%);">
+        <div class="badge badge-free">حر</div>
+        <div class="ep">12 حلقة</div>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:1;">
+          <div style="font-size:10px;font-weight:900;color:rgba(255,255,255,.9);text-align:center;text-shadow:0 1px 6px #000;line-height:1.4;direction:ltr;">Conspiracy<br>of Love</div>
+        </div>
+      </div>
+      <div class="card-title">مؤامرة الحب</div>
+    </div>
+
+    <div class="card">
+      <div class="card-img" style="background:linear-gradient(160deg,#ffd0d8 0%,#ffb0c8 40%,#c0d8f8 100%);">
+        <div class="badge badge-free">حر</div>
+        <div class="ep">12 حلقة</div>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:1;">
+          <div style="font-size:13px;font-weight:900;color:#1a3a6e;text-align:center;text-shadow:0 1px 4px rgba(255,255,255,.5);line-height:1.3;direction:ltr;">Be<br>My<br>Wife</div>
+        </div>
+      </div>
+      <div class="card-title">كوني زوجتي</div>
+    </div>
+
+    <div class="card">
+      <div class="card-img bg1">
+        <div class="badge badge-free">حر</div>
+        <div class="ep">80 حلقة</div>
+      </div>
+      <div class="card-title">مؤامرة الحب 2</div>
+    </div>
+
+    <div class="card">
+      <div class="card-img bg5">
+        <div class="badge badge-free">حر</div>
+        <div class="ep">56 حلقة</div>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:1;">
+          <div style="font-size:9px;font-weight:900;color:rgba(255,220,80,.9);text-align:center;text-shadow:0 1px 6px #000;line-height:1.4;direction:ltr;">The World<br>of Fantasy</div>
+        </div>
+      </div>
+      <div class="card-title">عالم الخيال</div>
+    </div>
+
+    <div class="card">
+      <div class="card-img bg4">
+        <div class="badge badge-free">حر</div>
+        <div class="ep">168 حلقة</div>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:1;">
+          <div style="font-size:9px;font-weight:900;color:rgba(200,255,180,.9);text-align:center;text-shadow:0 1px 6px #000;line-height:1.4;direction:ltr;">LINGWU<br>CONTINENT</div>
+        </div>
+      </div>
+      <div class="card-title">قارة لينغوو</div>
+    </div>
+
+  </div>
 </section>
+
+
+<!-- ════════════════════════════════
+     COMICS SECTION (bonus)
+════════════════════════════════ -->
+<section class="sec">
+  <div class="sec-hdr">
+    <h2>قصص مصورة لا تفوت مشاهدتها ›</h2>
+  </div>
+
+  <div class="row">
+
+    <div class="card">
+      <div class="card-img" style="background:linear-gradient(160deg,#0a1828 0%,#0a2848 60%,#050f18 100%);">
+        <div class="badge badge-free">حر</div>
+        <div class="ep">80 حلقة</div>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:1;">
+          <div style="font-size:9px;font-weight:900;color:rgba(150,255,200,.9);text-align:center;text-shadow:0 1px 6px #000;line-height:1.5;direction:ltr;">觉醒后<br>我无敌了</div>
+        </div>
+      </div>
+      <div class="card-title">بعد الصحوة أصبحت لا يُقهر</div>
+    </div>
+
+    <div class="card">
+      <div class="card-img" style="background:linear-gradient(160deg,#040818 0%,#081530 60%,#030810 100%);">
+        <div class="badge badge-free">حر</div>
+        <div class="ep">80 حلقة</div>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:1;">
+          <div style="font-size:8px;font-weight:900;color:rgba(100,200,255,.9);text-align:center;text-shadow:0 1px 6px #000;line-height:1.5;direction:ltr;">随身一座灵药园<br>我靠炼丹独断万古</div>
+        </div>
+      </div>
+      <div class="card-title">حديقة الأعشاب المحمولة</div>
+    </div>
+
+    <div class="card">
+      <div class="card-img" style="background:linear-gradient(160deg,#101008 0%,#2a2808 60%,#080805 100%);">
+        <div class="badge badge-free">حر</div>
+        <div class="ep">80 حلقة</div>
+      </div>
+      <div class="card-title">بطل الألف سنة</div>
+    </div>
+
+    <div class="card">
+      <div class="card-img bg3">
+        <div class="badge badge-free">حر</div>
+        <div class="ep">25 حلقة</div>
+      </div>
+      <div class="card-title">رحلة الشرق</div>
+    </div>
+
+  </div>
+</section>
+
+<div class="spacer"></div>
+
+
+<!-- ════════════════════════════════
+     JAVASCRIPT
+     - Hero: autoplay every 4s, crossfade
+     - Dots: click to jump
+     - Tabs: click to activate
+════════════════════════════════ -->
+<script>
+(function () {
+  'use strict';
+
+  /* ── HERO AUTOPLAY ──────────────────── */
+  const slides = document.querySelectorAll('.hero-slide');
+  const dots   = document.querySelectorAll('#heroDots .dot');
+  let current  = 0;
+  let timer    = null;
+
+  function goTo(idx) {
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = (idx + slides.length) % slides.length;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+  }
+
+  function next() { goTo(current + 1); }
+
+  function startTimer() {
+    clearInterval(timer);
+    timer = setInterval(next, 4000);
+  }
+
+  // dot click
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      goTo(+dot.dataset.go);
+      startTimer();
+    });
+  });
+
+  // Touch swipe on hero
+  const hero = document.getElementById('hero');
+  let touchX = 0;
+  hero.addEventListener('touchstart', e => {
+    touchX = e.touches[0].clientX;
+  }, { passive: true });
+  hero.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 40) {
+      // RTL: swipe right = next, swipe left = prev
+      goTo(dx < 0 ? current + 1 : current - 1);
+      startTimer();
+    }
+  }, { passive: true });
+
+  // Pause on hover (desktop)
+  hero.addEventListener('mouseenter', () => clearInterval(timer));
+  hero.addEventListener('mouseleave', startTimer);
+
+  startTimer();
+
+  /* ── TABS ───────────────────────────── */
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+      tab.classList.add('on');
+    });
+  });
+
+  /* ── HEADER: transparent → solid on scroll ── */
+  const hdr = document.querySelector('.hdr');
+  const heroSection = document.getElementById('hero');
+
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) {
+      hdr.style.background = 'linear-gradient(180deg,rgba(10,10,10,0.97) 0%,rgba(10,10,10,0.85) 70%,rgba(10,10,10,0) 100%)';
+    } else {
+      hdr.style.background = 'rgba(10,10,10,0.98)';
+    }
+  }, { threshold: 0.1 });
+
+  obs.observe(heroSection);
+
+})();
+</script>
 
 </body>
 </html>
