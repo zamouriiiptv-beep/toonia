@@ -3,19 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Toonia - عالم الكرتون العربي</title>
+<title>Cartoonia</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 
 <style>
+
+/* =========================
+   GLOBAL
+========================= */
+*{box-sizing:border-box;margin:0;padding:0}
+
 body{
-  margin:0;
   font-family:'Cairo',sans-serif;
   background:#0A0A0A;
   color:#fff;
 }
 
-/* HEADER */
+/* =========================
+   HEADER
+========================= */
 .header{
   display:flex;
   justify-content:space-between;
@@ -28,48 +35,42 @@ body{
   background:rgba(10,10,10,0.95);
   z-index:10;
 }
+
 .logo{
   color:#00D67A;
   font-weight:900;
-  font-size:22px;
-}
-.search input{
-  padding:6px;
-  border:none;
-  border-radius:8px;
-  background:#1A1A1A;
-  color:#fff;
-}
-.cta{
-  background:#00D67A;
-  border:none;
-  padding:6px 10px;
-  border-radius:6px;
+  font-size:20px;
 }
 
-/* HERO */
+/* =========================
+   HERO (16:9 + rounded)
+========================= */
 .hero{
   margin-top:60px;
-  height:240px;
+  width:100%;
+  aspect-ratio:16 / 9;
   position:relative;
   overflow:hidden;
+  border-radius:14px;
+  margin-left:10px;
+  margin-right:10px;
 }
+
 .slide{
   position:absolute;
-  width:100%;
-  height:100%;
+  inset:0;
   opacity:0;
-  transition:0.6s ease;
+  transition:.5s ease;
   display:flex;
   align-items:center;
   justify-content:center;
   font-size:22px;
   font-weight:900;
-  text-align:center;
 }
+
 .slide.active{opacity:1}
 
-/* DOTS */
+/* dots */
 .dots{
   position:absolute;
   bottom:10px;
@@ -78,63 +79,103 @@ body{
   gap:5px;
 }
 .dot{
-  width:12px;
+  width:10px;
   height:4px;
-  background:#444;
+  background:#555;
   border-radius:2px;
-  cursor:pointer;
 }
 .dot.active{
   background:#00D67A;
-  width:20px;
+  width:18px;
 }
 
-/* SECTION */
+/* =========================
+   SECTION
+========================= */
 .section{
   padding:10px;
 }
+
 .section h2{
+  font-size:14px;
   margin:10px 0;
 }
 
-/* SLIDER */
+/* =========================
+   GRID / SLIDER (iQIYI STYLE)
+   3 items + peek 4th
+========================= */
 .slider{
   display:flex;
+  gap:10px;                 /* max 10px spacing */
   overflow-x:auto;
-  gap:10px;
   scroll-snap-type:x mandatory;
   padding-bottom:10px;
 }
+
 .slider::-webkit-scrollbar{display:none}
 
-/* CARD (2:3 POSTER FIX iQIYI STYLE) */
+/* =========================
+   CARD (IMPORTANT)
+========================= */
 .card{
-  min-width:120px;
-  flex-shrink:0;
-  background:#111;
-  border-radius:12px;
-  overflow:hidden;
+  flex:0 0 calc(33.333% - 7px); /* 3 cards per row */
   scroll-snap-align:start;
-  transition:transform .2s ease;
 }
 
-.card:hover{
-  transform:scale(1.05);
-}
-
+/* image poster */
 .card img{
   width:100%;
-  aspect-ratio:2 / 3;
+  aspect-ratio:2 / 3;      /* iQIYI STYLE */
   object-fit:cover;
+  border-radius:12px;
   display:block;
+  position:relative;
 }
 
-.card p{
-  padding:6px;
-  font-size:12px;
-  text-align:center;
-  color:#fff;
+/* gradient overlay bottom */
+.card .overlay{
+  position:relative;
 }
+
+.card .overlay::after{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  height:40%;
+  border-radius:12px;
+  background:linear-gradient(
+    to top,
+    rgba(0,0,0,0.85),
+    transparent
+  );
+}
+
+/* title BELOW image (no black box) */
+.card p{
+  margin-top:4px;
+  font-size:12px;
+  color:#fff;
+  background:transparent;
+  text-align:center;
+}
+
+/* =========================
+   RESPONSIVE (mobile tuning)
+========================= */
+@media (max-width:420px){
+
+  .card{
+    flex:0 0 32%; /* slight peek of 4th card */
+  }
+
+  .slider{
+    gap:8px;
+  }
+}
+
 </style>
 </head>
 
@@ -142,45 +183,95 @@ body{
 
 <!-- HEADER -->
 <div class="header">
-  <div class="logo">Toonia</div>
-  <div class="search"><input placeholder="ابحث عن كرتون..."></div>
-  <button class="cta">تطبيق</button>
+  <div class="logo">Cartoonia</div>
 </div>
 
-<!-- HERO (6 SLIDES) -->
+<!-- HERO -->
 <div class="hero">
 
-  <div class="slide active" style="background:linear-gradient(135deg,#1a0835,#3a1060)">عالم الكرتون العربي</div>
-  <div class="slide" style="background:linear-gradient(135deg,#0f4a30,#1a7a50)">مدبلج عربي حصري</div>
-  <div class="slide" style="background:linear-gradient(135deg,#4a1515,#8a2020)">أقوى المسلسلات</div>
-  <div class="slide" style="background:linear-gradient(135deg,#0a0a28,#181860)">أفلام كرتون جديدة</div>
-  <div class="slide" style="background:linear-gradient(135deg,#380a50,#5a1080)">حصريات Toonia</div>
-  <div class="slide" style="background:linear-gradient(135deg,#103040,#1a5060)">شاهد بدون إعلانات</div>
+  <div class="slide active" style="background:linear-gradient(135deg,#1a0835,#3a1060)">Anime World</div>
+  <div class="slide" style="background:linear-gradient(135deg,#0f4a30,#1a7a50)">Arabic Dub</div>
+  <div class="slide" style="background:linear-gradient(135deg,#4a1515,#8a2020)">Movies</div>
 
   <div class="dots" id="dots"></div>
 </div>
 
-<!-- SECTION 1 -->
+<!-- SECTION -->
 <div class="section">
   <h2>🔥 الأكثر مشاهدة</h2>
-  <div class="slider" id="trend"></div>
+
+  <div class="slider">
+
+    <div class="card">
+      <div class="overlay">
+        <img src="https://via.placeholder.com/300x450">
+      </div>
+      <p>دراغون بول</p>
+    </div>
+
+    <div class="card">
+      <div class="overlay">
+        <img src="https://via.placeholder.com/300x450">
+      </div>
+      <p>ون بيس</p>
+    </div>
+
+    <div class="card">
+      <div class="overlay">
+        <img src="https://via.placeholder.com/300x450">
+      </div>
+      <p>كونان</p>
+    </div>
+
+    <div class="card">
+      <div class="overlay">
+        <img src="https://via.placeholder.com/300x450">
+      </div>
+      <p>ناروتو</p>
+    </div>
+
+  </div>
 </div>
 
 <!-- SECTION 2 -->
 <div class="section">
   <h2>🎬 كرتون عربي</h2>
-  <div class="slider" id="arabic"></div>
+
+  <div class="slider">
+
+    <div class="card">
+      <div class="overlay">
+        <img src="https://via.placeholder.com/300x450">
+      </div>
+      <p>عدنان ولينا</p>
+    </div>
+
+    <div class="card">
+      <div class="overlay">
+        <img src="https://via.placeholder.com/300x450">
+      </div>
+      <p>جريندايزر</p>
+    </div>
+
+    <div class="card">
+      <div class="overlay">
+        <img src="https://via.placeholder.com/300x450">
+      </div>
+      <p>ماوكلي</p>
+    </div>
+
+  </div>
 </div>
 
 <script>
 
 /* HERO SLIDER */
-let index = 0;
-const slides = document.querySelectorAll(".slide");
-const dotsContainer = document.getElementById("dots");
+let index=0;
+const slides=document.querySelectorAll(".slide");
 
-/* create dots */
-slides.forEach((_, i)=>{
+const dotsContainer=document.getElementById("dots");
+
+slides.forEach((_,i)=>{
   const d=document.createElement("div");
   d.className="dot"+(i===0?" active":"");
   d.onclick=()=>show(i);
@@ -203,41 +294,6 @@ setInterval(()=>{
   index=(index+1)%slides.length;
   show(index);
 },4000);
-
-/* DATA (6 ITEMS EACH) */
-const trend = [
- {t:"سندباد",img:"https://via.placeholder.com/200x300"},
- {t:"ماوكلي",img:"https://via.placeholder.com/200x300"},
- {t:"أبطال الكرة",img:"https://via.placeholder.com/200x300"},
- {t:"كونان",img:"https://via.placeholder.com/200x300"},
- {t:"دراغون بول",img:"https://via.placeholder.com/200x300"},
- {t:"ون بيس",img:"https://via.placeholder.com/200x300"}
-];
-
-const arabic = [
- {t:"عدنان ولينا",img:"https://via.placeholder.com/200x300"},
- {t:"جريندايزر",img:"https://via.placeholder.com/200x300"},
- {t:"الكابتن ماجد",img:"https://via.placeholder.com/200x300"},
- {t:"صقور الأرض",img:"https://via.placeholder.com/200x300"},
- {t:"فارس الشجاع",img:"https://via.placeholder.com/200x300"},
- {t:"الليث الأبيض",img:"https://via.placeholder.com/200x300"}
-];
-
-/* render sliders */
-function render(id,data){
-  const el=document.getElementById(id);
-  data.forEach(i=>{
-    el.innerHTML+=`
-      <div class="card">
-        <img src="${i.img}">
-        <p>${i.t}</p>
-      </div>
-    `;
-  });
-}
-
-render("trend",trend);
-render("arabic",arabic);
 
 </script>
 
