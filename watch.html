@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>مشاهدة – Toonia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Exo+2:wght@700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body class="watch-page">
+
+  <!-- HEADER -->
+  <header class="header watch-header" id="header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-t">T</span><span class="logo-rest">oonia</span>
+        <span class="logo-dot"></span>
+      </a>
+      <a href="index.html" class="back-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        العودة للرئيسية
+      </a>
+    </div>
+  </header>
+
+  <!-- WATCH LAYOUT -->
+  <div class="watch-layout">
+
+    <!-- LEFT: Player + Info -->
+    <div class="watch-main">
+
+      <!-- Video Player -->
+      <div class="player-wrap" id="playerWrap">
+        <video class="video-player" id="videoPlayer" controls poster="">
+          <source src="" type="video/mp4" id="videoSource" />
+          متصفحك لا يدعم تشغيل الفيديو.
+        </video>
+        <div class="player-overlay" id="playerOverlay">
+          <div class="player-placeholder">
+            <div class="play-pulse">
+              <svg width="60" height="60" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </div>
+            <p id="nowPlayingLabel">اختر حلقة للمشاهدة</p>
+          </div>
+        </div>
+        <div class="player-top-bar">
+          <span class="player-badge-live">HD</span>
+          <span id="playerEpTitle" class="player-ep-title"></span>
+        </div>
+      </div>
+
+      <!-- Anime Info -->
+      <div class="anime-info" id="animeInfo">
+        <div class="anime-info-header">
+          <div class="anime-thumb-wrap">
+            <img id="animeThumb" src="" alt="" class="anime-thumb" loading="lazy" />
+          </div>
+          <div class="anime-meta">
+            <h1 class="anime-title" id="animeTitle">جاري التحميل...</h1>
+            <div class="anime-tags" id="animeTags"></div>
+            <div class="anime-stats">
+              <span class="stat">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="#FFD700"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <span id="animeRating">--</span>
+              </span>
+              <span class="stat">📅 <span id="animeYear">--</span></span>
+              <span class="stat">🎬 <span id="animeEpCount">--</span> حلقة</span>
+              <span class="stat">🌐 <span id="animeLang">--</span></span>
+            </div>
+            <p class="anime-desc" id="animeDesc">--</p>
+            <button class="btn-next-ep" id="btnNextEp">
+              الحلقة التالية
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: Episodes list -->
+    <aside class="episodes-aside">
+      <div class="episodes-header">
+        <h3>قائمة الحلقات</h3>
+        <span class="ep-count-badge" id="epCountBadge">0 حلقة</span>
+      </div>
+      <div class="episodes-list" id="episodesList"></div>
+    </aside>
+
+  </div>
+
+  <!-- Related section -->
+  <section class="content-section related-section">
+    <div class="section-header">
+      <div class="section-title-wrap">
+        <span class="section-accent"></span>
+        <h2 class="section-title">قد يعجبك أيضاً</h2>
+      </div>
+    </div>
+    <div class="cards-row-wrap">
+      <button class="row-nav row-prev" aria-label="السابق"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <div class="cards-row" id="rowRelated"></div>
+      <button class="row-nav row-next" aria-label="التالي"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-bottom" style="padding-top:1.5rem">
+      <p>© 2025 Toonia. جميع الحقوق محفوظة.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
