@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Toonia - عالم الكرتون العربي</title>
+<title>Toonia</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 
@@ -50,7 +50,6 @@ body{
   position:relative;
   overflow:hidden;
 }
-
 .slide{
   position:absolute;
   width:100%;
@@ -62,7 +61,6 @@ body{
   justify-content:center;
   font-size:22px;
   font-weight:900;
-  text-align:center;
 }
 .slide.active{opacity:1}
 
@@ -79,7 +77,6 @@ body{
   height:4px;
   background:#444;
   border-radius:2px;
-  cursor:pointer;
 }
 .dot.active{
   background:#00D67A;
@@ -94,13 +91,15 @@ body{
   margin:10px 0;
 }
 
-/* ROW SLIDER */
-.row{
+/* ===== SLIDER (NEW) ===== */
+.slider{
   display:flex;
   overflow-x:auto;
   gap:10px;
   scroll-snap-type:x mandatory;
+  padding-bottom:10px;
 }
+.slider::-webkit-scrollbar{display:none}
 
 /* CARD */
 .card{
@@ -109,6 +108,7 @@ body{
   border-radius:10px;
   overflow:hidden;
   scroll-snap-align:start;
+  flex-shrink:0;
 }
 .card img{
   width:100%;
@@ -127,40 +127,19 @@ body{
 <!-- HEADER -->
 <div class="header">
   <div class="logo">Toonia</div>
-
-  <div class="search">
-    <input placeholder="ابحث عن كرتون...">
-  </div>
-
+  <div class="search"><input placeholder="ابحث..."></div>
   <button class="cta">تطبيق</button>
 </div>
 
 <!-- HERO (6 SLIDES) -->
 <div class="hero">
 
-  <div class="slide active" style="background:linear-gradient(135deg,#1a0835,#3a1060)">
-    عالم الكرتون العربي
-  </div>
-
-  <div class="slide" style="background:linear-gradient(135deg,#0f4a30,#1a7a50)">
-    مدبلج عربي حصري
-  </div>
-
-  <div class="slide" style="background:linear-gradient(135deg,#4a1515,#8a2020)">
-    أقوى المسلسلات
-  </div>
-
-  <div class="slide" style="background:linear-gradient(135deg,#0a0a28,#181860)">
-    أفلام كرتون جديدة
-  </div>
-
-  <div class="slide" style="background:linear-gradient(135deg,#380a50,#5a1080)">
-    حصريات Toonia
-  </div>
-
-  <div class="slide" style="background:linear-gradient(135deg,#103040,#1a5060)">
-    شاهد بدون إعلانات
-  </div>
+  <div class="slide active" style="background:linear-gradient(135deg,#1a0835,#3a1060)">عالم الكرتون</div>
+  <div class="slide" style="background:linear-gradient(135deg,#0f4a30,#1a7a50)">مدبلج عربي</div>
+  <div class="slide" style="background:linear-gradient(135deg,#4a1515,#8a2020)">مسلسلات</div>
+  <div class="slide" style="background:linear-gradient(135deg,#0a0a28,#181860)">أفلام</div>
+  <div class="slide" style="background:linear-gradient(135deg,#380a50,#5a1080)">حصريات</div>
+  <div class="slide" style="background:linear-gradient(135deg,#103040,#1a5060)">بدون إعلانات</div>
 
   <div class="dots" id="dots"></div>
 </div>
@@ -168,68 +147,74 @@ body{
 <!-- SECTION 1 -->
 <div class="section">
   <h2>🔥 الأكثر مشاهدة</h2>
-  <div class="row" id="trend"></div>
+  <div class="slider" id="trend"></div>
 </div>
 
 <!-- SECTION 2 -->
 <div class="section">
   <h2>🎬 كرتون عربي</h2>
-  <div class="row" id="arabic"></div>
+  <div class="slider" id="arabic"></div>
 </div>
 
 <script>
+
 /* HERO */
 let index = 0;
 const slides = document.querySelectorAll(".slide");
 const dotsContainer = document.getElementById("dots");
 
-/* create dots */
-slides.forEach((_, i) => {
-  const d = document.createElement("div");
-  d.className = "dot" + (i === 0 ? " active" : "");
-  d.onclick = () => show(i);
+slides.forEach((_, i)=>{
+  const d=document.createElement("div");
+  d.className="dot"+(i===0?" active":"");
+  d.onclick=()=>show(i);
   dotsContainer.appendChild(d);
 });
 
-const dots = document.querySelectorAll(".dot");
+const dots=document.querySelectorAll(".dot");
 
 function show(i){
-  slides.forEach(s => s.classList.remove("active"));
-  dots.forEach(d => d.classList.remove("active"));
+  slides.forEach(s=>s.classList.remove("active"));
+  dots.forEach(d=>d.classList.remove("active"));
 
   slides[i].classList.add("active");
   dots[i].classList.add("active");
 
-  index = i;
+  index=i;
 }
 
-/* autoplay */
-setInterval(() => {
-  index = (index + 1) % slides.length;
+setInterval(()=>{
+  index=(index+1)%slides.length;
   show(index);
-}, 4000);
+},4000);
 
-/* DATA */
+/* ===== SLIDER DATA (6 ITEMS EACH) ===== */
+
 const trend = [
-  {title:"سندباد",img:"https://via.placeholder.com/200x300"},
-  {title:"أبطال الكرة",img:"https://via.placeholder.com/200x300"},
-  {title:"ماوكلي",img:"https://via.placeholder.com/200x300"}
+ {t:"سندباد",img:"https://via.placeholder.com/200x300"},
+ {t:"ماوكلي",img:"https://via.placeholder.com/200x300"},
+ {t:"أبطال الكرة",img:"https://via.placeholder.com/200x300"},
+ {t:"كونان",img:"https://via.placeholder.com/200x300"},
+ {t:"دراغون بول",img:"https://via.placeholder.com/200x300"},
+ {t:"ون بيس",img:"https://via.placeholder.com/200x300"}
 ];
 
 const arabic = [
-  {title:"عدنان ولينا",img:"https://via.placeholder.com/200x300"},
-  {title:"الكابتن ماجد",img:"https://via.placeholder.com/200x300"},
-  {title:"جريندايزر",img:"https://via.placeholder.com/200x300"}
+ {t:"عدنان ولينا",img:"https://via.placeholder.com/200x300"},
+ {t:"جريندايزر",img:"https://via.placeholder.com/200x300"},
+ {t:"الكابتن ماجد",img:"https://via.placeholder.com/200x300"},
+ {t:"صقور الأرض",img:"https://via.placeholder.com/200x300"},
+ {t:"فارس الفتى الشجاع",img:"https://via.placeholder.com/200x300"},
+ {t:"الليث الأبيض",img:"https://via.placeholder.com/200x300"}
 ];
 
-/* render */
+/* render sliders */
 function render(id,data){
   const el=document.getElementById(id);
   data.forEach(i=>{
     el.innerHTML+=`
       <div class="card">
         <img src="${i.img}">
-        <p>${i.title}</p>
+        <p>${i.t}</p>
       </div>
     `;
   });
@@ -237,6 +222,7 @@ function render(id,data){
 
 render("trend",trend);
 render("arabic",arabic);
+
 </script>
 
 </body>
