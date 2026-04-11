@@ -1,301 +1,159 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cartoonia</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-
-<style>
-
-/* =========================
-   GLOBAL
-========================= */
-*{box-sizing:border-box;margin:0;padding:0}
-
-body{
-  font-family:'Cairo',sans-serif;
-  background:#0A0A0A;
-  color:#fff;
-}
-
-/* =========================
-   HEADER
-========================= */
-.header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:12px;
-  position:fixed;
-  top:0;
-  left:0;
-  right:0;
-  background:rgba(10,10,10,0.95);
-  z-index:10;
-}
-
-.logo{
-  color:#00D67A;
-  font-weight:900;
-  font-size:20px;
-}
-
-/* =========================
-   HERO (16:9 + rounded)
-========================= */
-.hero{
-  margin-top:60px;
-  width:100%;
-  aspect-ratio:16 / 9;
-  position:relative;
-  overflow:hidden;
-  border-radius:14px;
-  margin-left:10px;
-  margin-right:10px;
-}
-
-.slide{
-  position:absolute;
-  inset:0;
-  opacity:0;
-  transition:.5s ease;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:22px;
-  font-weight:900;
-}
-
-.slide.active{opacity:1}
-
-/* dots */
-.dots{
-  position:absolute;
-  bottom:10px;
-  left:10px;
-  display:flex;
-  gap:5px;
-}
-.dot{
-  width:10px;
-  height:4px;
-  background:#555;
-  border-radius:2px;
-}
-.dot.active{
-  background:#00D67A;
-  width:18px;
-}
-
-/* =========================
-   SECTION
-========================= */
-.section{
-  padding:10px;
-}
-
-.section h2{
-  font-size:14px;
-  margin:10px 0;
-}
-
-/* =========================
-   GRID / SLIDER (iQIYI STYLE)
-   3 items + peek 4th
-========================= */
-.slider{
-  display:flex;
-  gap:10px;                 /* max 10px spacing */
-  overflow-x:auto;
-  scroll-snap-type:x mandatory;
-  padding-bottom:10px;
-}
-
-.slider::-webkit-scrollbar{display:none}
-
-/* =========================
-   CARD (IMPORTANT)
-========================= */
-.card{
-  flex:0 0 calc(33.333% - 7px); /* 3 cards per row */
-  scroll-snap-align:start;
-}
-
-/* image poster */
-.card img{
-  width:100%;
-  aspect-ratio:2 / 3;      /* iQIYI STYLE */
-  object-fit:cover;
-  border-radius:12px;
-  display:block;
-  position:relative;
-}
-
-/* gradient overlay bottom */
-.card .overlay{
-  position:relative;
-}
-
-.card .overlay::after{
-  content:"";
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:0;
-  height:40%;
-  border-radius:12px;
-  background:linear-gradient(
-    to top,
-    rgba(0,0,0,0.85),
-    transparent
-  );
-}
-
-/* title BELOW image (no black box) */
-.card p{
-  margin-top:4px;
-  font-size:12px;
-  color:#fff;
-  background:transparent;
-  text-align:center;
-}
-
-/* =========================
-   RESPONSIVE (mobile tuning)
-========================= */
-@media (max-width:420px){
-
-  .card{
-    flex:0 0 32%; /* slight peek of 4th card */
-  }
-
-  .slider{
-    gap:8px;
-  }
-}
-
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Toonia – شاهد الأنيمي والكرتون</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Exo+2:wght@700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
 </head>
-
 <body>
 
-<!-- HEADER -->
-<div class="header">
-  <div class="logo">Cartoonia</div>
-</div>
+  <!-- ======== HEADER ======== -->
+  <header class="header" id="header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-t">T</span><span class="logo-rest">oonia</span>
+        <span class="logo-dot"></span>
+      </a>
 
-<!-- HERO -->
-<div class="hero">
+      <nav class="nav" id="nav">
+        <a href="#" class="nav-link active">الرئيسية</a>
+        <a href="#" class="nav-link">الأنيمي</a>
+        <a href="#" class="nav-link">الكرتون</a>
+        <a href="#" class="nav-link">الأطفال</a>
+        <a href="#" class="nav-link">الأحدث</a>
+      </nav>
 
-  <div class="slide active" style="background:linear-gradient(135deg,#1a0835,#3a1060)">Anime World</div>
-  <div class="slide" style="background:linear-gradient(135deg,#0f4a30,#1a7a50)">Arabic Dub</div>
-  <div class="slide" style="background:linear-gradient(135deg,#4a1515,#8a2020)">Movies</div>
-
-  <div class="dots" id="dots"></div>
-</div>
-
-<!-- SECTION -->
-<div class="section">
-  <h2>🔥 الأكثر مشاهدة</h2>
-
-  <div class="slider">
-
-    <div class="card">
-      <div class="overlay">
-        <img src="https://via.placeholder.com/300x450">
+      <div class="header-actions">
+        <div class="search-wrap">
+          <button class="search-toggle" id="searchToggle" aria-label="بحث">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          </button>
+          <div class="search-box" id="searchBox">
+            <input type="text" placeholder="ابحث عن أنيمي أو كرتون..." class="search-input" />
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          </div>
+        </div>
+        <a href="#" class="btn-cta">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17 2H7a2 2 0 00-2 2v16a2 2 0 002 2h10a2 2 0 002-2V4a2 2 0 00-2-2zm-5 17a1 1 0 110-2 1 1 0 010 2z"/></svg>
+          حمّل التطبيق
+        </a>
+        <button class="hamburger" id="hamburger" aria-label="القائمة">
+          <span></span><span></span><span></span>
+        </button>
       </div>
-      <p>دراغون بول</p>
     </div>
+    <!-- Mobile nav -->
+    <div class="mobile-nav" id="mobileNav">
+      <a href="#" class="nav-link">الرئيسية</a>
+      <a href="#" class="nav-link">الأنيمي</a>
+      <a href="#" class="nav-link">الكرتون</a>
+      <a href="#" class="nav-link">الأطفال</a>
+      <a href="#" class="nav-link">الأحدث</a>
+    </div>
+  </header>
 
-    <div class="card">
-      <div class="overlay">
-        <img src="https://via.placeholder.com/300x450">
+  <!-- ======== HERO SLIDER ======== -->
+  <section class="hero" id="heroSection">
+    <div class="hero-track" id="heroTrack"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content" id="heroContent"></div>
+    <div class="hero-controls">
+      <button class="hero-btn prev" id="heroPrev" aria-label="السابق">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="hero-dots" id="heroDots"></div>
+      <button class="hero-btn next" id="heroNext" aria-label="التالي">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- ======== MAIN CONTENT ======== -->
+  <main class="main">
+
+    <!-- Trending Now -->
+    <section class="content-section" id="sectionTrending">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="section-accent"></span>
+          <h2 class="section-title">🔥 الأكثر مشاهدةً الآن</h2>
+        </div>
+        <a href="#" class="see-all">عرض الكل <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
       </div>
-      <p>ون بيس</p>
-    </div>
-
-    <div class="card">
-      <div class="overlay">
-        <img src="https://via.placeholder.com/300x450">
+      <div class="cards-row-wrap">
+        <button class="row-nav row-prev" aria-label="السابق"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
+        <div class="cards-row" id="rowTrending"></div>
+        <button class="row-nav row-next" aria-label="التالي"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
       </div>
-      <p>كونان</p>
-    </div>
+    </section>
 
-    <div class="card">
-      <div class="overlay">
-        <img src="https://via.placeholder.com/300x450">
+    <!-- Anime Series -->
+    <section class="content-section" id="sectionAnime">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="section-accent blue"></span>
+          <h2 class="section-title">⚔️ سلاسل الأنيمي</h2>
+        </div>
+        <a href="#" class="see-all">عرض الكل <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
       </div>
-      <p>ناروتو</p>
-    </div>
-
-  </div>
-</div>
-
-<!-- SECTION 2 -->
-<div class="section">
-  <h2>🎬 كرتون عربي</h2>
-
-  <div class="slider">
-
-    <div class="card">
-      <div class="overlay">
-        <img src="https://via.placeholder.com/300x450">
+      <div class="cards-row-wrap">
+        <button class="row-nav row-prev" aria-label="السابق"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
+        <div class="cards-row" id="rowAnime"></div>
+        <button class="row-nav row-next" aria-label="التالي"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
       </div>
-      <p>عدنان ولينا</p>
-    </div>
+    </section>
 
-    <div class="card">
-      <div class="overlay">
-        <img src="https://via.placeholder.com/300x450">
+    <!-- Kids Section -->
+    <section class="content-section kids-section" id="sectionKids">
+      <div class="kids-bg-deco"></div>
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="section-accent yellow"></span>
+          <h2 class="section-title">🌟 ركن الأطفال</h2>
+        </div>
+        <a href="#" class="see-all">عرض الكل <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>
       </div>
-      <p>جريندايزر</p>
-    </div>
-
-    <div class="card">
-      <div class="overlay">
-        <img src="https://via.placeholder.com/300x450">
+      <div class="cards-row-wrap">
+        <button class="row-nav row-prev" aria-label="السابق"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
+        <div class="cards-row" id="rowKids"></div>
+        <button class="row-nav row-next" aria-label="التالي"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
       </div>
-      <p>ماوكلي</p>
+    </section>
+
+  </main>
+
+  <!-- ======== FOOTER ======== -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="logo footer-logo">
+          <span class="logo-t">T</span><span class="logo-rest">oonia</span>
+          <span class="logo-dot"></span>
+        </a>
+        <p>منصتك الأولى لمشاهدة الأنيمي والكرتون مجاناً بجودة عالية.</p>
+      </div>
+      <div class="footer-links">
+        <h4>التصفح</h4>
+        <a href="#">الرئيسية</a>
+        <a href="#">الأنيمي</a>
+        <a href="#">الكرتون</a>
+        <a href="#">الأطفال</a>
+      </div>
+      <div class="footer-links">
+        <h4>الدعم</h4>
+        <a href="#">تواصل معنا</a>
+        <a href="#">سياسة الخصوصية</a>
+        <a href="#">شروط الاستخدام</a>
+      </div>
     </div>
+    <div class="footer-bottom">
+      <p>© 2025 Toonia. جميع الحقوق محفوظة.</p>
+    </div>
+  </footer>
 
-  </div>
-</div>
-
-<script>
-
-/* HERO SLIDER */
-let index=0;
-const slides=document.querySelectorAll(".slide");
-
-const dotsContainer=document.getElementById("dots");
-
-slides.forEach((_,i)=>{
-  const d=document.createElement("div");
-  d.className="dot"+(i===0?" active":"");
-  d.onclick=()=>show(i);
-  dotsContainer.appendChild(d);
-});
-
-const dots=document.querySelectorAll(".dot");
-
-function show(i){
-  slides.forEach(s=>s.classList.remove("active"));
-  dots.forEach(d=>d.classList.remove("active"));
-
-  slides[i].classList.add("active");
-  dots[i].classList.add("active");
-
-  index=i;
-}
-
-setInterval(()=>{
-  index=(index+1)%slides.length;
-  show(index);
-},4000);
-
-</script>
-
+  <script src="assets/js/app.js"></script>
 </body>
 </html>
