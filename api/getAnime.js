@@ -2,51 +2,90 @@
  * Toonia – api/getAnime.js
  * Vercel Serverless Function
  * Usage: /api/getAnime?id=101
+ *
+ * ══════════════════════════════════════════════════════════════════
+ *  نظام الحلقات المزدوج:
+ *
+ *  ① يدوي  — الصق كود الحلقة من Admin Panel مباشرة في مصفوفة
+ *             episodes داخل animeDB. مثال:
+ *             { num: 1, title: "الحلقة 1: البداية",
+ *               servers: buildServers({ uq: "abc123", st: "xyz", mv: "def" }) },
+ *
+ *  ② تلقائي — buildAutoEpisodes(slug, count, titles, duration)
+ *             تولّد حلقات بأكواد وهمية كنظام احتياطي لأي أنمي
+ *             لم تُضَف حلقاته يدوياً بعد.
+ * ══════════════════════════════════════════════════════════════════
  */
 
 export default function handler(req, res) {
 
-  // ── CORS Headers ──────────────────────────────────────────────
+  /* ── CORS ────────────────────────────────────────────────────── */
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET");
   res.setHeader("Content-Type", "application/json; charset=UTF-8");
 
-  // ── قراءة الـ id ──────────────────────────────────────────────
+  /* ── قراءة الـ id ───────────────────────────────────────────── */
   const id = parseInt(req.query.id) || 101;
 
-  // ── بناء السيرفرات ────────────────────────────────────────────
-  function buildServers(slug, epNum) {
-    return {
-      "1": `https://uqload.is/embed-${slug}-ep${epNum}.html`,
-      "2": `https://streamtape.com/e/${slug}-ep${epNum}/`,
-      "3": `https://myvidplay.com/e/${slug}-ep${epNum}`,
-    };
+  /* ══════════════════════════════════════════════════════════════
+     buildServers({ uq, st, mv })
+     ─────────────────────────────────────────────────────────────
+     تستقبل كائن الأكواد القادم من Admin Panel وتبني روابط
+     السيرفرات الثلاثة. أي كود فارغ/غير موجود يُحذف من الناتج.
+  ══════════════════════════════════════════════════════════════ */
+  function buildServers(codes = {}) {
+    const servers = {};
+    if (codes.uq) servers["1"] = `https://uqload.is/embed-${codes.uq}.html`;
+    if (codes.st) servers["2"] = `https://streamtape.com/e/${codes.st}/`;
+    if (codes.mv) servers["3"] = `https://myvidplay.com/e/${codes.mv}`;
+    return servers;
   }
 
-  // ── بناء الحلقات ──────────────────────────────────────────────
-  function buildEpisodes(slug, count, titles, baseDuration = 23) {
+  /* ══════════════════════════════════════════════════════════════
+     buildAutoEpisodes(slug, count, titles, baseDuration)
+     ─────────────────────────────────────────────────────────────
+     نظام احتياطي — يولّد حلقات بأكواد وهمية مبنية على
+     (slug + رقم الحلقة). يُستخدم فقط للأنميات التي لم تُضَف
+     حلقاتها يدوياً من Admin Panel بعد.
+  ══════════════════════════════════════════════════════════════ */
+  function buildAutoEpisodes(slug, count, titles, baseDuration = 23) {
     const episodes = [];
     for (let i = 1; i <= count; i++) {
       episodes.push({
         num: i,
         title: `الحلقة ${i}: ${titles[(i - 1) % titles.length]}`,
         duration: `${baseDuration + ((i % 3) - 1)} دقيقة`,
-        servers: buildServers(slug, i),
+        servers: buildServers({
+          uq: `${slug}-ep${i}`,
+          st: `${slug}-ep${i}`,
+          mv: `${slug}-ep${i}`,
+        }),
       });
     }
     return episodes;
   }
 
-  // ── عناوين الحلقات ────────────────────────────────────────────
+  /* ── عناوين الحلقات (للنظام الاحتياطي) ──────────────────────── */
   const aotTitles = ["البداية","الجدار","الهجوم","الثأر","الحقيقة","المعركة","الانتقام","النهاية","الوحش","التضحية","الحرية","الأمل"];
   const narTitles = ["العودة","الطريق","التحالف","الصراع","الخطر","الظلام","النور","القوة","الإرادة","الصمود","الانتصار","السلام"];
   const oneTitles = ["البحر","الكنز","المعركة","الرفاق","الخطر","الجزيرة","الفجر","الملك","الحلم","العالم","الأسطورة","المستقبل"];
   const dsTitles  = ["اللهب","الشيطان","الإرادة","الوادي","التدريب","النهر","الجبل","القمر","النجم","الرياح","الرعد","الفجر"];
   const hhTitles  = ["الصياد","الامتحان","التحدي","المتاهة","العدو","الجائزة","الخطة","الاتحاد","الهجوم","الدفاع","القرار","الغاية"];
 
-  // ── قاعدة البيانات ────────────────────────────────────────────
+  /* ══════════════════════════════════════════════════════════════
+     قاعدة البيانات
+     ─────────────────────────────────────────────────────────────
+     episodes هي Array عادية — الصق فيها الأكواد من Admin Panel
+     مباشرة دون أي تعديل. الحلقات غير الموجودة يدوياً
+     يمكن تغطيتها بـ buildAutoEpisodes كنظام احتياطي.
+  ══════════════════════════════════════════════════════════════ */
   const animeDB = {
 
+    /* ────────────────────────────────────────────────────────────
+       101: Attack on Titan
+       ✦ مثال على الحلقات اليدوية من Admin Panel
+         الصق السطر الناتج من اللوحة مباشرة داخل المصفوفة
+    ──────────────────────────────────────────────────────────── */
     101: {
       id: 101,
       title: "Attack on Titan",
@@ -57,9 +96,19 @@ export default function handler(req, res) {
       lang: "مدبلج عربي",
       tags: ["أكشن", "فانتازيا مظلمة", "دراما", "إثارة"],
       emoji: "🏰",
-      episodes: buildEpisodes("aot", 87, aotTitles, 24),
+      episodes: [
+        /* ↓↓↓ الصق هنا الأكواد من Admin Panel ↓↓↓ */
+        { num: 1, title: "الحلقة 1: البداية",  duration: "24 دقيقة", servers: buildServers({ uq: "aot-ep1",  st: "aot-ep1",  mv: "aot-ep1"  }) },
+        { num: 2, title: "الحلقة 2: الجدار",   duration: "24 دقيقة", servers: buildServers({ uq: "aot-ep2",  st: "aot-ep2",  mv: "aot-ep2"  }) },
+        { num: 3, title: "الحلقة 3: الهجوم",   duration: "24 دقيقة", servers: buildServers({ uq: "aot-ep3",  st: "aot-ep3",  mv: "aot-ep3"  }) },
+        /* ↑↑↑ نهاية الحلقات اليدوية ↑↑↑ */
+      ],
     },
 
+    /* ────────────────────────────────────────────────────────────
+       102: Naruto Shippuden
+       ✦ نظام احتياطي — buildAutoEpisodes حتى تُضاف يدوياً
+    ──────────────────────────────────────────────────────────── */
     102: {
       id: 102,
       title: "Naruto Shippuden",
@@ -70,9 +119,13 @@ export default function handler(req, res) {
       lang: "مدبلج عربي",
       tags: ["أكشن", "نينجا", "مغامرات", "صداقة"],
       emoji: "🍥",
-      episodes: buildEpisodes("naruto", 30, narTitles, 23),
+      episodes: buildAutoEpisodes("naruto", 30, narTitles, 23),
     },
 
+    /* ────────────────────────────────────────────────────────────
+       103: One Piece
+       ✦ نظام احتياطي
+    ──────────────────────────────────────────────────────────── */
     103: {
       id: 103,
       title: "One Piece",
@@ -83,9 +136,13 @@ export default function handler(req, res) {
       lang: "مدبلج عربي",
       tags: ["مغامرة", "أكشن", "كوميدي", "خيال"],
       emoji: "🏴‍☠️",
-      episodes: buildEpisodes("onepiece", 30, oneTitles, 22),
+      episodes: buildAutoEpisodes("onepiece", 30, oneTitles, 22),
     },
 
+    /* ────────────────────────────────────────────────────────────
+       104: Demon Slayer
+       ✦ نظام احتياطي
+    ──────────────────────────────────────────────────────────── */
     104: {
       id: 104,
       title: "Demon Slayer",
@@ -96,9 +153,13 @@ export default function handler(req, res) {
       lang: "مدبلج عربي",
       tags: ["أكشن", "خيال", "دراما"],
       emoji: "⚔️",
-      episodes: buildEpisodes("demonslayer", 55, dsTitles, 23),
+      episodes: buildAutoEpisodes("demonslayer", 55, dsTitles, 23),
     },
 
+    /* ────────────────────────────────────────────────────────────
+       105: Hunter x Hunter
+       ✦ نظام احتياطي
+    ──────────────────────────────────────────────────────────── */
     105: {
       id: 105,
       title: "Hunter x Hunter",
@@ -109,12 +170,12 @@ export default function handler(req, res) {
       lang: "مدبلج عربي",
       tags: ["أكشن", "مغامرة", "فانتازيا", "نفسي"],
       emoji: "🎯",
-      episodes: buildEpisodes("hxh", 30, hhTitles, 23),
+      episodes: buildAutoEpisodes("hxh", 30, hhTitles, 23),
     },
 
   };
 
-  // ── الرد ──────────────────────────────────────────────────────
+  /* ── الرد ───────────────────────────────────────────────────── */
   if (animeDB[id]) {
     return res.status(200).json({
       status: "success",
