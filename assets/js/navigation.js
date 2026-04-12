@@ -38,17 +38,18 @@ function initSidebar() {
 
   // ✅ Search toggle
   const searchToggle = document.getElementById("searchToggle");
-  const searchBox    = document.getElementById("searchBox");
-  if (searchToggle && searchBox) {
+  const searchBar    = document.getElementById("searchBar");
+  const searchInput  = document.getElementById("searchInput");
+  if (searchToggle && searchBar) {
     searchToggle.addEventListener("click", (e) => {
       e.stopPropagation();
-      const isOpen = searchBox.style.width === "240px";
-      searchBox.style.width = isOpen ? "0" : "240px";
-      if (!isOpen) document.getElementById("searchInput")?.focus();
+      const isOpen = searchBar.style.display === "block";
+      searchBar.style.display = isOpen ? "none" : "block";
+      if (!isOpen) searchInput?.focus();
     });
     document.addEventListener("click", (e) => {
-      if (!e.target.closest(".search-wrap")) {
-        searchBox.style.width = "0";
+      if (!e.target.closest("#searchBar") && !e.target.closest("#searchToggle")) {
+        searchBar.style.display = "none";
       }
     });
   }
