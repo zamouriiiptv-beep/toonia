@@ -29,56 +29,27 @@
       <i class="fas fa-bars" style="font-size:1.1rem;"></i>
     </button>
 
-    <!-- اليسار: شعار + بحث -->
-    <div style="display:flex;align-items:center;gap:10px;">
+    <!-- اليسار: شعار + مربع البحث -->
+    <div style="display:flex;align-items:center;gap:10px;flex:1;justify-content:flex-end;">
 
-      <!-- أيقونة البحث -->
-      <button id="searchToggle" aria-label="بحث"
-        style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.07);
-               border:none;display:flex;align-items:center;justify-content:center;
-               color:var(--text);cursor:pointer;flex-shrink:0;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+      <!-- مربع البحث الظاهر دائماً -->
+      <div style="display:flex;align-items:center;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:30px;padding:0 12px;height:38px;gap:8px;flex:1;max-width:220px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2.2" style="flex-shrink:0;">
           <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
         </svg>
-      </button>
+        <input type="text" id="searchInput" placeholder="ابحث..."
+          style="background:none;border:none;outline:none;color:#fff;font-size:.85rem;
+                 font-family:'Cairo',sans-serif;width:100%;"/>
+      </div>
 
       <!-- الشعار على اليسار: Toonia -->
-      <a href="/toonia/" style="text-decoration:none;display:flex;align-items:center;gap:0px;">
+      <a href="/toonia/" style="text-decoration:none;display:flex;align-items:center;gap:0px;flex-shrink:0;">
         <span style="font-family:'Exo 2',sans-serif;font-weight:700;font-size:1.7rem;color:#eaeaea;">oonia</span><span style="font-family:'Exo 2',sans-serif;font-weight:900;font-size:1.7rem;color:var(--accent,#00D67A);">T</span>
       </a>
 
     </div>
 
   </div>
-
-  <!-- خانة البحث -->
-  <div id="searchBar" style="display:none;padding:10px 16px;background:var(--bg-2,#12141c);border-top:1px solid var(--border,rgba(255,255,255,0.08));">
-    <input type="text" id="searchInput" placeholder="ابحث عن أنمي أو كرتون..."
-      style="width:100%;padding:10px 16px;background:var(--bg-3,#1a1d2e);border:1px solid var(--border,rgba(255,255,255,0.1));
-             border-radius:30px;color:#fff;font-size:.9rem;font-family:'Cairo',sans-serif;
-             outline:none;box-sizing:border-box;"/>
-  </div>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      var toggle = document.getElementById('searchToggle');
-      var bar    = document.getElementById('searchBar');
-      var input  = document.getElementById('searchInput');
-      if (toggle && bar) {
-        toggle.addEventListener('click', function(e) {
-          e.stopPropagation();
-          var isOpen = bar.style.display === 'block';
-          bar.style.display = isOpen ? 'none' : 'block';
-          if (!isOpen && input) input.focus();
-        });
-        document.addEventListener('click', function(e) {
-          if (!e.target.closest('#searchBar') && !e.target.closest('#searchToggle')) {
-            bar.style.display = 'none';
-          }
-        });
-      }
-    });
-  </script>
 
 </header>
 
