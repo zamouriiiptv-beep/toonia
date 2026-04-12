@@ -7,10 +7,115 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Exo+2:wght@700;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/style.css" />
+
+  <!-- إضافات Player فقط — لا تمس style.css -->
+  <style>
+    /* iframe يملأ player-wrap بالكامل */
+    #mainPlayer {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: inherit;
+      background: #000;
+      z-index: 2;
+    }
+
+    /* Loader */
+    .player-loader {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      background: rgba(0,0,0,.78);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      border-radius: inherit;
+      transition: opacity .3s, visibility .3s;
+    }
+    .player-loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    .pl-spinner {
+      width: 44px; height: 44px;
+      border: 3px solid rgba(255,255,255,.12);
+      border-top-color: #22c55e;
+      border-radius: 50%;
+      animation: pl-spin .75s linear infinite;
+    }
+    @keyframes pl-spin { to { transform: rotate(360deg); } }
+    .pl-loader-text {
+      font-size: .82rem;
+      color: rgba(255,255,255,.5);
+      font-family: 'Cairo', sans-serif;
+    }
+
+    /* أزرار السيرفرات */
+    .server-switcher {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      flex-wrap: wrap;
+      margin-top: .85rem;
+    }
+    .server-label {
+      font-size: .78rem;
+      color: rgba(255,255,255,.4);
+      font-family: 'Cairo', sans-serif;
+      font-weight: 600;
+    }
+    .server-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: .38rem .85rem;
+      border-radius: 7px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.05);
+      color: rgba(255,255,255,.5);
+      font-size: .78rem;
+      font-weight: 700;
+      font-family: 'Cairo', sans-serif;
+      cursor: pointer;
+      transition: all .2s ease;
+    }
+    .server-btn:hover { border-color: #22c55e; color: #fff; }
+    .server-btn.active { background: #22c55e; border-color: #22c55e; color: #000; }
+    .server-btn.error  { border-color: #ef4444; color: #ef4444; }
+    .srv-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      flex-shrink: 0;
+    }
+
+    /* Toast */
+    .toonia-toast {
+      position: fixed;
+      bottom: 1.4rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(70px);
+      background: rgba(15,17,22,.95);
+      border: 1px solid rgba(255,255,255,.1);
+      color: #e8ecf5;
+      padding: .6rem 1.25rem;
+      border-radius: 8px;
+      font-size: .82rem;
+      font-weight: 600;
+      font-family: 'Cairo', sans-serif;
+      z-index: 9999;
+      transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+      white-space: nowrap;
+      box-shadow: 0 6px 24px rgba(0,0,0,.55);
+      pointer-events: none;
+    }
+    .toonia-toast.show { transform: translateX(-50%) translateY(0); }
+  </style>
 </head>
 <body class="watch-page">
 
-  <!-- HEADER -->
+  <!-- HEADER — لم يتغير -->
   <header class="header watch-header" id="header">
     <div class="header-inner">
       <a href="index.html" class="logo">
@@ -24,18 +129,28 @@
     </div>
   </header>
 
-  <!-- WATCH LAYOUT -->
+  <!-- WATCH LAYOUT — نفس الهيكل الأصلي -->
   <div class="watch-layout">
 
     <!-- LEFT: Player + Info -->
     <div class="watch-main">
 
-      <!-- Video Player -->
+      <!-- Player — iframe بدل video -->
       <div class="player-wrap" id="playerWrap">
-        <video class="video-player" id="videoPlayer" controls poster="">
-          <source src="" type="video/mp4" id="videoSource" />
-          متصفحك لا يدعم تشغيل الفيديو.
-        </video>
+
+        <iframe id="mainPlayer" src="about:blank"
+          allowfullscreen
+          allow="autoplay; fullscreen; picture-in-picture"
+          sandbox="allow-scripts allow-same-origin allow-presentation allow-popups">
+        </iframe>
+
+        <!-- Loader -->
+        <div class="player-loader hidden" id="playerLoader">
+          <div class="pl-spinner"></div>
+          <span class="pl-loader-text">جاري تحميل الفيديو...</span>
+        </div>
+
+        <!-- Overlay — لم يتغير -->
         <div class="player-overlay" id="playerOverlay">
           <div class="player-placeholder">
             <div class="play-pulse">
@@ -44,13 +159,29 @@
             <p id="nowPlayingLabel">اختر حلقة للمشاهدة</p>
           </div>
         </div>
+
+        <!-- Top bar — لم يتغير -->
         <div class="player-top-bar">
           <span class="player-badge-live">HD</span>
           <span id="playerEpTitle" class="player-ep-title"></span>
         </div>
       </div>
 
-      <!-- Anime Info -->
+      <!-- أزرار السيرفرات — مباشرة بعد البلاير -->
+      <div class="server-switcher" id="serverSwitcher">
+        <span class="server-label">السيرفر:</span>
+        <button class="server-btn active" id="srv1" onclick="playerEngine.changeServer(1)">
+          <span class="srv-dot"></span>Uqload
+        </button>
+        <button class="server-btn" id="srv2" onclick="playerEngine.changeServer(2)">
+          <span class="srv-dot"></span>Streamtape
+        </button>
+        <button class="server-btn" id="srv3" onclick="playerEngine.changeServer(3)">
+          <span class="srv-dot"></span>Myvidplay
+        </button>
+      </div>
+
+      <!-- Anime Info — لم يتغير -->
       <div class="anime-info" id="animeInfo">
         <div class="anime-info-header">
           <div class="anime-thumb-wrap">
@@ -79,7 +210,7 @@
 
     </div>
 
-    <!-- RIGHT: Episodes list -->
+    <!-- RIGHT: Episodes list — لم يتغير -->
     <aside class="episodes-aside">
       <div class="episodes-header">
         <h3>قائمة الحلقات</h3>
@@ -90,7 +221,7 @@
 
   </div>
 
-  <!-- Related section -->
+  <!-- Related section — لم يتغير -->
   <section class="content-section related-section">
     <div class="section-header">
       <div class="section-title-wrap">
@@ -99,9 +230,13 @@
       </div>
     </div>
     <div class="cards-row-wrap">
-      <button class="row-nav row-prev" aria-label="السابق"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <button class="row-nav row-prev" aria-label="السابق">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
       <div class="cards-row" id="rowRelated"></div>
-      <button class="row-nav row-next" aria-label="التالي"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
+      <button class="row-nav row-next" aria-label="التالي">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
     </div>
   </section>
 
@@ -111,6 +246,11 @@
     </div>
   </footer>
 
+  <!-- Toast -->
+  <div class="toonia-toast" id="tooniaToast"></div>
+
+  <!-- app.js الأصلي أولاً -->
   <script src="assets/js/app.js"></script>
+
 </body>
 </html>
