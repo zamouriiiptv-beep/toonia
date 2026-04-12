@@ -1,256 +1,355 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>مشاهدة – Toonia</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Exo+2:wght@700;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/css/style.css" />
+/**
+ * Toonia – watch.js
+ * Handles: API fetch → render anime info → episode list → server switching
+ * Vanilla JS only, no dependencies.
+ */
 
-  <!-- إضافات Player فقط — لا تمس style.css -->
-  <style>
-    /* iframe يملأ player-wrap بالكامل */
-    #mainPlayer {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-      border-radius: inherit;
-      background: #000;
-      z-index: 2;
+"use strict";
+
+/* ═══════════════════════════════════════════════════════════════
+   CONFIG
+═══════════════════════════════════════════════════════════════ */
+const CONFIG = {
+  apiBase: "https://my-api.com/api/getAnime.php",
+  defaultServer: "1",
+};
+
+/* ═══════════════════════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════════════════════ */
+const state = {
+  animeData: null,          // full API response data
+  currentEpisode: null,     // episode object currently loaded
+  currentServer: CONFIG.defaultServer,
+};
+
+/* ═══════════════════════════════════════════════════════════════
+   DOM REFERENCES  (populated after DOMContentLoaded)
+═══════════════════════════════════════════════════════════════ */
+const DOM = {};
+
+function cacheDom() {
+  DOM.playerWrapper    = document.getElementById("playerWrapper");
+  DOM.videoPlayer      = document.getElementById("videoPlayer");
+  DOM.videoSource      = document.getElementById("videoSource");
+  DOM.episodeTitle     = document.getElementById("episodeTitle");
+  DOM.serverBtns       = document.getElementById("serverBtns");
+  DOM.animeTitle       = document.getElementById("animeTitle");
+  DOM.animeDesc        = document.getElementById("animeDesc");
+  DOM.animeRating      = document.getElementById("animeRating");
+  DOM.animeYear        = document.getElementById("animeYear");
+  DOM.animeEpCount     = document.getElementById("animeEpCount");
+  DOM.animeLang        = document.getElementById("animeLang");
+  DOM.animeTags        = document.getElementById("animeTags");
+  DOM.episodeList      = document.getElementById("episodeList");
+  DOM.loadingOverlay   = document.getElementById("loadingOverlay");
+  DOM.errorBox         = document.getElementById("errorBox");
+  DOM.errorMessage     = document.getElementById("errorMessage");
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   URL HELPERS
+═══════════════════════════════════════════════════════════════ */
+
+/**
+ * Returns the ?id= param from the current URL, or null if missing.
+ */
+function getAnimeIdFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const id = parseInt(params.get("id"), 10);
+  return Number.isFinite(id) ? id : null;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   API
+═══════════════════════════════════════════════════════════════ */
+
+/**
+ * Fetches anime data from the API.
+ * @param {number} id
+ * @returns {Promise<Object>} Resolved anime data object
+ * @throws {Error} On network failure or non-success status
+ */
+async function fetchAnime(id) {
+  const url = `${CONFIG.apiBase}?id=${encodeURIComponent(id)}`;
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error(`خطأ في الاتصال بالخادم (HTTP ${response.status})`);
+  }
+
+  const json = await response.json();
+
+  if (json.status !== "success" || !json.data) {
+    throw new Error(json.message || "لم يتم العثور على الأنيمي المطلوب.");
+  }
+
+  return json.data;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RENDER – Anime Info
+═══════════════════════════════════════════════════════════════ */
+
+function renderAnimeInfo(data) {
+  DOM.animeTitle.textContent   = data.title       ?? "—";
+  DOM.animeDesc.textContent    = data.description ?? "—";
+  DOM.animeRating.textContent  = data.rating      ?? "—";
+  DOM.animeYear.textContent    = data.year         ?? "—";
+  DOM.animeEpCount.textContent = data.epCount      ?? "—";
+  DOM.animeLang.textContent    = data.lang         ?? "—";
+
+  // Tags
+  DOM.animeTags.innerHTML = "";
+  if (Array.isArray(data.tags)) {
+    data.tags.forEach((tag) => {
+      const span = document.createElement("span");
+      span.className = "tag";
+      span.textContent = tag;
+      DOM.animeTags.appendChild(span);
+    });
+  }
+
+  // Page title
+  document.title = `${data.title} – Toonia`;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RENDER – Episode List
+═══════════════════════════════════════════════════════════════ */
+
+function renderEpisodeList(episodes) {
+  DOM.episodeList.innerHTML = "";
+
+  if (!Array.isArray(episodes) || episodes.length === 0) {
+    DOM.episodeList.innerHTML = '<p class="no-episodes">لا توجد حلقات متاحة.</p>';
+    return;
+  }
+
+  const fragment = document.createDocumentFragment();
+
+  episodes.forEach((ep) => {
+    const item = document.createElement("div");
+    item.className = "episode-item";
+    item.dataset.epNum = ep.num;
+
+    item.innerHTML = `
+      <span class="ep-num">${ep.num}</span>
+      <span class="ep-title">${escapeHtml(ep.title)}</span>
+      <span class="ep-duration">${escapeHtml(ep.duration)}</span>
+    `;
+
+    item.addEventListener("click", () => loadEpisode(ep));
+    fragment.appendChild(item);
+  });
+
+  DOM.episodeList.appendChild(fragment);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RENDER – Server Buttons
+═══════════════════════════════════════════════════════════════ */
+
+function renderServerButtons(servers) {
+  DOM.serverBtns.innerHTML = "";
+
+  if (!servers || typeof servers !== "object") return;
+
+  Object.keys(servers).forEach((key) => {
+    const btn = document.createElement("button");
+    btn.className = "server-btn" + (key === state.currentServer ? " active" : "");
+    btn.dataset.serverKey = key;
+    btn.textContent = `سيرفر ${key}`;
+
+    btn.addEventListener("click", () => switchServer(key));
+    DOM.serverBtns.appendChild(btn);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PLAYBACK LOGIC
+═══════════════════════════════════════════════════════════════ */
+
+/**
+ * Loads an episode: updates state, re-renders server buttons,
+ * updates the player src, and highlights the active episode row.
+ * @param {Object} ep  Episode object from API
+ */
+function loadEpisode(ep) {
+  state.currentEpisode = ep;
+  state.currentServer  = CONFIG.defaultServer;
+
+  // Highlight active episode
+  document
+    .querySelectorAll(".episode-item")
+    .forEach((el) => el.classList.remove("active"));
+
+  const activeItem = document.querySelector(
+    `.episode-item[data-ep-num="${ep.num}"]`
+  );
+  if (activeItem) {
+    activeItem.classList.add("active");
+    activeItem.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+
+  // Render server buttons for this episode
+  renderServerButtons(ep.servers);
+
+  // Update the player
+  updatePlayer(ep.servers[state.currentServer], ep.title);
+}
+
+/**
+ * Switches to a different server for the currently loaded episode.
+ * @param {string} serverKey  e.g. "1", "2", "3"
+ */
+function switchServer(serverKey) {
+  if (!state.currentEpisode) return;
+
+  const url = state.currentEpisode.servers[serverKey];
+  if (!url) {
+    console.warn(`Server "${serverKey}" not found for this episode.`);
+    return;
+  }
+
+  state.currentServer = serverKey;
+
+  // Update active button style
+  document.querySelectorAll(".server-btn").forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset.serverKey === serverKey);
+  });
+
+  updatePlayer(url, state.currentEpisode.title);
+}
+
+/**
+ * Updates the <video> source (or iframe) and reloads playback.
+ * Falls back to iframe for embed-style links (uqload, streamtape, etc.).
+ * @param {string} src    Media URL
+ * @param {string} title  Episode title shown above the player
+ */
+function updatePlayer(src, title) {
+  if (DOM.episodeTitle) {
+    DOM.episodeTitle.textContent = title ?? "";
+  }
+
+  // Detect embed URLs → use <iframe>; direct files (.mp4) → use <video>
+  if (isEmbedUrl(src)) {
+    useIframePlayer(src);
+  } else {
+    useVideoPlayer(src);
+  }
+}
+
+function isEmbedUrl(src) {
+  const embedHosts = ["uqload", "streamtape", "doodstream", "vidplay", "myvidplay"];
+  try {
+    const hostname = new URL(src).hostname;
+    return embedHosts.some((h) => hostname.includes(h));
+  } catch {
+    return false;
+  }
+}
+
+function useVideoPlayer(src) {
+  // Remove any existing iframe
+  const existingIframe = DOM.playerWrapper.querySelector("iframe.toonia-iframe");
+  if (existingIframe) existingIframe.remove();
+
+  DOM.videoPlayer.style.display = "block";
+  DOM.videoSource.src = src;
+  DOM.videoPlayer.load();
+  DOM.videoPlayer.play().catch(() => {
+    // Autoplay may be blocked; silent catch is fine – user can press play
+  });
+}
+
+function useIframePlayer(src) {
+  DOM.videoPlayer.style.display = "none";
+
+  let iframe = DOM.playerWrapper.querySelector("iframe.toonia-iframe");
+  if (!iframe) {
+    iframe = document.createElement("iframe");
+    iframe.className = "toonia-iframe";
+    iframe.setAttribute("allowfullscreen", "true");
+    iframe.setAttribute("scrolling", "no");
+    iframe.setAttribute("frameborder", "0");
+    DOM.playerWrapper.appendChild(iframe);
+  }
+  iframe.src = src;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   UI STATE – Loading / Error
+═══════════════════════════════════════════════════════════════ */
+
+function showLoading(visible) {
+  if (DOM.loadingOverlay) {
+    DOM.loadingOverlay.hidden = !visible;
+  }
+}
+
+function showError(message) {
+  if (DOM.errorBox) {
+    DOM.errorBox.hidden = false;
+    DOM.errorMessage.textContent = message;
+  }
+}
+
+function hideError() {
+  if (DOM.errorBox) DOM.errorBox.hidden = true;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   UTILITY
+═══════════════════════════════════════════════════════════════ */
+
+/**
+ * Simple HTML escaping to prevent XSS when injecting API strings.
+ */
+function escapeHtml(str) {
+  return String(str ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════════════════ */
+
+async function init() {
+  cacheDom();
+  hideError();
+  showLoading(true);
+
+  const animeId = getAnimeIdFromUrl();
+
+  if (!animeId) {
+    showLoading(false);
+    showError("لم يتم تحديد الأنيمي. تأكد من أن الرابط يحتوي على ?id=...");
+    return;
+  }
+
+  try {
+    const data = await fetchAnime(animeId);
+    state.animeData = data;
+
+    renderAnimeInfo(data);
+    renderEpisodeList(data.episodes);
+
+    // Auto-load first episode
+    if (Array.isArray(data.episodes) && data.episodes.length > 0) {
+      loadEpisode(data.episodes[0]);
     }
+  } catch (err) {
+    showError(err.message || "حدث خطأ غير متوقع. حاول مجدداً.");
+    console.error("[Toonia]", err);
+  } finally {
+    showLoading(false);
+  }
+}
 
-    /* Loader */
-    .player-loader {
-      position: absolute;
-      inset: 0;
-      z-index: 10;
-      background: rgba(0,0,0,.78);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      border-radius: inherit;
-      transition: opacity .3s, visibility .3s;
-    }
-    .player-loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-    .pl-spinner {
-      width: 44px; height: 44px;
-      border: 3px solid rgba(255,255,255,.12);
-      border-top-color: #22c55e;
-      border-radius: 50%;
-      animation: pl-spin .75s linear infinite;
-    }
-    @keyframes pl-spin { to { transform: rotate(360deg); } }
-    .pl-loader-text {
-      font-size: .82rem;
-      color: rgba(255,255,255,.5);
-      font-family: 'Cairo', sans-serif;
-    }
-
-    /* أزرار السيرفرات */
-    .server-switcher {
-      display: flex;
-      align-items: center;
-      gap: .5rem;
-      flex-wrap: wrap;
-      margin-top: .85rem;
-    }
-    .server-label {
-      font-size: .78rem;
-      color: rgba(255,255,255,.4);
-      font-family: 'Cairo', sans-serif;
-      font-weight: 600;
-    }
-    .server-btn {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: .38rem .85rem;
-      border-radius: 7px;
-      border: 1px solid rgba(255,255,255,.1);
-      background: rgba(255,255,255,.05);
-      color: rgba(255,255,255,.5);
-      font-size: .78rem;
-      font-weight: 700;
-      font-family: 'Cairo', sans-serif;
-      cursor: pointer;
-      transition: all .2s ease;
-    }
-    .server-btn:hover { border-color: #22c55e; color: #fff; }
-    .server-btn.active { background: #22c55e; border-color: #22c55e; color: #000; }
-    .server-btn.error  { border-color: #ef4444; color: #ef4444; }
-    .srv-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: currentColor;
-      flex-shrink: 0;
-    }
-
-    /* Toast */
-    .toonia-toast {
-      position: fixed;
-      bottom: 1.4rem;
-      left: 50%;
-      transform: translateX(-50%) translateY(70px);
-      background: rgba(15,17,22,.95);
-      border: 1px solid rgba(255,255,255,.1);
-      color: #e8ecf5;
-      padding: .6rem 1.25rem;
-      border-radius: 8px;
-      font-size: .82rem;
-      font-weight: 600;
-      font-family: 'Cairo', sans-serif;
-      z-index: 9999;
-      transition: transform .3s cubic-bezier(.34,1.56,.64,1);
-      white-space: nowrap;
-      box-shadow: 0 6px 24px rgba(0,0,0,.55);
-      pointer-events: none;
-    }
-    .toonia-toast.show { transform: translateX(-50%) translateY(0); }
-  </style>
-</head>
-<body class="watch-page">
-
-  <!-- HEADER — لم يتغير -->
-  <header class="header watch-header" id="header">
-    <div class="header-inner">
-      <a href="index.html" class="logo">
-        <span class="logo-t">T</span><span class="logo-rest">oonia</span>
-        <span class="logo-dot"></span>
-      </a>
-      <a href="index.html" class="back-btn">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-        العودة للرئيسية
-      </a>
-    </div>
-  </header>
-
-  <!-- WATCH LAYOUT — نفس الهيكل الأصلي -->
-  <div class="watch-layout">
-
-    <!-- LEFT: Player + Info -->
-    <div class="watch-main">
-
-      <!-- Player — iframe بدل video -->
-      <div class="player-wrap" id="playerWrap">
-
-        <iframe id="mainPlayer" src="about:blank"
-          allowfullscreen
-          allow="autoplay; fullscreen; picture-in-picture"
-          sandbox="allow-scripts allow-same-origin allow-presentation allow-popups">
-        </iframe>
-
-        <!-- Loader -->
-        <div class="player-loader hidden" id="playerLoader">
-          <div class="pl-spinner"></div>
-          <span class="pl-loader-text">جاري تحميل الفيديو...</span>
-        </div>
-
-        <!-- Overlay — لم يتغير -->
-        <div class="player-overlay" id="playerOverlay">
-          <div class="player-placeholder">
-            <div class="play-pulse">
-              <svg width="60" height="60" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            </div>
-            <p id="nowPlayingLabel">اختر حلقة للمشاهدة</p>
-          </div>
-        </div>
-
-        <!-- Top bar — لم يتغير -->
-        <div class="player-top-bar">
-          <span class="player-badge-live">HD</span>
-          <span id="playerEpTitle" class="player-ep-title"></span>
-        </div>
-      </div>
-
-      <!-- أزرار السيرفرات — مباشرة بعد البلاير -->
-      <div class="server-switcher" id="serverSwitcher">
-        <span class="server-label">السيرفر:</span>
-        <button class="server-btn active" id="srv1" onclick="playerEngine.changeServer(1)">
-          <span class="srv-dot"></span>Uqload
-        </button>
-        <button class="server-btn" id="srv2" onclick="playerEngine.changeServer(2)">
-          <span class="srv-dot"></span>Streamtape
-        </button>
-        <button class="server-btn" id="srv3" onclick="playerEngine.changeServer(3)">
-          <span class="srv-dot"></span>Myvidplay
-        </button>
-      </div>
-
-      <!-- Anime Info — لم يتغير -->
-      <div class="anime-info" id="animeInfo">
-        <div class="anime-info-header">
-          <div class="anime-thumb-wrap">
-            <img id="animeThumb" src="" alt="" class="anime-thumb" loading="lazy" />
-          </div>
-          <div class="anime-meta">
-            <h1 class="anime-title" id="animeTitle">جاري التحميل...</h1>
-            <div class="anime-tags" id="animeTags"></div>
-            <div class="anime-stats">
-              <span class="stat">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="#FFD700"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                <span id="animeRating">--</span>
-              </span>
-              <span class="stat">📅 <span id="animeYear">--</span></span>
-              <span class="stat">🎬 <span id="animeEpCount">--</span> حلقة</span>
-              <span class="stat">🌐 <span id="animeLang">--</span></span>
-            </div>
-            <p class="anime-desc" id="animeDesc">--</p>
-            <button class="btn-next-ep" id="btnNextEp">
-              الحلقة التالية
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-            </button>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- RIGHT: Episodes list — لم يتغير -->
-    <aside class="episodes-aside">
-      <div class="episodes-header">
-        <h3>قائمة الحلقات</h3>
-        <span class="ep-count-badge" id="epCountBadge">0 حلقة</span>
-      </div>
-      <div class="episodes-list" id="episodesList"></div>
-    </aside>
-
-  </div>
-
-  <!-- Related section — لم يتغير -->
-  <section class="content-section related-section">
-    <div class="section-header">
-      <div class="section-title-wrap">
-        <span class="section-accent"></span>
-        <h2 class="section-title">قد يعجبك أيضاً</h2>
-      </div>
-    </div>
-    <div class="cards-row-wrap">
-      <button class="row-nav row-prev" aria-label="السابق">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-      </button>
-      <div class="cards-row" id="rowRelated"></div>
-      <button class="row-nav row-next" aria-label="التالي">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-      </button>
-    </div>
-  </section>
-
-  <footer class="footer">
-    <div class="footer-bottom" style="padding-top:1.5rem">
-      <p>© 2025 Toonia. جميع الحقوق محفوظة.</p>
-    </div>
-  </footer>
-
-  <!-- Toast -->
-  <div class="toonia-toast" id="tooniaToast"></div>
-
-  <!-- app.js الأصلي أولاً -->
-  <script src="assets/js/app.js"></script>
-
-</body>
-</html>
+document.addEventListener("DOMContentLoaded", init);
