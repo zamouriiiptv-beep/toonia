@@ -58,13 +58,13 @@ const HERO_SLIDES = [
 ];
 
 const TRENDING = [
+  // ✅ البطل خماسي أول — يظهر مباشرة عند فتح الصفحة
+  { id: 106, title: "البطل خماسي", eps: 54, badge: "FREE", emoji: "🤖", palette: "placeholder-6", rating: 8.5, year: 1976 },
   { id: 101, title: "Attack on Titan", eps: 87, badge: "VIP", emoji: "🏰", palette: "placeholder-1", rating: 9.8, year: 2013 },
   { id: 102, title: "Naruto Shippuden", eps: 500, badge: "FREE", emoji: "🍥", palette: "placeholder-2", rating: 9.3, year: 2007 },
   { id: 103, title: "Dragon Ball Super", eps: 131, badge: "NEW", emoji: "🐉", palette: "placeholder-3", rating: 8.7, year: 2015 },
   { id: 104, title: "My Hero Academia", eps: 138, badge: "VIP", emoji: "⚡", palette: "placeholder-4", rating: 8.9, year: 2016 },
   { id: 105, title: "Chainsaw Man", eps: 12, badge: "NEW", emoji: "🪚", palette: "placeholder-5", rating: 9.1, year: 2022 },
-  // ✅ تم تغيير id: 106 من Hunter x Hunter إلى البطل خماسي
-  { id: 106, title: "البطل خماسي", eps: 54, badge: "FREE", emoji: "🤖", palette: "placeholder-6", rating: 8.5, year: 1976 },
   { id: 107, title: "Fullmetal Alchemist", eps: 64, badge: "FREE", emoji: "⚗️", palette: "placeholder-7", rating: 9.7, year: 2009 },
   { id: 108, title: "Tokyo Revengers", eps: 65, badge: "SUB", emoji: "🏍️", palette: "placeholder-8", rating: 8.4, year: 2021 },
 ];
@@ -93,21 +93,6 @@ const KIDS = [
 
 // Mock detail data (used in watch.html)
 const ANIME_DETAILS = {
-  // ✅ البطل خماسي — الحلقات الحقيقية تأتي من API عبر watch.js
-  106: {
-    title: "البطل خماسي",
-    description: "خمسة شباب يتحدون بمركباتهم لتشكيل الروبوت العملاق خماسي لحماية الأرض.",
-    rating: "8.5",
-    year: "1976",
-    epCount: 54,
-    lang: "مدبلج عربي",
-    tags: ["ميكا", "أكشن", "كلاسيك"],
-    palette: "placeholder-6",
-    emoji: "🤖",
-    episodes: [
-      { num: 1, title: "الحلقة 1: البطل خماسي", duration: "24 دقيقة" },
-    ],
-  },
   101: {
     title: "Attack on Titan",
     description: "في عالم تحكمه عمالقة الأكل للبشر، يقرر إيرين يجر الانتقام بعد أن تهاجم العمالقة مدينته. قصة ملحمية عن الحرية، الحرب، والبقاء.",
