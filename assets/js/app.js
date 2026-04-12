@@ -19,7 +19,7 @@ const HERO_SLIDES = [
     episodes: "26 حلقة",
     badge: "جديد",
     color: "#e53935",
-    emoji: "⚔️",
+    image: "assets/images/images-hero/hero_1.webp",
     gradient: "linear-gradient(135deg, #1a0a0a 0%, #4a0000 40%, #8b1a1a 100%)",
   },
   {
@@ -30,7 +30,7 @@ const HERO_SLIDES = [
     episodes: "50 حلقة",
     badge: "مميز",
     color: "#1565C0",
-    emoji: "🏴‍☠️",
+    image: "assets/images/images-hero/hero_2.webp",
     gradient: "linear-gradient(135deg, #0a0a2a 0%, #0d2952 40%, #1a5276 100%)",
   },
   {
@@ -41,7 +41,7 @@ const HERO_SLIDES = [
     episodes: "24 حلقة",
     badge: "حصري",
     color: "#7B1FA2",
-    emoji: "👁️",
+    image: "assets/images/images-hero/hero_3.webp",
     gradient: "linear-gradient(135deg, #0d001a 0%, #2d0045 40%, #5c0080 100%)",
   },
   {
@@ -52,19 +52,40 @@ const HERO_SLIDES = [
     episodes: "فيلم",
     badge: "مجاني",
     color: "#FFC107",
-    emoji: "🧽",
+    image: "assets/images/images-hero/hero_4.webp",
     gradient: "linear-gradient(135deg, #1a1400 0%, #4a3800 40%, #7a5c00 100%)",
+  },
+  {
+    id: 5,
+    title: "Solo Leveling Season 2",
+    description: "سونج جين-وو يواصل صعوده نحو القمة ليواجه تهديدات تفوق كل ما شهده العالم من قبل.",
+    genre: "أنيمي · أكشن",
+    episodes: "13 حلقة",
+    badge: "جديد",
+    color: "#00BCD4",
+    image: "assets/images/images-hero/hero_5.webp",
+    gradient: "linear-gradient(135deg, #0f2027 0%, #203a43 40%, #2c5364 100%)",
+  },
+  {
+    id: 6,
+    title: "Dragon Ball Super",
+    description: "غوكو وفيجيتا يواجهان تحديات كونية جديدة في مغامرات تتجاوز حدود الكون المعروف.",
+    genre: "أنيمي · أكشن",
+    episodes: "131 حلقة",
+    badge: "كلاسيك",
+    color: "#FF9800",
+    image: "assets/images/images-hero/hero_6.webp",
+    gradient: "linear-gradient(135deg, #200122 0%, #6f0000 100%)",
   },
 ];
 
 const TRENDING = [
-  // ✅ البطل خماسي أول — يظهر مباشرة عند فتح الصفحة
-  { id: 106, title: "البطل خماسي", eps: 54, badge: "FREE", emoji: "🤖", palette: "placeholder-6", rating: 8.5, year: 1976 },
   { id: 101, title: "Attack on Titan", eps: 87, badge: "VIP", emoji: "🏰", palette: "placeholder-1", rating: 9.8, year: 2013 },
   { id: 102, title: "Naruto Shippuden", eps: 500, badge: "FREE", emoji: "🍥", palette: "placeholder-2", rating: 9.3, year: 2007 },
   { id: 103, title: "Dragon Ball Super", eps: 131, badge: "NEW", emoji: "🐉", palette: "placeholder-3", rating: 8.7, year: 2015 },
   { id: 104, title: "My Hero Academia", eps: 138, badge: "VIP", emoji: "⚡", palette: "placeholder-4", rating: 8.9, year: 2016 },
   { id: 105, title: "Chainsaw Man", eps: 12, badge: "NEW", emoji: "🪚", palette: "placeholder-5", rating: 9.1, year: 2022 },
+  { id: 106, title: "Hunter x Hunter", eps: 148, badge: "FREE", emoji: "🎯", palette: "placeholder-6", rating: 9.5, year: 2011 },
   { id: 107, title: "Fullmetal Alchemist", eps: 64, badge: "FREE", emoji: "⚗️", palette: "placeholder-7", rating: 9.7, year: 2009 },
   { id: 108, title: "Tokyo Revengers", eps: 65, badge: "SUB", emoji: "🏍️", palette: "placeholder-8", rating: 8.4, year: 2021 },
 ];
@@ -91,38 +112,27 @@ const KIDS = [
   { id: 308, title: "Pokémon Horizons", eps: 51, badge: "NEW", emoji: "⚡", palette: "placeholder-4", rating: 8.0, year: 2023 },
 ];
 
-// Mock detail data (used in watch.html)
 const ANIME_DETAILS = {
   101: {
     title: "Attack on Titan",
-    description: "في عالم تحكمه عمالقة الأكل للبشر، يقرر إيرين يجر الانتقام بعد أن تهاجم العمالقة مدينته. قصة ملحمية عن الحرية، الحرب، والبقاء.",
-    rating: "9.8",
-    year: "2013",
-    epCount: 87,
-    lang: "مدبلج عربي",
+    description: "في عالم تحكمه عمالقة الأكل للبشر، يقرر إيرين يجر الانتقام بعد أن تهاجم العمالقة مدينته.",
+    rating: "9.8", year: "2013", epCount: 87, lang: "مدبلج عربي",
     tags: ["أكشن", "فانتازيا مظلمة", "دراما", "إثارة"],
-    palette: "placeholder-1",
-    emoji: "🏰",
+    palette: "placeholder-1", emoji: "🏰",
     episodes: Array.from({ length: 87 }, (_, i) => ({
       num: i + 1,
-      title: `الحلقة ${i + 1}: ${["البداية", "الجدار", "الهجوم", "الثأر", "الحقيقة", "المعركة", "الانتقام", "النهاية"][i % 8]}`,
+      title: `الحلقة ${i + 1}: ${["البداية","الجدار","الهجوم","الثأر","الحقيقة","المعركة","الانتقام","النهاية"][i % 8]}`,
       duration: `${22 + Math.floor(Math.random() * 4)} دقيقة`,
     })),
   },
   102: {
     title: "Naruto Shippuden",
     description: "ناروتو أوزوماكي يواصل رحلته نحو حلمه ليصبح هوكاجي بينما يواجه تهديدات تطال العالم بأسره.",
-    rating: "9.3",
-    year: "2007",
-    epCount: 500,
-    lang: "مدبلج عربي",
+    rating: "9.3", year: "2007", epCount: 500, lang: "مدبلج عربي",
     tags: ["أكشن", "نينجا", "مغامرات", "صداقة"],
-    palette: "placeholder-2",
-    emoji: "🍥",
+    palette: "placeholder-2", emoji: "🍥",
     episodes: Array.from({ length: 30 }, (_, i) => ({
-      num: i + 1,
-      title: `الحلقة ${i + 1}`,
-      duration: "23 دقيقة",
+      num: i + 1, title: `الحلقة ${i + 1}`, duration: "23 دقيقة",
     })),
   },
 };
@@ -219,16 +229,20 @@ let heroIndex = 0;
 let heroTimer = null;
 
 function renderHeroSlider() {
-  const track = document.getElementById("heroTrack");
+  const track   = document.getElementById("heroTrack");
   const content = document.getElementById("heroContent");
   const dotsWrap = document.getElementById("heroDots");
   if (!track || !content || !dotsWrap) return;
 
-  // Build slides (bg-only divs)
+  // Build slides — صورة حقيقية مع gradient كـ fallback
   track.innerHTML = HERO_SLIDES.map((s, i) => `
-    <div class="hero-slide${i === 0 ? " active" : ""}"
-         style="background:${s.gradient};"
-         data-index="${i}">
+    <div class="hero-slide${i === 0 ? " active" : ""}" data-index="${i}"
+         style="background:${s.gradient};">
+      <img
+        src="${s.image}"
+        alt="${s.title}"
+        onerror="this.style.display='none'"
+        style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.7;">
     </div>
   `).join("");
 
@@ -236,7 +250,7 @@ function renderHeroSlider() {
   content.innerHTML = HERO_SLIDES.map((s, i) => `
     <div class="hero-slide-content${i === 0 ? " active" : ""}" data-index="${i}">
       <span class="hero-genre-tag">${s.genre}</span>
-      <h1 class="hero-title">${s.emoji} ${s.title}</h1>
+      <h1 class="hero-title">${s.title}</h1>
       <p class="hero-desc">${s.description}</p>
       <div class="hero-actions">
         <a href="watch.html?id=${s.id}" class="btn-play">
@@ -265,9 +279,9 @@ function renderHeroSlider() {
 }
 
 function goToSlide(idx) {
-  const slides = document.querySelectorAll(".hero-slide");
+  const slides   = document.querySelectorAll(".hero-slide");
   const contents = document.querySelectorAll(".hero-slide-content");
-  const dots = document.querySelectorAll(".hero-dot");
+  const dots     = document.querySelectorAll(".hero-dot");
 
   slides[heroIndex]?.classList.remove("active");
   contents[heroIndex]?.classList.remove("active");
@@ -297,7 +311,6 @@ function initHeroControls() {
   document.getElementById("heroNext")?.addEventListener("click", () => goToSlide(heroIndex + 1));
 }
 
-// Touch/swipe support for hero
 function initHeroSwipe() {
   const hero = document.querySelector(".hero");
   if (!hero) return;
@@ -315,19 +328,16 @@ function initHeroSwipe() {
    HEADER BEHAVIOR
    ============================================= */
 function initHeader() {
-  // Scroll effect
   window.addEventListener("scroll", () => {
     document.getElementById("header")?.classList.toggle("scrolled", window.scrollY > 60);
   }, { passive: true });
 
-  // Hamburger
   const hamburger = document.getElementById("hamburger");
   const mobileNav = document.getElementById("mobileNav");
   hamburger?.addEventListener("click", () => mobileNav?.classList.toggle("open"));
 
-  // Search toggle
   const searchToggle = document.getElementById("searchToggle");
-  const searchBox = document.getElementById("searchBox");
+  const searchBox    = document.getElementById("searchBox");
   searchToggle?.addEventListener("click", () => {
     searchBox?.classList.toggle("open");
     if (searchBox?.classList.contains("open")) {
@@ -345,8 +355,6 @@ function initHeader() {
 function initWatchPage() {
   const params = getParams();
   const id = parseInt(params.get("id")) || 101;
-
-  // Try to find in mock data
   const allAnime = [...TRENDING, ...ANIME_SERIES, ...KIDS];
   const basicData = allAnime.find((a) => a.id === id);
   const detailData = ANIME_DETAILS[id] || buildFallbackDetail(basicData);
@@ -367,40 +375,29 @@ function buildFallbackDetail(basic) {
   return {
     title: basic.title,
     description: `استمتع بمشاهدة ${basic.title} – سلسلة رائعة بـ ${basic.eps} حلقة.`,
-    rating: basic.rating.toString(),
-    year: basic.year.toString(),
-    epCount: basic.eps,
-    lang: "مدبلج عربي",
-    tags: ["أنيمي"],
-    palette: basic.palette,
-    emoji: basic.emoji,
+    rating: basic.rating.toString(), year: basic.year.toString(),
+    epCount: basic.eps, lang: "مدبلج عربي", tags: ["أنيمي"],
+    palette: basic.palette, emoji: basic.emoji,
     episodes: Array.from({ length: Math.min(basic.eps, 30) }, (_, i) => ({
-      num: i + 1,
-      title: `الحلقة ${i + 1}`,
-      duration: "23 دقيقة",
+      num: i + 1, title: `الحلقة ${i + 1}`, duration: "23 دقيقة",
     })),
   };
 }
 
 function renderAnimeInfo(data) {
-  // Page title
   document.title = `${data.title} – Toonia`;
-
-  // Thumbnail
   const thumb = document.getElementById("animeThumb");
   if (thumb) {
     thumb.parentElement.classList.add(data.palette);
-    thumb.style.display = "none"; // no real image; show gradient bg
+    thumb.style.display = "none";
     thumb.parentElement.innerHTML = `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3rem;">${data.emoji}</div>`;
   }
-
-  document.getElementById("animeTitle").textContent = data.title;
-  document.getElementById("animeRating").textContent = data.rating;
-  document.getElementById("animeYear").textContent = data.year;
-  document.getElementById("animeEpCount").textContent = data.epCount;
-  document.getElementById("animeLang").textContent = data.lang;
-  document.getElementById("animeDesc").textContent = data.description;
-
+  document.getElementById("animeTitle").textContent    = data.title;
+  document.getElementById("animeRating").textContent   = data.rating;
+  document.getElementById("animeYear").textContent     = data.year;
+  document.getElementById("animeEpCount").textContent  = data.epCount;
+  document.getElementById("animeLang").textContent     = data.lang;
+  document.getElementById("animeDesc").textContent     = data.description;
   const tagsContainer = document.getElementById("animeTags");
   if (tagsContainer) {
     tagsContainer.innerHTML = data.tags.map((t) => `<span class="anime-tag">${t}</span>`).join("");
@@ -410,13 +407,11 @@ function renderAnimeInfo(data) {
 let currentEpIndex = 0;
 
 function renderEpisodesList(episodes) {
-  const list = document.getElementById("episodesList");
+  const list  = document.getElementById("episodesList");
   const badge = document.getElementById("epCountBadge");
   if (!list) return;
-
   badge && (badge.textContent = `${episodes.length} حلقة`);
   list.innerHTML = "";
-
   const fragment = document.createDocumentFragment();
   episodes.forEach((ep, idx) => {
     const item = document.createElement("div");
@@ -437,27 +432,17 @@ function renderEpisodesList(episodes) {
 
 function selectEpisode(idx, ep, episodes) {
   currentEpIndex = idx;
-
-  // Update active state
   document.querySelectorAll(".ep-item").forEach((el, i) => {
     el.classList.toggle("active", i === idx);
   });
-
-  // Scroll into view
   const activeEl = document.querySelector(".ep-item.active");
   activeEl?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-
-  // Update player
-  const overlay = document.getElementById("playerOverlay");
-  const label = document.getElementById("nowPlayingLabel");
-  const epTitle = document.getElementById("playerEpTitle");
-
+  const overlay  = document.getElementById("playerOverlay");
+  const label    = document.getElementById("nowPlayingLabel");
+  const epTitle  = document.getElementById("playerEpTitle");
   if (overlay && label) {
     label.textContent = `تشغيل: ${ep.title}`;
     epTitle && (epTitle.textContent = ep.title);
-    // In a real app: load video src and play
-    // document.getElementById('videoSource').src = ep.videoUrl;
-    // document.getElementById('videoPlayer').load();
   }
 }
 
@@ -481,29 +466,14 @@ function renderRelated(currentId, allAnime) {
 }
 
 /* =============================================
-   FUTURE API INTEGRATION STUBS
-   ============================================= */
-// These functions are ready to be connected to a real API
-// async function fetchTrending() {
-//   const res = await fetch('/api/trending');
-//   return res.json();
-// }
-// async function fetchAnimeDetail(id) {
-//   const res = await fetch(`/api/anime/${id}`);
-//   return res.json();
-// }
-
-/* =============================================
    PAGE ROUTER & INIT
    ============================================= */
 function handleNavigation() {
   const isWatch = document.body.classList.contains("watch-page");
-
   if (isWatch) {
     initHeader();
     initWatchPage();
   } else {
-    // Home page
     initHeader();
     renderHeroSlider();
     initHeroControls();
@@ -515,5 +485,4 @@ function handleNavigation() {
   }
 }
 
-// Boot
 document.addEventListener("DOMContentLoaded", handleNavigation);
