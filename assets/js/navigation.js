@@ -36,6 +36,23 @@ function initSidebar() {
   // إغلاق عند الضغط على الـ overlay
   overlay?.addEventListener("click", closeSidebar);
 
+  // ✅ Search toggle
+  const searchToggle = document.getElementById("searchToggle");
+  const searchBox    = document.getElementById("searchBox");
+  if (searchToggle && searchBox) {
+    searchToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isOpen = searchBox.style.width === "240px";
+      searchBox.style.width = isOpen ? "0" : "240px";
+      if (!isOpen) document.getElementById("searchInput")?.focus();
+    });
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest(".search-wrap")) {
+        searchBox.style.width = "0";
+      }
+    });
+  }
+
   // ✅ إغلاق ذكي: الضغط خارج القائمة
   document.addEventListener("click", (e) => {
     if (
