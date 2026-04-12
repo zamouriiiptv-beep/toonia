@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Toonia — Admin Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════ RESET & VARS ═══════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-0:       #080a0f;
+  --bg-1:       #0d1017;
+  --bg-2:       #111520;
+  --bg-3:       #161b2a;
+  --border:     rgba(255,255,255,.07);
+  --border-md:  rgba(255,255,255,.12);
+  --green:      #22c55e;
+  --green-dim:  rgba(34,197,94,.12);
+  --green-glow: rgba(34,197,94,.25);
+  --red:        #ef4444;
+  --red-dim:    rgba(239,68,68,.1);
+  --amber:      #f59e0b;
+  --blue:       #3b82f6;
+  --text-1:     #f0f4ff;
+  --text-2:     rgba(240,244,255,.6);
+  --text-3:     rgba(240,244,255,.3);
+  --mono:       'JetBrains Mono', monospace;
+  --cairo:      'Cairo', sans-serif;
+  --radius:     10px;
+  --radius-lg:  16px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--cairo);
+  background: var(--bg-0);
+  color: var(--text-1);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ═══════════════════════════ GRID NOISE BG ═══════════════════════════ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(34,197,94,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34,197,94,.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ═══════════════════════════ HEADER ═══════════════════════════ */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(8,10,15,.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  text-decoration: none;
+}
+.logo-mark {
+  font-family: var(--cairo);
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: var(--text-1);
+  letter-spacing: -.02em;
+}
+.logo-mark span { color: var(--green); }
+.logo-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+  animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink {
+  0%,100% { opacity: 1; }
+  50%      { opacity: .3; }
+}
+.header-badge {
+  font-family: var(--mono);
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  color: var(--green);
+  background: var(--green-dim);
+  border: 1px solid rgba(34,197,94,.2);
+  border-radius: 5px;
+  padding: 3px 8px;
+  text-transform: uppercase;
+}
+
+/* ═══════════════════════════ LAYOUT ═══════════════════════════ */
+.page {
+  position: relative;
+  z-index: 1;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+/* ═══════════════════════════ SECTION TITLE ═══════════════════════════ */
+.section-head {
+  margin-bottom: 1.5rem;
+}
+.section-head h2 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-1);
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+}
+.section-head h2::before {
+  content: '';
+  display: block;
+  width: 3px;
+  height: 18px;
+  background: var(--green);
+  border-radius: 2px;
+  box-shadow: 0 0 8px var(--green-glow);
+}
+.section-head p {
+  font-size: .8rem;
+  color: var(--text-3);
+  margin-top: .3rem;
+  padding-right: 15px;
+}
+
+/* ═══════════════════════════ CARD ═══════════════════════════ */
+.card {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  transition: border-color .2s;
+}
+.card:hover { border-color: var(--border-md); }
+
+/* ═══════════════════════════ FORM GRID ═══════════════════════════ */
+.form-row {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.form-row.cols-2 { grid-template-columns: 1fr 2fr; }
+.form-row.cols-3 { grid-template-columns: repeat(3, 1fr); }
+
+@media (max-width: 620px) {
+  .form-row.cols-2,
+  .form-row.cols-3 { grid-template-columns: 1fr; }
+}
+
+/* ═══════════════════════════ FIELD ═══════════════════════════ */
+.field { display: flex; flex-direction: column; gap: .45rem; }
+
+.field label {
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--text-3);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+.field label .srv-badge {
+  font-size: .62rem;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-family: var(--mono);
+  font-weight: 600;
+  letter-spacing: .02em;
+}
+.srv-badge.uq { background: rgba(59,130,246,.15); color: #60a5fa; border: 1px solid rgba(59,130,246,.2); }
+.srv-badge.st { background: rgba(245,158,11,.12); color: #fbbf24; border: 1px solid rgba(245,158,11,.2); }
+.srv-badge.mv { background: rgba(168,85,247,.12); color: #c084fc; border: 1px solid rgba(168,85,247,.2); }
+
+.field input {
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: .65rem .9rem;
+  color: var(--text-1);
+  font-family: var(--cairo);
+  font-size: .88rem;
+  font-weight: 500;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s, background .2s;
+  width: 100%;
+}
+.field input::placeholder { color: var(--text-3); }
+.field input:focus {
+  border-color: rgba(34,197,94,.4);
+  box-shadow: 0 0 0 3px rgba(34,197,94,.08);
+  background: var(--bg-2);
+}
+.field input.mono-input {
+  font-family: var(--mono);
+  font-size: .82rem;
+  direction: ltr;
+  text-align: left;
+}
+
+/* ═══════════════════════════ DIVIDER ═══════════════════════════ */
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 1.5rem 0;
+}
+
+/* ═══════════════════════════ SERVER SECTION ═══════════════════════════ */
+.server-section-title {
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--text-3);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: .85rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.server-section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ═══════════════════════════ ACTIONS ROW ═══════════════════════════ */
+.actions {
+  display: flex;
+  gap: .75rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .65rem 1.35rem;
+  border-radius: var(--radius);
+  font-family: var(--cairo);
+  font-size: .85rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: all .2s ease;
+  white-space: nowrap;
+}
+.btn svg { flex-shrink: 0; }
+
+.btn-primary {
+  background: var(--green);
+  color: #000;
+  box-shadow: 0 0 20px rgba(34,197,94,.2);
+}
+.btn-primary:hover {
+  background: #16a34a;
+  box-shadow: 0 0 28px rgba(34,197,94,.35);
+  transform: translateY(-1px);
+}
+.btn-primary:active { transform: translateY(0); }
+
+.btn-ghost {
+  background: var(--bg-3);
+  border: 1px solid var(--border-md);
+  color: var(--text-2);
+}
+.btn-ghost:hover {
+  background: var(--bg-1);
+  color: var(--text-1);
+  border-color: rgba(255,255,255,.2);
+}
+
+.btn-danger {
+  background: var(--red-dim);
+  border: 1px solid rgba(239,68,68,.2);
+  color: #fca5a5;
+}
+.btn-danger:hover { background: rgba(239,68,68,.18); }
+
+/* ═══════════════════════════ OUTPUT SECTION ═══════════════════════════ */
+.output-wrap {
+  margin-top: 2rem;
+}
+
+.output-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: .65rem;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+.output-header-left {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+}
+.output-label {
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--text-3);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.output-count {
+  font-family: var(--mono);
+  font-size: .68rem;
+  color: var(--green);
+  background: var(--green-dim);
+  border: 1px solid rgba(34,197,94,.15);
+  border-radius: 20px;
+  padding: 1px 8px;
+}
+
+.output-box {
+  position: relative;
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: border-color .2s;
+}
+.output-box:focus-within { border-color: rgba(34,197,94,.3); }
+
+.output-box-bar {
+  background: var(--bg-3);
+  border-bottom: 1px solid var(--border);
+  padding: .5rem .85rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.bar-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+}
+.bar-dot:nth-child(1) { background: #ef4444; }
+.bar-dot:nth-child(2) { background: #f59e0b; }
+.bar-dot:nth-child(3) { background: #22c55e; }
+.bar-filename {
+  font-family: var(--mono);
+  font-size: .68rem;
+  color: var(--text-3);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+#outputArea {
+  display: block;
+  width: 100%;
+  min-height: 200px;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 1rem 1.1rem;
+  color: #86efac;
+  font-family: var(--mono);
+  font-size: .82rem;
+  line-height: 1.7;
+  resize: vertical;
+  direction: ltr;
+  text-align: left;
+}
+#outputArea::placeholder {
+  color: var(--text-3);
+  font-family: var(--cairo);
+  direction: rtl;
+  text-align: right;
+  font-size: .82rem;
+}
+
+/* ═══════════════════════════ HISTORY LIST ═══════════════════════════ */
+.history-wrap {
+  margin-top: 2.5rem;
+}
+
+#historyList {
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+  margin-top: 1rem;
+}
+
+.history-item {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: .75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: .85rem;
+  transition: border-color .2s;
+  cursor: pointer;
+}
+.history-item:hover { border-color: var(--border-md); }
+
+.hi-num {
+  font-family: var(--mono);
+  font-size: .78rem;
+  font-weight: 700;
+  color: #000;
+  background: var(--green);
+  border-radius: 6px;
+  min-width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.hi-info { flex: 1; overflow: hidden; }
+.hi-title {
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--text-1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hi-servers {
+  display: flex;
+  gap: .35rem;
+  margin-top: .25rem;
+}
+.hi-srv {
+  font-family: var(--mono);
+  font-size: .62rem;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+.hi-srv.has  { background: rgba(34,197,94,.12); color: #4ade80; border: 1px solid rgba(34,197,94,.2); }
+.hi-srv.none { background: rgba(255,255,255,.04); color: var(--text-3); border: 1px solid var(--border); text-decoration: line-through; }
+
+.hi-actions { display: flex; gap: .4rem; flex-shrink: 0; }
+.hi-btn {
+  width: 30px; height: 30px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background: var(--bg-3);
+  color: var(--text-2);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: all .15s;
+  font-size: .78rem;
+}
+.hi-btn:hover { background: var(--bg-1); color: var(--text-1); border-color: var(--border-md); }
+.hi-btn.del:hover { background: var(--red-dim); color: #fca5a5; border-color: rgba(239,68,68,.25); }
+
+/* ═══════════════════════════ EMPTY STATE ═══════════════════════════ */
+.empty-state {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: var(--text-3);
+  font-size: .85rem;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-lg);
+}
+.empty-state span { display: block; font-size: 2rem; margin-bottom: .5rem; }
+
+/* ═══════════════════════════ TOAST ═══════════════════════════ */
+#toast {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: rgba(13,16,23,.96);
+  border: 1px solid rgba(34,197,94,.3);
+  color: var(--text-1);
+  padding: .65rem 1.35rem;
+  border-radius: 10px;
+  font-size: .83rem;
+  font-weight: 600;
+  font-family: var(--cairo);
+  z-index: 9999;
+  transition: transform .35s cubic-bezier(.34,1.56,.64,1);
+  white-space: nowrap;
+  box-shadow: 0 8px 32px rgba(0,0,0,.6), 0 0 0 1px rgba(34,197,94,.1);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+#toast.show { transform: translateX(-50%) translateY(0); }
+#toast.error { border-color: rgba(239,68,68,.3); box-shadow: 0 8px 32px rgba(0,0,0,.6), 0 0 0 1px rgba(239,68,68,.1); }
+
+/* ═══════════════════════════ SCROLLBAR ═══════════════════════════ */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-0); }
+::-webkit-scrollbar-thumb { background: var(--bg-3); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.15); }
+
+/* ═══════════════════════════ COPY FLASH ═══════════════════════════ */
+@keyframes copyFlash {
+  0%   { background: rgba(34,197,94,.15); }
+  100% { background: transparent; }
+}
+.flash { animation: copyFlash .6s ease; }
+
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ HEADER ══════════════════ -->
+<header>
+  <a href="index.html" class="logo">
+    <span class="logo-mark"><span>T</span>oonia</span>
+    <div class="logo-dot"></div>
+  </a>
+  <span class="header-badge">Admin Panel</span>
+</header>
+
+<!-- ══════════════════ MAIN PAGE ══════════════════ -->
+<main class="page">
+
+  <!-- ── Input Card ── -->
+  <div class="section-head">
+    <h2>توليد كود الحلقة</h2>
+    <p>أدخل بيانات الحلقة وسيتم توليد الكود جاهزاً للنسخ</p>
+  </div>
+
+  <div class="card">
+
+    <!-- الصف الأول: رقم + عنوان -->
+    <div class="form-row cols-2">
+      <div class="field">
+        <label>رقم الحلقة</label>
+        <input type="number" id="epNum" placeholder="1" min="1" class="mono-input"/>
+      </div>
+      <div class="field">
+        <label>عنوان الحلقة</label>
+        <input type="text" id="epTitle" placeholder="مثال: البداية"/>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <!-- السيرفرات -->
+    <div class="server-section-title">معرّفات السيرفرات (Slug / ID)</div>
+
+    <div class="form-row cols-3">
+      <div class="field">
+        <label>
+          Uqload ID
+          <span class="srv-badge uq">UQ</span>
+        </label>
+        <input type="text" id="uqId" placeholder="embed-aot-ep1" class="mono-input" dir="ltr"/>
+      </div>
+      <div class="field">
+        <label>
+          Streamtape ID
+          <span class="srv-badge st">ST</span>
+        </label>
+        <input type="text" id="stId" placeholder="aot-ep1" class="mono-input" dir="ltr"/>
+      </div>
+      <div class="field">
+        <label>
+          Myvidplay ID
+          <span class="srv-badge mv">MV</span>
+        </label>
+        <input type="text" id="mvId" placeholder="aot-ep1" class="mono-input" dir="ltr"/>
+      </div>
+    </div>
+
+    <!-- أزرار الإجراءات -->
+    <div class="actions">
+      <button class="btn btn-primary" onclick="generateCode()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+        </svg>
+        توليد الكود
+      </button>
+      <button class="btn btn-ghost" onclick="addToHistory()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        أضف للقائمة
+      </button>
+      <button class="btn btn-ghost" onclick="resetForm()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="1 4 1 10 7 10"/>
+          <path d="M3.51 15a9 9 0 1 0 .49-4.95"/>
+        </svg>
+        إعادة ضبط
+      </button>
+    </div>
+
+  </div>
+  <!-- /card -->
+
+  <!-- ── Output ── -->
+  <div class="output-wrap">
+    <div class="output-header">
+      <div class="output-header-left">
+        <span class="output-label">الكود المتولّد</span>
+        <span class="output-count" id="lineCount">0 سطر</span>
+      </div>
+      <div style="display:flex;gap:.5rem;">
+        <button class="btn btn-ghost" style="padding:.45rem .9rem;font-size:.78rem;" onclick="copyOutput()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          </svg>
+          نسخ الكل
+        </button>
+        <button class="btn btn-danger" style="padding:.45rem .9rem;font-size:.78rem;" onclick="clearOutput()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/>
+          </svg>
+          مسح
+        </button>
+      </div>
+    </div>
+
+    <div class="output-box" id="outputBox">
+      <div class="output-box-bar">
+        <div class="bar-dot"></div>
+        <div class="bar-dot"></div>
+        <div class="bar-dot"></div>
+        <span class="bar-filename">getAnime.js</span>
+      </div>
+      <textarea id="outputArea" spellcheck="false"
+        placeholder="الكود سيظهر هنا بعد الضغط على &quot;توليد الكود&quot;..."></textarea>
+    </div>
+  </div>
+
+  <!-- ── History ── -->
+  <div class="history-wrap">
+    <div class="section-head" style="margin-bottom:.5rem;">
+      <h2>قائمة الحلقات المضافة</h2>
+      <p>اضغط على حلقة لتحميل بياناتها في النموذج — أو اضغط على "نسخ الكل" لتصدير الجميع</p>
+    </div>
+
+    <div style="display:flex;gap:.6rem;margin-bottom:1rem;flex-wrap:wrap;">
+      <button class="btn btn-ghost" style="font-size:.8rem;padding:.5rem 1rem;" onclick="exportAll()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        تصدير الكل للـ Output
+      </button>
+      <button class="btn btn-danger" style="font-size:.8rem;padding:.5rem 1rem;" onclick="clearHistory()">
+        مسح القائمة
+      </button>
+    </div>
+
+    <div id="historyList"></div>
+  </div>
+
+</main>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script>
+"use strict";
+
+/* ══════════════ STATE ══════════════ */
+let history = JSON.parse(localStorage.getItem("toonia_ep_history") || "[]");
+
+/* ══════════════ INIT ══════════════ */
+renderHistory();
+updateLineCount();
+
+/* ══════════════ GENERATE ══════════════ */
+function generateCode() {
+  const num   = document.getElementById("epNum").value.trim();
+  const title = document.getElementById("epTitle").value.trim();
+  const uq    = document.getElementById("uqId").value.trim();
+  const st    = document.getElementById("stId").value.trim();
+  const mv    = document.getElementById("mvId").value.trim();
+
+  if (!num) { showToast("⚠️ أدخل رقم الحلقة", true); return; }
+  if (!title) { showToast("⚠️ أدخل عنوان الحلقة", true); return; }
+
+  const code = buildCode(num, title, uq, st, mv);
+  const area = document.getElementById("outputArea");
+
+  // Append to existing output
+  area.value += (area.value ? "\n" : "") + code;
+  area.scrollTop = area.scrollHeight;
+
+  updateLineCount();
+  flashBox();
+  showToast("✅ تم توليد الكود");
+}
+
+function buildCode(num, title, uq, st, mv) {
+  const serversObj = buildServersStr(uq, st, mv);
+  const epTitle = `الحلقة ${num}: ${title}`;
+  return `{ num: ${num}, title: "${epTitle}", servers: buildServers(${serversObj}) },`;
+}
+
+function buildServersStr(uq, st, mv) {
+  const parts = [];
+  if (uq) parts.push(`uq: "${uq}"`);
+  if (st) parts.push(`st: "${st}"`);
+  if (mv) parts.push(`mv: "${mv}"`);
+  if (!parts.length) return "{}";
+  return `{ ${parts.join(", ")} }`;
+}
+
+/* ══════════════ HISTORY ══════════════ */
+function addToHistory() {
+  const num   = document.getElementById("epNum").value.trim();
+  const title = document.getElementById("epTitle").value.trim();
+  const uq    = document.getElementById("uqId").value.trim();
+  const st    = document.getElementById("stId").value.trim();
+  const mv    = document.getElementById("mvId").value.trim();
+
+  if (!num || !title) { showToast("⚠️ أدخل الرقم والعنوان على الأقل", true); return; }
+
+  // Check duplicate
+  const exists = history.find(e => e.num === parseInt(num));
+  if (exists) { showToast("⚠️ هذه الحلقة موجودة بالفعل في القائمة", true); return; }
+
+  history.push({ num: parseInt(num), title, uq, st, mv });
+  history.sort((a, b) => a.num - b.num);
+  saveHistory();
+  renderHistory();
+  showToast("✅ تمت إضافة الحلقة للقائمة");
+  resetForm();
+}
+
+function loadToForm(ep) {
+  document.getElementById("epNum").value   = ep.num;
+  document.getElementById("epTitle").value = ep.title;
+  document.getElementById("uqId").value    = ep.uq || "";
+  document.getElementById("stId").value    = ep.st || "";
+  document.getElementById("mvId").value    = ep.mv || "";
+  showToast(`📂 تم تحميل الحلقة ${ep.num}`);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function deleteFromHistory(num) {
+  history = history.filter(e => e.num !== num);
+  saveHistory();
+  renderHistory();
+  showToast("🗑️ تم حذف الحلقة");
+}
+
+function clearHistory() {
+  if (!history.length) return;
+  if (!confirm("هل تريد مسح قائمة الحلقات بالكامل؟")) return;
+  history = [];
+  saveHistory();
+  renderHistory();
+  showToast("🗑️ تم مسح القائمة");
+}
+
+function exportAll() {
+  if (!history.length) { showToast("⚠️ القائمة فارغة", true); return; }
+  const lines = history.map(ep => buildCode(ep.num, ep.title, ep.uq, ep.st, ep.mv));
+  document.getElementById("outputArea").value = lines.join("\n");
+  updateLineCount();
+  flashBox();
+  showToast(`✅ تم تصدير ${history.length} حلقة`);
+}
+
+function renderHistory() {
+  const list = document.getElementById("historyList");
+
+  if (!history.length) {
+    list.innerHTML = `
+      <div class="empty-state">
+        <span>📋</span>
+        لا توجد حلقات بعد — أضف حلقات باستخدام زر "أضف للقائمة"
+      </div>`;
+    return;
+  }
+
+  list.innerHTML = history.map(ep => `
+    <div class="history-item" onclick="loadToForm(${JSON.stringify(ep).replace(/"/g,'&quot;')})">
+      <div class="hi-num">${ep.num}</div>
+      <div class="hi-info">
+        <div class="hi-title">الحلقة ${ep.num}: ${escHtml(ep.title)}</div>
+        <div class="hi-servers">
+          <span class="hi-srv ${ep.uq ? 'has':'none'}">UQ</span>
+          <span class="hi-srv ${ep.st ? 'has':'none'}">ST</span>
+          <span class="hi-srv ${ep.mv ? 'has':'none'}">MV</span>
+        </div>
+      </div>
+      <div class="hi-actions">
+        <button class="hi-btn" title="نسخ الكود" onclick="event.stopPropagation(); copySingle(${ep.num})">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          </svg>
+        </button>
+        <button class="hi-btn del" title="حذف" onclick="event.stopPropagation(); deleteFromHistory(${ep.num})">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function copySingle(num) {
+  const ep = history.find(e => e.num === num);
+  if (!ep) return;
+  const code = buildCode(ep.num, ep.title, ep.uq, ep.st, ep.mv);
+  navigator.clipboard.writeText(code).then(() => showToast(`✅ تم نسخ كود الحلقة ${num}`));
+}
+
+/* ══════════════ OUTPUT HELPERS ══════════════ */
+function copyOutput() {
+  const val = document.getElementById("outputArea").value.trim();
+  if (!val) { showToast("⚠️ لا يوجد كود للنسخ", true); return; }
+  navigator.clipboard.writeText(val).then(() => {
+    showToast("✅ تم نسخ الكود بنجاح");
+    flashBox();
+  });
+}
+
+function clearOutput() {
+  document.getElementById("outputArea").value = "";
+  updateLineCount();
+  showToast("🗑️ تم مسح الكود");
+}
+
+function updateLineCount() {
+  const val = document.getElementById("outputArea").value.trim();
+  const count = val ? val.split("\n").filter(l => l.trim()).length : 0;
+  document.getElementById("lineCount").textContent = `${count} سطر`;
+}
+
+document.getElementById("outputArea").addEventListener("input", updateLineCount);
+
+function flashBox() {
+  const box = document.getElementById("outputBox");
+  box.classList.remove("flash");
+  void box.offsetWidth;
+  box.classList.add("flash");
+}
+
+/* ══════════════ FORM HELPERS ══════════════ */
+function resetForm() {
+  ["epNum","epTitle","uqId","stId","mvId"].forEach(id => {
+    document.getElementById(id).value = "";
+  });
+  document.getElementById("epNum").focus();
+}
+
+/* ══════════════ STORAGE ══════════════ */
+function saveHistory() {
+  localStorage.setItem("toonia_ep_history", JSON.stringify(history));
+}
+
+/* ══════════════ TOAST ══════════════ */
+let toastTimer;
+function showToast(msg, isError = false) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.className = "show" + (isError ? " error" : "");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.classList.remove("show"); }, 2400);
+}
+
+/* ══════════════ UTIL ══════════════ */
+function escHtml(s) {
+  return String(s ?? "")
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+/* ══════════════ KEYBOARD SHORTCUT ══════════════ */
+document.addEventListener("keydown", e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+    e.preventDefault();
+    generateCode();
+  }
+  if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === "C") {
+    e.preventDefault();
+    copyOutput();
+  }
+});
+</script>
+</body>
+</html>
