@@ -1,34 +1,17 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <!-- ================================== -->
-    <!--  إعدادات الصفحة الأساسية (Meta)    -->
-    <!-- ================================== -->
-
-    <!-- تحديد ترميز الصفحة لدعم العربية -->
     <meta charset="UTF-8" />
-
-    <!-- جعل التصميم متجاوب مع جميع الشاشات -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <!-- عنوان الصفحة (مهم للـ SEO) -->
     <title>Toonia - عالم الأنمي</title>
 
-    <!-- ================================== -->
-    <!--  خط Cairo (إجباري قبل CSS)         -->
-    <!-- ================================== -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- ================================== -->
-<!--  ملفات CSS                          -->
-<!-- ================================== -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
-<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css">
-<link rel="stylesheet" href="assets/css/navigation.css">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/navigation.css">
 </head>
 <body>
 
@@ -46,15 +29,8 @@
       <i class="fas fa-bars" style="font-size:1.1rem;"></i>
     </button>
 
-    <!-- الوسط: الشعار -->
-    <a href="/toonia/" style="text-decoration:none;display:flex;align-items:center;gap:2px;position:absolute;left:50%;transform:translateX(-50%);">
-      <span style="font-family:'Exo 2',sans-serif;font-weight:900;font-size:1.8rem;color:var(--accent);letter-spacing:-1px;">T</span>
-      <span style="font-family:'Exo 2',sans-serif;font-weight:700;font-size:1.6rem;color:var(--text);">oonia</span>
-      <span style="width:7px;height:7px;border-radius:50%;background:var(--accent);margin-bottom:5px;margin-right:1px;box-shadow:0 0 8px var(--accent);display:inline-block;"></span>
-    </a>
-
-    <!-- اليسار: بحث -->
-    <div style="display:flex;align-items:center;gap:8px;">
+    <!-- اليسار: شعار + بحث -->
+    <div style="display:flex;align-items:center;gap:10px;">
 
       <!-- أيقونة البحث -->
       <button id="searchToggle" aria-label="بحث"
@@ -66,6 +42,13 @@
         </svg>
       </button>
 
+      <!-- الشعار على اليسار -->
+      <a href="/toonia/" style="text-decoration:none;display:flex;align-items:center;gap:2px;">
+        <span style="font-family:'Exo 2',sans-serif;font-weight:900;font-size:1.8rem;color:var(--accent);letter-spacing:-1px;">T</span>
+        <span style="font-family:'Exo 2',sans-serif;font-weight:700;font-size:1.6rem;color:var(--text);">oonia</span>
+        <span style="width:7px;height:7px;border-radius:50%;background:var(--accent);margin-bottom:5px;margin-right:1px;box-shadow:0 0 8px var(--accent);display:inline-block;"></span>
+      </a>
+
     </div>
 
   </div>
@@ -75,7 +58,7 @@
     <input type="text" id="searchInput" placeholder="ابحث عن أنمي أو كرتون..."
       style="width:100%;padding:10px 16px;background:var(--bg-3);border:1px solid var(--border);
              border-radius:30px;color:var(--text);font-size:.9rem;font-family:'Cairo',sans-serif;
-             outline:none;"/>
+             outline:none;box-sizing:border-box;"/>
   </div>
 
 </header>
@@ -83,7 +66,6 @@
 <!-- ================================== -->
 <!--  قسم الـ Hero (الواجهة الرئيسية)    -->
 <!-- ================================== -->
-
 <section class="hero" id="heroSection">
   <div class="hero-track" id="heroTrack"></div>
   <div class="hero-overlay"></div>
@@ -249,10 +231,7 @@
 <!--  المحتوى الرئيسي                  -->
 <!-- ================================== -->
 <main class="main" id="mainContent">
-
-  <!-- سلايدرات البوسترات (تُملأ تلقائياً من navigation.js) -->
   <div id="posterSections"></div>
-
 </main>
 
 <!-- فوتر الموقع -->
@@ -283,7 +262,7 @@
     <p>© 2025 Toonia. جميع الحقوق محفوظة.</p>
   </div>
 </footer>
-<!-- ملفات JavaScript -->
+
 <script src="assets/js/app.js" defer></script>
 <script src="assets/js/navigation.js" defer></script>
 </body>
