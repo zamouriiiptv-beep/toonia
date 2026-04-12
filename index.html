@@ -42,24 +42,43 @@
         </svg>
       </button>
 
-      <!-- الشعار على اليسار -->
-      <a href="/toonia/" style="text-decoration:none;display:flex;align-items:center;gap:2px;">
-        <span style="font-family:'Exo 2',sans-serif;font-weight:900;font-size:1.8rem;color:var(--accent);letter-spacing:-1px;">T</span>
-        <span style="font-family:'Exo 2',sans-serif;font-weight:700;font-size:1.6rem;color:var(--text);">oonia</span>
-        <span style="width:7px;height:7px;border-radius:50%;background:var(--accent);margin-bottom:5px;margin-right:1px;box-shadow:0 0 8px var(--accent);display:inline-block;"></span>
+      <!-- الشعار على اليسار: Toonia -->
+      <a href="/toonia/" style="text-decoration:none;display:flex;align-items:center;gap:0px;">
+        <span style="font-family:'Exo 2',sans-serif;font-weight:700;font-size:1.7rem;color:#eaeaea;">oonia</span><span style="font-family:'Exo 2',sans-serif;font-weight:900;font-size:1.7rem;color:var(--accent,#00D67A);">T</span>
       </a>
 
     </div>
 
   </div>
 
-  <!-- خانة البحث — تنزل تحت الهيدر عند الفتح -->
-  <div id="searchBar" style="display:none;padding:10px 16px;background:var(--bg-2);border-top:1px solid var(--border);">
+  <!-- خانة البحث -->
+  <div id="searchBar" style="display:none;padding:10px 16px;background:var(--bg-2,#12141c);border-top:1px solid var(--border,rgba(255,255,255,0.08));">
     <input type="text" id="searchInput" placeholder="ابحث عن أنمي أو كرتون..."
-      style="width:100%;padding:10px 16px;background:var(--bg-3);border:1px solid var(--border);
-             border-radius:30px;color:var(--text);font-size:.9rem;font-family:'Cairo',sans-serif;
+      style="width:100%;padding:10px 16px;background:var(--bg-3,#1a1d2e);border:1px solid var(--border,rgba(255,255,255,0.1));
+             border-radius:30px;color:#fff;font-size:.9rem;font-family:'Cairo',sans-serif;
              outline:none;box-sizing:border-box;"/>
   </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var toggle = document.getElementById('searchToggle');
+      var bar    = document.getElementById('searchBar');
+      var input  = document.getElementById('searchInput');
+      if (toggle && bar) {
+        toggle.addEventListener('click', function(e) {
+          e.stopPropagation();
+          var isOpen = bar.style.display === 'block';
+          bar.style.display = isOpen ? 'none' : 'block';
+          if (!isOpen && input) input.focus();
+        });
+        document.addEventListener('click', function(e) {
+          if (!e.target.closest('#searchBar') && !e.target.closest('#searchToggle')) {
+            bar.style.display = 'none';
+          }
+        });
+      }
+    });
+  </script>
 
 </header>
 
