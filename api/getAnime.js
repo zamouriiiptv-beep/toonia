@@ -6,7 +6,7 @@ export default function handler(req, res) {
 
   const id = parseInt(req.query.id) || 101;
 
-  // دالة بناء السيرفرات للأكواد اليدوية
+  // دالة بناء السيرفرات للأكواد اليدوية فقط
   function buildServers(codes = {}) {
     const servers = {};
     if (codes.uq) servers["1"] = `https://uqload.is/embed-${codes.uq}.html`;
@@ -15,70 +15,65 @@ export default function handler(req, res) {
     return servers;
   }
 
-  // نظام الحلقات الاحتياطي (Auto)
-  function buildAutoEpisodes(slug, count, titles, baseDuration = 23) {
-    const episodes = [];
-    for (let i = 1; i <= count; i++) {
-      episodes.push({
-        num: i,
-        title: `الحلقة ${i}: ${titles[(i - 1) % titles.length] || "مغامرة جديدة"}`,
-        duration: `${baseDuration} دقيقة`,
-        servers: buildServers({
-          uq: `${slug}-ep${i}`,
-          st: `${slug}-ep${i}`,
-          mv: `${slug}-ep${i}`,
-        }),
-      });
-    }
-    return episodes;
-  }
-
-  const aotTitles = ["البداية", "الجدار", "الهجوم"];
-
   const animeDB = {
-    // 101: Attack on Titan
+    // ✅ 101: Attack on Titan — حلقات يدوية (أضف الأكواد الحقيقية لاحقاً)
     101: {
       id: 101,
       title: "Attack on Titan",
       description: "في عالم تحكمه العمالقة، يسعى إيرين ييغر للانتقام واستعادة حرية البشرية.",
       rating: "9.8",
       year: "2013",
-      epCount: 87,
+      // ✅ إصلاح: epCount يطابق عدد الحلقات الفعلية المدخلة
+      epCount: 1,
       lang: "مدبلج عربي",
       tags: ["أكشن", "خيال"],
       emoji: "🏰",
-      episodes: buildAutoEpisodes("aot", 12, aotTitles),
+      episodes: [
+        // أضف الحلقات هنا بأكواد حقيقية — مثال:
+        // { num: 1, title: "الحلقة 1: للبشرية", duration: "24 دقيقة", servers: buildServers({ uq: "XXXX", st: "YYYY", mv: "ZZZZ" }) },
+        {
+          num: 1,
+          title: "الحلقة 1: للبشرية",
+          duration: "24 دقيقة",
+          servers: buildServers({
+            uq: "REPLACE_WITH_REAL_CODE",
+            st: "REPLACE_WITH_REAL_CODE",
+            mv: "REPLACE_WITH_REAL_CODE",
+          }),
+        },
+      ],
     },
 
-    // 106: أنمي البطل خماسي - النسخة المصلحة
+    // ✅ 106: البطل خماسي — نسخة مصلحة
     106: {
       id: 106,
       title: "البطل خماسي",
       description: "خمسة شباب يتحدون بمركباتهم لتشكيل الروبوت العملاق خماسي لحماية الأرض.",
       rating: "8.5",
       year: "1976",
-      epCount: 54,
+      // ✅ إصلاح: epCount يطابق عدد الحلقات الفعلية (1 حلقة مدخلة حالياً)
+      epCount: 1,
       lang: "مدبلج عربي",
       tags: ["ميكا", "أكشن", "كلاسيك"],
       emoji: "🤖",
       episodes: [
-        /* الحلقة 1: تم تصحيح كود Streamtape هنا ليعمل المشغل ✅ */
-        { 
-          num: 1, 
-          title: "الحلقة 1: البطل خماسي", 
-          duration: "24 دقيقة", 
-          servers: buildServers({ 
-            uq: "133ubxsynlut", 
-            st: "r8eo6kQBDJT8Ao", 
-            mv: "sa0syyd9a4nl" 
-          }) 
+        {
+          num: 1,
+          title: "الحلقة 1: البطل خماسي",
+          duration: "24 دقيقة",
+          // ✅ الأكواد الحقيقية المصلحة
+          servers: buildServers({
+            uq: "133ubxsynlut",
+            st: "r8eo6kQBDJT8Ao",
+            mv: "sa0syyd9a4nl",
+          }),
         },
-        /* أضف الحلقة 2 هنا لاحقاً بنفس الطريقة */
+        // أضف الحلقة 2 هنا بنفس الطريقة عند توفر الأكواد:
+        // { num: 2, title: "الحلقة 2: ...", duration: "24 دقيقة", servers: buildServers({ uq: "...", st: "...", mv: "..." }) },
       ],
-    }
+    },
   };
 
-  // التحقق من وجود الأنمي في قاعدة البيانات
   if (animeDB[id]) {
     return res.status(200).json({
       status: "success",
