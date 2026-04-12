@@ -8,9 +8,10 @@
 
 /* ═══════════════════════════════════════════════════════════════
    CONFIG
+   ► تم تغيير apiBase فقط للإشارة إلى Vercel Serverless Function
 ═══════════════════════════════════════════════════════════════ */
 const CONFIG = {
-  apiBase: "https://my-api.com/api/getAnime.php",
+  apiBase: "/api/getAnime",
   defaultServer: "1",
 };
 
@@ -18,13 +19,13 @@ const CONFIG = {
    STATE
 ═══════════════════════════════════════════════════════════════ */
 const state = {
-  animeData: null,          // full API response data
-  currentEpisode: null,     // episode object currently loaded
+  animeData: null,
+  currentEpisode: null,
   currentServer: CONFIG.defaultServer,
 };
 
 /* ═══════════════════════════════════════════════════════════════
-   DOM REFERENCES  (populated after DOMContentLoaded)
+   DOM REFERENCES
 ═══════════════════════════════════════════════════════════════ */
 const DOM = {};
 
@@ -50,10 +51,6 @@ function cacheDom() {
 /* ═══════════════════════════════════════════════════════════════
    URL HELPERS
 ═══════════════════════════════════════════════════════════════ */
-
-/**
- * Returns the ?id= param from the current URL, or null if missing.
- */
 function getAnimeIdFromUrl() {
   const params = new URLSearchParams(window.location.search);
   const id = parseInt(params.get("id"), 10);
@@ -63,13 +60,6 @@ function getAnimeIdFromUrl() {
 /* ═══════════════════════════════════════════════════════════════
    API
 ═══════════════════════════════════════════════════════════════ */
-
-/**
- * Fetches anime data from the API.
- * @param {number} id
- * @returns {Promise<Object>} Resolved anime data object
- * @throws {Error} On network failure or non-success status
- */
 async function fetchAnime(id) {
   const url = `${CONFIG.apiBase}?id=${encodeURIComponent(id)}`;
   const response = await fetch(url);
@@ -90,7 +80,6 @@ async function fetchAnime(id) {
 /* ═══════════════════════════════════════════════════════════════
    RENDER – Anime Info
 ═══════════════════════════════════════════════════════════════ */
-
 function renderAnimeInfo(data) {
   DOM.animeTitle.textContent   = data.title       ?? "—";
   DOM.animeDesc.textContent    = data.description ?? "—";
@@ -99,7 +88,6 @@ function renderAnimeInfo(data) {
   DOM.animeEpCount.textContent = data.epCount      ?? "—";
   DOM.animeLang.textContent    = data.lang         ?? "—";
 
-  // Tags
   DOM.animeTags.innerHTML = "";
   if (Array.isArray(data.tags)) {
     data.tags.forEach((tag) => {
@@ -110,14 +98,12 @@ function renderAnimeInfo(data) {
     });
   }
 
-  // Page title
   document.title = `${data.title} – Toonia`;
 }
 
 /* ═══════════════════════════════════════════════════════════════
    RENDER – Episode List
 ═══════════════════════════════════════════════════════════════ */
-
 function renderEpisodeList(episodes) {
   DOM.episodeList.innerHTML = "";
 
@@ -149,7 +135,6 @@ function renderEpisodeList(episodes) {
 /* ═══════════════════════════════════════════════════════════════
    RENDER – Server Buttons
 ═══════════════════════════════════════════════════════════════ */
-
 function renderServerButtons(servers) {
   DOM.serverBtns.innerHTML = "";
 
@@ -169,17 +154,10 @@ function renderServerButtons(servers) {
 /* ═══════════════════════════════════════════════════════════════
    PLAYBACK LOGIC
 ═══════════════════════════════════════════════════════════════ */
-
-/**
- * Loads an episode: updates state, re-renders server buttons,
- * updates the player src, and highlights the active episode row.
- * @param {Object} ep  Episode object from API
- */
 function loadEpisode(ep) {
   state.currentEpisode = ep;
   state.currentServer  = CONFIG.defaultServer;
 
-  // Highlight active episode
   document
     .querySelectorAll(".episode-item")
     .forEach((el) => el.classList.remove("active"));
@@ -192,17 +170,10 @@ function loadEpisode(ep) {
     activeItem.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }
 
-  // Render server buttons for this episode
   renderServerButtons(ep.servers);
-
-  // Update the player
   updatePlayer(ep.servers[state.currentServer], ep.title);
 }
 
-/**
- * Switches to a different server for the currently loaded episode.
- * @param {string} serverKey  e.g. "1", "2", "3"
- */
 function switchServer(serverKey) {
   if (!state.currentEpisode) return;
 
@@ -214,7 +185,6 @@ function switchServer(serverKey) {
 
   state.currentServer = serverKey;
 
-  // Update active button style
   document.querySelectorAll(".server-btn").forEach((btn) => {
     btn.classList.toggle("active", btn.dataset.serverKey === serverKey);
   });
@@ -222,18 +192,11 @@ function switchServer(serverKey) {
   updatePlayer(url, state.currentEpisode.title);
 }
 
-/**
- * Updates the <video> source (or iframe) and reloads playback.
- * Falls back to iframe for embed-style links (uqload, streamtape, etc.).
- * @param {string} src    Media URL
- * @param {string} title  Episode title shown above the player
- */
 function updatePlayer(src, title) {
   if (DOM.episodeTitle) {
     DOM.episodeTitle.textContent = title ?? "";
   }
 
-  // Detect embed URLs → use <iframe>; direct files (.mp4) → use <video>
   if (isEmbedUrl(src)) {
     useIframePlayer(src);
   } else {
@@ -252,16 +215,13 @@ function isEmbedUrl(src) {
 }
 
 function useVideoPlayer(src) {
-  // Remove any existing iframe
   const existingIframe = DOM.playerWrapper.querySelector("iframe.toonia-iframe");
   if (existingIframe) existingIframe.remove();
 
   DOM.videoPlayer.style.display = "block";
   DOM.videoSource.src = src;
   DOM.videoPlayer.load();
-  DOM.videoPlayer.play().catch(() => {
-    // Autoplay may be blocked; silent catch is fine – user can press play
-  });
+  DOM.videoPlayer.play().catch(() => {});
 }
 
 function useIframePlayer(src) {
@@ -280,13 +240,10 @@ function useIframePlayer(src) {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   UI STATE – Loading / Error
+   UI STATE
 ═══════════════════════════════════════════════════════════════ */
-
 function showLoading(visible) {
-  if (DOM.loadingOverlay) {
-    DOM.loadingOverlay.hidden = !visible;
-  }
+  if (DOM.loadingOverlay) DOM.loadingOverlay.hidden = !visible;
 }
 
 function showError(message) {
@@ -303,10 +260,6 @@ function hideError() {
 /* ═══════════════════════════════════════════════════════════════
    UTILITY
 ═══════════════════════════════════════════════════════════════ */
-
-/**
- * Simple HTML escaping to prevent XSS when injecting API strings.
- */
 function escapeHtml(str) {
   return String(str ?? "")
     .replace(/&/g, "&amp;")
@@ -319,7 +272,6 @@ function escapeHtml(str) {
 /* ═══════════════════════════════════════════════════════════════
    INIT
 ═══════════════════════════════════════════════════════════════ */
-
 async function init() {
   cacheDom();
   hideError();
@@ -340,7 +292,6 @@ async function init() {
     renderAnimeInfo(data);
     renderEpisodeList(data.episodes);
 
-    // Auto-load first episode
     if (Array.isArray(data.episodes) && data.episodes.length > 0) {
       loadEpisode(data.episodes[0]);
     }
