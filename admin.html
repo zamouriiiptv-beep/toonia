@@ -19,6 +19,40 @@
 }
 html { scroll-behavior:smooth; }
 body { font-family:var(--cairo); background:var(--bg-0); color:var(--text-1); min-height:100vh; overflow-x:hidden; }
+
+/* ══ LOGIN SCREEN ══ */
+#loginScreen {
+  position:fixed; inset:0; z-index:9999;
+  background:var(--bg-0);
+  display:flex; align-items:center; justify-content:center;
+}
+#loginScreen.hidden { display:none; }
+.login-box {
+  width:100%; max-width:360px; padding:2.5rem 2rem;
+  background:var(--bg-2); border:1px solid rgba(34,197,94,.2);
+  border-radius:var(--radius-lg); text-align:center;
+}
+.login-logo { font-size:1.6rem; font-weight:900; margin-bottom:.25rem; }
+.login-logo span { color:var(--green); }
+.login-subtitle { font-size:.8rem; color:var(--text-3); margin-bottom:2rem; }
+.login-field { position:relative; margin-bottom:1rem; }
+.login-field input {
+  width:100%; padding:.75rem 1rem; padding-left:3rem;
+  background:var(--bg-1); border:1px solid var(--border);
+  border-radius:var(--radius); color:var(--text-1);
+  font-family:var(--mono); font-size:.9rem; outline:none;
+  transition:border-color .2s, box-shadow .2s;
+  text-align:left; direction:ltr;
+}
+.login-field input:focus { border-color:rgba(34,197,94,.4); box-shadow:0 0 0 3px rgba(34,197,94,.08); }
+.login-field input.error { border-color:rgba(239,68,68,.5) !important; }
+.login-eye { position:absolute; left:.85rem; top:50%; transform:translateY(-50%); background:none; border:none; color:var(--text-3); cursor:pointer; padding:0; display:flex; align-items:center; }
+.login-eye:hover { color:var(--text-1); }
+.login-btn { width:100%; padding:.75rem; background:var(--green); color:#000; border:none; border-radius:var(--radius); font-family:var(--cairo); font-size:.95rem; font-weight:700; cursor:pointer; transition:background .2s, transform .1s; margin-top:.25rem; }
+.login-btn:hover { background:#16a34a; }
+.login-btn:active { transform:scale(.98); }
+.login-error { font-size:.78rem; color:#fca5a5; margin-top:.75rem; display:none; }
+.login-error.show { display:block; }
 body::before {
   content:''; position:fixed; inset:0;
   background-image: linear-gradient(rgba(34,197,94,.03) 1px,transparent 1px), linear-gradient(90deg,rgba(34,197,94,.03) 1px,transparent 1px);
@@ -156,6 +190,24 @@ header {
 </head>
 <body>
 
+<!-- ══ LOGIN SCREEN ══ -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo"><span>T</span>oonia</div>
+    <p class="login-subtitle">لوحة التحكم — أدخل كلمة السر للمتابعة</p>
+    <div class="login-field">
+      <input type="password" id="loginInput" placeholder="كلمة السر" onkeydown="if(event.key==='Enter')checkLogin()"/>
+      <button class="login-eye" onclick="toggleLoginEye()" id="loginEyeBtn">
+        <svg id="loginEyeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+        </svg>
+      </button>
+    </div>
+    <button class="login-btn" onclick="checkLogin()">دخول</button>
+    <p class="login-error" id="loginError">❌ كلمة السر غير صحيحة</p>
+  </div>
+</div>
+
 <header>
   <a href="index.html" class="logo">
     <span class="logo-mark"><span>T</span>oonia</span>
@@ -292,6 +344,56 @@ header {
 
 <script>
 "use strict";
+
+/* ══ PASSWORD PROTECTION ══ */
+// 🔑 غيّر كلمة السر هنا
+const ADMIN_PASSWORD = "toonia2025";
+
+function checkLogin() {
+  const input = document.getElementById("loginInput");
+  const error = document.getElementById("loginError");
+  const val   = input.value;
+
+  if (val === ADMIN_PASSWORD) {
+    // حفظ الجلسة لمدة 8 ساعات
+    sessionStorage.setItem("admin_auth", Date.now().toString());
+    document.getElementById("loginScreen").classList.add("hidden");
+    error.classList.remove("show");
+    input.classList.remove("error");
+  } else {
+    input.classList.add("error");
+    error.classList.add("show");
+    input.value = "";
+    input.focus();
+    // اهتزاز بسيط
+    input.style.animation = "none";
+    setTimeout(() => { input.style.animation = ""; }, 10);
+  }
+}
+
+function toggleLoginEye() {
+  const input = document.getElementById("loginInput");
+  const icon  = document.getElementById("loginEyeIcon");
+  if (input.type === "password") {
+    input.type = "text";
+    icon.innerHTML = `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>`;
+  } else {
+    input.type = "password";
+    icon.innerHTML = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
+  }
+}
+
+// التحقق عند فتح الصفحة
+(function() {
+  const auth = sessionStorage.getItem("admin_auth");
+  const valid = auth && (Date.now() - parseInt(auth)) < 8 * 60 * 60 * 1000;
+  if (valid) {
+    document.getElementById("loginScreen").classList.add("hidden");
+  } else {
+    sessionStorage.removeItem("admin_auth");
+    setTimeout(() => document.getElementById("loginInput").focus(), 100);
+  }
+})();
 
 /* ══ CONFIG ══ */
 const GITHUB_OWNER = "zamouriiiptv-beep";
