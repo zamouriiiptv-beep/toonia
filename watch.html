@@ -4,14 +4,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>مشاهدة – Toonia</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Exo+2:wght@700;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/style.css" />
 
-  <!-- إضافات Player فقط — لا تمس style.css -->
   <style>
-    /* iframe يملأ player-wrap بالكامل */
-    #mainPlayer {
+
+    /* 1. PLAYER WRAPPER */
+    #playerWrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    #videoPlayer {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      border: none;
+      display: none;
+    }
+
+    #playerWrapper iframe.toonia-iframe {
       position: absolute;
       inset: 0;
       width: 100%;
@@ -22,36 +42,140 @@
       z-index: 2;
     }
 
-    /* Loader */
-    .player-loader {
+    /* 2. EPISODE TITLE BAR */
+    .player-top-bar {
+      position: absolute;
+      top: 0; right: 0; left: 0;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      gap: .55rem;
+      padding: .55rem .85rem;
+      background: linear-gradient(to bottom, rgba(0,0,0,.72), transparent);
+      pointer-events: none;
+    }
+    .player-badge-live {
+      font-size: .68rem;
+      font-weight: 900;
+      font-family: 'Exo 2', sans-serif;
+      letter-spacing: .06em;
+      color: #000;
+      background: #22c55e;
+      border-radius: 4px;
+      padding: 1px 6px;
+    }
+    #episodeTitle {
+      font-size: .8rem;
+      font-weight: 600;
+      font-family: 'Cairo', sans-serif;
+      color: rgba(255,255,255,.85);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* 3. PLAYER OVERLAY */
+    .player-overlay {
       position: absolute;
       inset: 0;
-      z-index: 10;
-      background: rgba(0,0,0,.78);
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(10,12,18,.88);
+      border-radius: inherit;
+      transition: opacity .35s, visibility .35s;
+    }
+    .player-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .player-placeholder { text-align: center; }
+    .play-pulse {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: rgba(34,197,94,.15);
+      border: 2px solid rgba(34,197,94,.35);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto .75rem;
+      color: #22c55e;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,.25); }
+      50%       { box-shadow: 0 0 0 14px rgba(34,197,94,0); }
+    }
+    .player-placeholder p {
+      font-size: .9rem;
+      color: rgba(255,255,255,.45);
+      font-family: 'Cairo', sans-serif;
+      margin: 0;
+    }
+
+    /* 4. LOADING OVERLAY */
+    #loadingOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9990;
+      background: rgba(8,10,16,.92);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      border-radius: inherit;
-      transition: opacity .3s, visibility .3s;
+      gap: 1rem;
     }
-    .player-loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-    .pl-spinner {
-      width: 44px; height: 44px;
-      border: 3px solid rgba(255,255,255,.12);
+    #loadingOverlay[hidden] { display: none; }
+    .lo-spinner {
+      width: 48px; height: 48px;
+      border: 3px solid rgba(255,255,255,.1);
       border-top-color: #22c55e;
       border-radius: 50%;
-      animation: pl-spin .75s linear infinite;
+      animation: lo-spin .75s linear infinite;
     }
-    @keyframes pl-spin { to { transform: rotate(360deg); } }
-    .pl-loader-text {
-      font-size: .82rem;
-      color: rgba(255,255,255,.5);
+    @keyframes lo-spin { to { transform: rotate(360deg); } }
+    .lo-text {
+      font-size: .85rem;
+      font-weight: 600;
       font-family: 'Cairo', sans-serif;
+      color: rgba(255,255,255,.45);
     }
 
-    /* أزرار السيرفرات */
+    /* 5. ERROR BOX */
+    #errorBox {
+      max-width: 520px;
+      margin: 3rem auto;
+      padding: 1.5rem 2rem;
+      background: rgba(239,68,68,.08);
+      border: 1px solid rgba(239,68,68,.3);
+      border-radius: 12px;
+      text-align: center;
+    }
+    #errorBox[hidden] { display: none; }
+    .error-icon { font-size: 2.2rem; margin-bottom: .5rem; }
+    #errorMessage {
+      font-size: .9rem;
+      font-weight: 600;
+      font-family: 'Cairo', sans-serif;
+      color: #fca5a5;
+      margin: 0;
+    }
+    .error-retry-btn {
+      margin-top: 1rem;
+      padding: .45rem 1.25rem;
+      background: rgba(239,68,68,.15);
+      border: 1px solid rgba(239,68,68,.35);
+      border-radius: 8px;
+      color: #fca5a5;
+      font-family: 'Cairo', sans-serif;
+      font-size: .82rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .error-retry-btn:hover { background: rgba(239,68,68,.28); }
+
+    /* 6. SERVER BUTTONS */
     .server-switcher {
       display: flex;
       align-items: center;
@@ -66,7 +190,7 @@
       font-weight: 600;
     }
     .server-btn {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 6px;
       padding: .38rem .85rem;
@@ -80,42 +204,95 @@
       cursor: pointer;
       transition: all .2s ease;
     }
-    .server-btn:hover { border-color: #22c55e; color: #fff; }
-    .server-btn.active { background: #22c55e; border-color: #22c55e; color: #000; }
-    .server-btn.error  { border-color: #ef4444; color: #ef4444; }
-    .srv-dot {
+    .server-btn::before {
+      content: '';
       width: 6px; height: 6px;
       border-radius: 50%;
       background: currentColor;
       flex-shrink: 0;
     }
+    .server-btn:hover  { border-color: #22c55e; color: #fff; }
+    .server-btn.active { background: #22c55e; border-color: #22c55e; color: #000; }
+    .server-btn.error  { border-color: #ef4444; color: #ef4444; }
 
-    /* Toast */
-    .toonia-toast {
-      position: fixed;
-      bottom: 1.4rem;
-      left: 50%;
-      transform: translateX(-50%) translateY(70px);
-      background: rgba(15,17,22,.95);
-      border: 1px solid rgba(255,255,255,.1);
-      color: #e8ecf5;
-      padding: .6rem 1.25rem;
+    /* 7. EPISODE LIST */
+    .episode-item {
+      display: flex;
+      align-items: center;
+      gap: .65rem;
+      padding: .65rem .85rem;
       border-radius: 8px;
-      font-size: .82rem;
-      font-weight: 600;
-      font-family: 'Cairo', sans-serif;
-      z-index: 9999;
-      transition: transform .3s cubic-bezier(.34,1.56,.64,1);
-      white-space: nowrap;
-      box-shadow: 0 6px 24px rgba(0,0,0,.55);
-      pointer-events: none;
+      cursor: pointer;
+      transition: background .18s;
+      border: 1px solid transparent;
     }
-    .toonia-toast.show { transform: translateX(-50%) translateY(0); }
+    .episode-item:hover { background: rgba(255,255,255,.05); }
+    .episode-item.active {
+      background: rgba(34,197,94,.1);
+      border-color: rgba(34,197,94,.25);
+    }
+    .ep-num {
+      min-width: 28px; height: 28px;
+      border-radius: 6px;
+      background: rgba(255,255,255,.07);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .75rem; font-weight: 700;
+      font-family: 'Exo 2', sans-serif;
+      color: rgba(255,255,255,.5);
+      flex-shrink: 0;
+    }
+    .episode-item.active .ep-num { background: #22c55e; color: #000; }
+    .ep-title {
+      flex: 1;
+      font-size: .82rem; font-weight: 600;
+      font-family: 'Cairo', sans-serif;
+      color: rgba(255,255,255,.75);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .episode-item.active .ep-title { color: #fff; }
+    .ep-duration {
+      font-size: .72rem;
+      color: rgba(255,255,255,.3);
+      font-family: 'Cairo', sans-serif;
+      flex-shrink: 0;
+    }
+    .no-episodes {
+      text-align: center; padding: 2rem 1rem;
+      font-size: .85rem; font-family: 'Cairo', sans-serif;
+      color: rgba(255,255,255,.3);
+    }
+
+    /* 8. TAGS */
+    .tag {
+      display: inline-block;
+      padding: .22rem .65rem;
+      border-radius: 20px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.1);
+      font-size: .72rem; font-weight: 600;
+      font-family: 'Cairo', sans-serif;
+      color: rgba(255,255,255,.55);
+    }
+
   </style>
 </head>
+
 <body class="watch-page">
 
-  <!-- HEADER — لم يتغير -->
+  <!-- LOADING OVERLAY -->
+  <div id="loadingOverlay">
+    <div class="lo-spinner"></div>
+    <p class="lo-text">جاري تحميل البيانات...</p>
+  </div>
+
+  <!-- ERROR BOX -->
+  <div id="errorBox" hidden>
+    <div class="error-icon">⚠️</div>
+    <p id="errorMessage">حدث خطأ ما.</p>
+    <button class="error-retry-btn" onclick="location.reload()">إعادة المحاولة</button>
+  </div>
+
+  <!-- HEADER -->
   <header class="header watch-header" id="header">
     <div class="header-inner">
       <a href="index.html" class="logo">
@@ -123,105 +300,108 @@
         <span class="logo-dot"></span>
       </a>
       <a href="index.html" class="back-btn">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
         العودة للرئيسية
       </a>
     </div>
   </header>
 
-  <!-- WATCH LAYOUT — نفس الهيكل الأصلي -->
+  <!-- WATCH LAYOUT -->
   <div class="watch-layout">
 
     <!-- LEFT: Player + Info -->
     <div class="watch-main">
 
-      <!-- Player — iframe بدل video -->
-      <div class="player-wrap" id="playerWrap">
+      <!-- PLAYER WRAPPER -->
+      <div class="player-wrap" id="playerWrapper">
 
-        <iframe id="mainPlayer" src="about:blank"
-          allowfullscreen
-          allow="autoplay; fullscreen; picture-in-picture"
-          sandbox="allow-scripts allow-same-origin allow-presentation allow-popups">
-        </iframe>
+        <!-- video للملفات المباشرة -->
+        <video id="videoPlayer" controls preload="metadata">
+          <source id="videoSource" src="" type="video/mp4" />
+        </video>
 
-        <!-- Loader -->
-        <div class="player-loader hidden" id="playerLoader">
-          <div class="pl-spinner"></div>
-          <span class="pl-loader-text">جاري تحميل الفيديو...</span>
-        </div>
-
-        <!-- Overlay — لم يتغير -->
+        <!-- Placeholder قبل اختيار حلقة -->
         <div class="player-overlay" id="playerOverlay">
           <div class="player-placeholder">
             <div class="play-pulse">
-              <svg width="60" height="60" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              <svg width="52" height="52" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
             </div>
-            <p id="nowPlayingLabel">اختر حلقة للمشاهدة</p>
+            <p>اختر حلقة للمشاهدة</p>
           </div>
         </div>
 
-        <!-- Top bar — لم يتغير -->
+        <!-- Top bar -->
         <div class="player-top-bar">
           <span class="player-badge-live">HD</span>
-          <span id="playerEpTitle" class="player-ep-title"></span>
+          <span id="episodeTitle"></span>
         </div>
-      </div>
 
-      <!-- أزرار السيرفرات — مباشرة بعد البلاير -->
-      <div class="server-switcher" id="serverSwitcher">
+      </div>
+      <!-- /playerWrapper -->
+
+      <!-- SERVER SWITCHER -->
+      <div class="server-switcher">
         <span class="server-label">السيرفر:</span>
-        <button class="server-btn active" id="srv1" onclick="playerEngine.changeServer(1)">
-          <span class="srv-dot"></span>Uqload
-        </button>
-        <button class="server-btn" id="srv2" onclick="playerEngine.changeServer(2)">
-          <span class="srv-dot"></span>Streamtape
-        </button>
-        <button class="server-btn" id="srv3" onclick="playerEngine.changeServer(3)">
-          <span class="srv-dot"></span>Myvidplay
-        </button>
+        <div id="serverBtns" style="display:contents"></div>
       </div>
 
-      <!-- Anime Info — لم يتغير -->
+      <!-- ANIME INFO -->
       <div class="anime-info" id="animeInfo">
         <div class="anime-info-header">
+
           <div class="anime-thumb-wrap">
             <img id="animeThumb" src="" alt="" class="anime-thumb" loading="lazy" />
           </div>
+
           <div class="anime-meta">
             <h1 class="anime-title" id="animeTitle">جاري التحميل...</h1>
+
             <div class="anime-tags" id="animeTags"></div>
+
             <div class="anime-stats">
               <span class="stat">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="#FFD700"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="#FFD700">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
                 <span id="animeRating">--</span>
               </span>
               <span class="stat">📅 <span id="animeYear">--</span></span>
               <span class="stat">🎬 <span id="animeEpCount">--</span> حلقة</span>
               <span class="stat">🌐 <span id="animeLang">--</span></span>
             </div>
+
             <p class="anime-desc" id="animeDesc">--</p>
-            <button class="btn-next-ep" id="btnNextEp">
+
+            <button class="btn-next-ep" id="btnNextEp" hidden>
               الحلقة التالية
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="9 18 15 12 9 6"/>
+              </svg>
             </button>
+
           </div>
         </div>
       </div>
 
     </div>
+    <!-- /watch-main -->
 
-    <!-- RIGHT: Episodes list — لم يتغير -->
+    <!-- RIGHT: Episodes -->
     <aside class="episodes-aside">
       <div class="episodes-header">
         <h3>قائمة الحلقات</h3>
-        <span class="ep-count-badge" id="epCountBadge">0 حلقة</span>
       </div>
-      <div class="episodes-list" id="episodesList"></div>
+      <div class="episodes-list" id="episodeList"></div>
     </aside>
 
   </div>
+  <!-- /watch-layout -->
 
-  <!-- Related section — لم يتغير -->
+  <!-- RELATED SECTION -->
   <section class="content-section related-section">
     <div class="section-header">
       <div class="section-title-wrap">
@@ -231,26 +411,31 @@
     </div>
     <div class="cards-row-wrap">
       <button class="row-nav row-prev" aria-label="السابق">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
       </button>
       <div class="cards-row" id="rowRelated"></div>
       <button class="row-nav row-next" aria-label="التالي">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
       </button>
     </div>
   </section>
 
+  <!-- FOOTER -->
   <footer class="footer">
     <div class="footer-bottom" style="padding-top:1.5rem">
       <p>© 2025 Toonia. جميع الحقوق محفوظة.</p>
     </div>
   </footer>
 
-  <!-- Toast -->
-  <div class="toonia-toast" id="tooniaToast"></div>
-
-  <!-- app.js الأصلي أولاً -->
-  <script src="assets/js/app.js"></script>
+  <script src="assets/js/app.js" defer></script>
+  <script src="assets/js/watch.js" defer></script>
 
 </body>
 </html>
+```
+
+انسخ الكود كاملاً، افتح محرر النصوص (Notepad أو VS Code)، ألصقه، واحفظه باسم `watch.html` — وتأكد أن الامتداد `.html` وليس `.txt`.
